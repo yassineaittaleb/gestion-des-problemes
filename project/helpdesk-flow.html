@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Helpdesk Flow</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f0f4f8;font-family:'Segoe UI',Arial,sans-serif;padding:2rem;display:flex;flex-direction:column;align-items:center}
+h1{font-size:1.5rem;color:#1e293b;margin-bottom:.3rem;font-weight:700}
+.sub{color:#64748b;font-size:.85rem;margin-bottom:2rem}
+.flow{display:flex;flex-direction:column;align-items:center;gap:0;max-width:820px;width:100%}
+
+/* Screen */
+.screen{background:#fff;border-radius:16px;padding:2rem;width:100%;box-shadow:0 1px 4px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);border:1px solid #e2e8f0;position:relative}
+.screen-label{position:absolute;top:-10px;left:20px;background:#fff;padding:0 8px;font-size:.7rem;font-weight:700;color:#94a3b8;letter-spacing:.3px}
+
+/* Arrow */
+.arrow{display:flex;align-items:center;justify-content:center;height:36px;color:#94a3b8}
+.arrow svg{width:22px;height:22px;opacity:.5}
+
+/* Landing */
+.landing{text-align:center;padding:3rem 2rem}
+.landing .icon{margin-bottom:1rem}
+.landing .icon svg{width:56px;height:56px;filter:drop-shadow(0 6px 16px rgba(59,130,246,.2))}
+.landing h2{font-size:1.8rem;font-weight:800;color:#1e293b;letter-spacing:-.5px;margin-bottom:.5rem}
+.landing p{color:#64748b;font-size:.95rem;margin-bottom:1.5rem}
+.btn{display:inline-flex;align-items:center;gap:.4rem;padding:.7rem 2rem;background:#3b82f6;border:none;border-radius:10px;color:#fff;font-size:.9rem;font-weight:600;font-family:inherit;cursor:pointer;box-shadow:0 4px 16px rgba(59,130,246,.3);transition:all .2s}
+.btn svg{width:16px;height:16px;transition:transform .2s}
+.btn:hover{background:#2563eb;transform:translateY(-1px);box-shadow:0 6px 20px rgba(59,130,246,.4)}
+.btn:hover svg{transform:translateX(3px)}
+
+/* Role cards */
+.role-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:.5rem}
+.role-card{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.25rem .75rem;background:#fff;border:2px solid #e2e8f0;border-radius:14px;cursor:pointer;transition:all .2s;min-height:105px;user-select:none}
+.role-card:hover{border-color:#3b82f6;background:#f8faff;transform:translateY(-2px);box-shadow:0 4px 12px rgba(59,130,246,.08)}
+.role-card .ico{font-size:1.5rem;margin-bottom:.4rem;line-height:1}
+.role-card h4{font-size:.85rem;color:#1e293b;font-weight:600}
+.role-card p{font-size:.68rem;color:#94a3b8;text-align:center;margin-top:.1rem}
+
+/* Form */
+.form{max-width:360px;margin:0 auto;padding:.5rem 0}
+.field{margin-bottom:1rem}
+.field label{display:block;font-size:.78rem;color:#64748b;margin-bottom:.35rem;font-weight:600}
+.field input{width:100%;padding:.7rem .85rem;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;font-size:.88rem;font-family:inherit;color:#1e293b;transition:all .2s;outline:none}
+.field input:focus{border-color:#3b82f6;background:#fff;box-shadow:0 0 0 3px rgba(59,130,246,.08)}
+.btn-full{width:100%;justify-content:center}
+.error{background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:.5rem .75rem;font-size:.8rem;color:#dc2626;text-align:center;margin-bottom:.75rem;display:none}
+
+/* Dashboards */
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.dash-card{padding:1rem;background:#f8fafc;border-radius:10px;border:1px solid #e2e8f0;text-align:center}
+.dash-card h4{font-size:.78rem;color:#64748b;font-weight:600;margin-bottom:.2rem;text-transform:uppercase;letter-spacing:.3px}
+.dash-card .num{font-size:1.4rem;font-weight:800;color:#1e293b;letter-spacing:-.5px}
+.dash-bar{height:4px;border-radius:2px;margin-top:.5rem;width:60%;margin-left:auto;margin-right:auto}
+.role-tag{display:inline-block;padding:.25rem .7rem;border-radius:20px;font-size:.68rem;font-weight:600;margin-top:.3rem}
+
+/* Columns */
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:.75rem}
+.col{min-width:0}
+
+/* Decorative */
+.bg-soft{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:-1}
+.bg-soft div{position:absolute;border-radius:50%;filter:blur(120px);opacity:.05}
+.b1{width:500px;height:500px;background:#3b82f6;top:-200px;left:-100px}
+.b2{width:400px;height:400px;background:#8b5cf6;bottom:-150px;right:-100px}
+</style>
+</head>
+<body>
+<div class="bg-soft"><div class="b1"></div><div class="b2"></div></div>
+<h1>Helpdesk System</h1>
+<p class="sub">Landing + Login Flow</p>
+
+<div class="flow">
+
+  <!-- 1. LANDING -->
+  <div class="screen">
+    <span class="screen-label">1. LANDING PAGE</span>
+    <div class="landing">
+      <div class="icon">
+        <svg viewBox="0 0 64 64" fill="none"><defs><linearGradient id="a" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3498db"/><stop offset="100%" stop-color="#2c3e50"/></linearGradient></defs><path d="M32 2 L58 14 V32 C58 48 32 62 32 62 C32 62 6 48 6 32 V14 Z" fill="url(#a)"/><path d="M22 32 L30 42 L44 24" stroke="#fff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+      </div>
+      <h2>IT Helpdesk System</h2>
+      <p>Report and manage IT issues easily</p>
+      <button class="btn" onclick="event.preventDefault()">Login <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+    </div>
+  </div>
+
+  <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg></div>
+
+  <!-- 2. ROLE SELECTION -->
+  <div class="screen">
+    <span class="screen-label">2. ROLE SELECTION</span>
+    <p style="font-size:.85rem;color:#64748b;margin-bottom:.75rem;text-align:center">Selectionnez votre role</p>
+    <div class="role-grid">
+      <div class="role-card"><div class="ico">👤</div><h4>Utilisateur</h4><p>Signale les problemes</p></div>
+      <div class="role-card"><div class="ico">🛠️</div><h4>Technicien</h4><p>Resout les incidents</p></div>
+      <div class="role-card"><div class="ico">💻</div><h4>Ingenieur</h4><p>Traite les escalades</p></div>
+      <div class="role-card"><div class="ico">👔</div><h4>Chef de Service</h4><p>Supervise & gere</p></div>
+    </div>
+  </div>
+
+  <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg></div>
+
+  <!-- 3. LOGIN FORM -->
+  <div class="screen">
+    <span class="screen-label">3. LOGIN FORM</span>
+    <div class="form">
+      <div class="error" style="display:block">Identifiants incorrects. Reessayez.</div>
+      <div class="field">
+        <label>Nom d'utilisateur</label>
+        <input type="text" placeholder="Entrez votre nom" value="yassine">
+      </div>
+      <div class="field">
+        <label>Mot de passe</label>
+        <input type="password" placeholder="Entrez votre mot de passe" value="••••••••">
+      </div>
+      <button class="btn btn-full" onclick="event.preventDefault()">Se connecter <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+    </div>
+  </div>
+
+  <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg></div>
+
+  <!-- 4. REDIRECTION -->
+  <div class="screen">
+    <span class="screen-label">4. REDIRECTION PAR ROLE</span>
+    <p style="font-size:.85rem;color:#64748b;margin-bottom:1rem;text-align:center">Apres authentification → vers le tableau de bord correspondant</p>
+    <div class="dash-grid">
+      <div class="dash-card">
+        <h4>Utilisateur</h4>
+        <div class="num">1</div>
+        <p style="font-size:.7rem;color:#94a3b8;margin-top:.1rem">Total Tickets</p>
+        <div class="role-tag" style="background:#eff6ff;color:#3b82f6;border:1.5px solid #3b82f6">Dashboard</div>
+        <div class="dash-bar" style="background:#3b82f6;opacity:.15"></div>
+      </div>
+      <div class="dash-card">
+        <h4>Technicien</h4>
+        <div class="num">3</div>
+        <p style="font-size:.7rem;color:#94a3b8;margin-top:.1rem">Tickets Ouverts</p>
+        <div class="role-tag" style="background:#f0fdf4;color:#22c55e;border:1.5px solid #22c55e">Dashboard</div>
+        <div class="dash-bar" style="background:#22c55e;opacity:.15"></div>
+      </div>
+      <div class="dash-card">
+        <h4>Ingenieur</h4>
+        <div class="num">2</div>
+        <p style="font-size:.7rem;color:#94a3b8;margin-top:.1rem">Escalades</p>
+        <div class="role-tag" style="background:#fffbeb;color:#f59e0b;border:1.5px solid #f59e0b">Dashboard</div>
+        <div class="dash-bar" style="background:#f59e0b;opacity:.15"></div>
+      </div>
+      <div class="dash-card">
+        <h4>Chef de Service</h4>
+        <div class="num">12</div>
+        <p style="font-size:.7rem;color:#94a3b8;margin-top:.1rem">Total Tickets</p>
+        <div class="role-tag" style="background:#f5f3ff;color:#8b5cf6;border:1.5px solid #8b5cf6">Dashboard</div>
+        <div class="dash-bar" style="background:#8b5cf6;opacity:.15"></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:1.5rem;padding:.7rem 1.5rem;background:#fff;border:1px solid #e2e8f0;border-radius:10px;text-align:center;width:100%;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+    <p style="font-size:.8rem;color:#94a3b8">Chaque role voit son propre tableau de bord avec les donnees pertinentes</p>
+  </div>
+
+</div>
+
+<p style="margin-top:2rem;font-size:.75rem;color:#94a3b8">UI/UX Flow Diagram — Helpdesk System</p>
+</body>
+</html>

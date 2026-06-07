@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Problèmes</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- ===== LANDING PAGE ===== -->
+    <div id="homeStep" class="landing">
+
+        <div class="landing-bg">
+            <div class="land-circle lc1"></div>
+            <div class="land-circle lc2"></div>
+            <div class="land-circle lc3"></div>
+            <div class="land-circle lc4"></div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="land-nav">
+            <div class="land-nav-inner">
+                <div class="land-nav-logo">
+                    <svg viewBox="0 0 28 28" fill="none">
+                        <path d="M14 1 L25.5 7 V14 C25.5 21 14 27 14 27 C14 27 2.5 21 2.5 14 V7 Z" fill="var(--primary)"/>
+                        <path d="M9 14 L13 19 L19 9" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    </svg>
+                    <span>Gestion des Problèmes</span>
+                </div>
+                <div class="land-nav-links">
+                    <a href="#features">Fonctionnalités</a>
+                    <a href="#how-it-works">Fonctionnement</a>
+                    <a href="#roles">Rôles</a>
+                    <a href="#" class="land-nav-cta" onclick="showRoleStep()">Connexion</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero -->
+        <section class="land-hero">
+            <div class="land-hero-bg">
+                <div class="hero-glow"></div>
+            </div>
+            <div class="land-hero-content">
+                <div class="land-hero-logo">
+                    <svg viewBox="0 0 72 72" fill="none">
+                        <defs>
+                            <linearGradient id="heroGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#3b82f6"/>
+                                <stop offset="100%" stop-color="#1e293b"/>
+                            </linearGradient>
+                        </defs>
+                        <path d="M36 2 L66 16 V36 C66 54 36 70 36 70 C36 70 6 54 6 36 V16 Z" fill="url(#heroGrad)"/>
+                        <path d="M24 36 L33 47 L50 26" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    </svg>
+                </div>
+                <h1 class="land-hero-title">Gestion des Problèmes</h1>
+                <p class="land-hero-desc">Plateforme centralisée de gestion des incidents informatiques. Créez, suivez et résolvez vos tickets en équipe avec un système de rôles dédiés.</p>
+                <button class="land-cta" onclick="showRoleStep()">
+                    <span>Accéder à l'espace de travail</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </button>
+            </div>
+        </section>
+
+        <!-- Stats -->
+        <section class="land-stats">
+            <div class="land-stats-inner">
+                <div class="land-stat-item">
+                    <span class="land-stat-num">10+</span>
+                    <span class="land-stat-label">Tickets traités</span>
+                </div>
+                <div class="land-stat-divider"></div>
+                <div class="land-stat-item">
+                    <span class="land-stat-num">4</span>
+                    <span class="land-stat-label">Rôles dédiés</span>
+                </div>
+                <div class="land-stat-divider"></div>
+                <div class="land-stat-item">
+                    <span class="land-stat-num">6</span>
+                    <span class="land-stat-label">Utilisateurs</span>
+                </div>
+                <div class="land-stat-divider"></div>
+                <div class="land-stat-item">
+                    <span class="land-stat-num">98%</span>
+                    <span class="land-stat-label">Satisfaction</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section id="features" class="land-section">
+            <div class="land-section-header">
+                <h2>Fonctionnalités</h2>
+                <p>Une solution complète pour la gestion de vos incidents informatiques</p>
+            </div>
+            <div class="land-features">
+                <div class="land-feat-card">
+                    <div class="land-feat-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="5" width="18" height="14" rx="2"/>
+                            <line x1="7" y1="9" x2="17" y2="9"/>
+                            <line x1="7" y1="13" x2="14" y2="13"/>
+                            <line x1="7" y1="17" x2="11" y2="17"/>
+                        </svg>
+                    </div>
+                    <h3>Création de tickets</h3>
+                    <p>Signalez un incident en quelques clics. Ajoutez une description détaillée, définissez la priorité et le type de problème pour un traitement rapide et efficace.</p>
+                </div>
+                <div class="land-feat-card">
+                    <div class="land-feat-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polyline points="12 6 12 12 16 14"/>
+                        </svg>
+                    </div>
+                    <h3>Suivi en temps réel</h3>
+                    <p>Consultez l'état de vos tickets à chaque étape : Ouvert, En cours, Résolu, Escaladé. Accédez à l'historique complet de toutes les interventions.</p>
+                </div>
+                <div class="land-feat-card">
+                    <div class="land-feat-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                        </svg>
+                    </div>
+                    <h3>Rôles et permissions</h3>
+                    <p>Quatre profils avec des accès adaptés : Utilisateur, Technicien, Chef de Service, Ingénieur. Chaque intervenant dispose des outils nécessaires à sa mission.</p>
+                </div>
+                <div class="land-feat-card">
+                    <div class="land-feat-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="4" y1="20" x2="4" y2="10"/>
+                            <line x1="10" y1="20" x2="10" y2="4"/>
+                            <line x1="16" y1="20" x2="16" y2="12"/>
+                            <line x1="22" y1="20" x2="22" y2="8"/>
+                        </svg>
+                    </div>
+                    <h3>Tableaux de bord</h3>
+                    <p>Visualisez les indicateurs clés : nombre de tickets par statut, répartition par type, taux de résolution et performances de votre équipe technique.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- How it works -->
+        <section id="how-it-works" class="land-section land-alt">
+            <div class="land-section-header">
+                <h2>Comment ça marche</h2>
+                <p>Un processus simple en trois étapes</p>
+            </div>
+            <div class="land-steps">
+                <div class="land-step">
+                    <div class="land-step-num">1</div>
+                    <div class="land-step-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="8" x2="12" y2="16"/>
+                            <line x1="8" y1="12" x2="16" y2="12"/>
+                        </svg>
+                    </div>
+                    <h3>Créez un ticket</h3>
+                    <p>Décrivez votre problème en détail, choisissez la priorité et le type d'incident. Votre demande est immédiatement enregistrée et visible par l'équipe technique.</p>
+                </div>
+                <div class="land-step-arrow">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </div>
+                <div class="land-step">
+                    <div class="land-step-num">2</div>
+                    <div class="land-step-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12a9 9 0 1 1-6.5-8.6"/>
+                            <polyline points="17 2 21 6 17 10"/>
+                        </svg>
+                    </div>
+                    <h3>Suivez son avancement</h3>
+                    <p>L'équipe technique prend en charge votre incident. Vous recevez les mises à jour en temps réel et pouvez suivre chaque étape de la résolution.</p>
+                </div>
+                <div class="land-step-arrow">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </div>
+                <div class="land-step">
+                    <div class="land-step-num">3</div>
+                    <div class="land-step-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M8 12 L11 15 L16 9"/>
+                        </svg>
+                    </div>
+                    <h3>Validez la résolution</h3>
+                    <p>Une fois le problème résolu, le ticket est clôturé avec un historique complet des actions menées. Toutes les informations sont conservées pour référence.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Roles -->
+        <section id="roles" class="land-section">
+            <div class="land-section-header">
+                <h2>Profils adaptés à votre organisation</h2>
+                <p>Chaque métier dispose d'un espace de travail sur mesure</p>
+            </div>
+            <div class="land-roles">
+                <div class="land-role-card" style="--role-color: var(--primary);">
+                    <div class="land-role-icon" style="background: rgba(59,130,246,0.1);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                    </div>
+                    <h3>Utilisateur</h3>
+                    <p>Crée des tickets et suit leur résolution. Interface simple et intuitive pour signaler tout incident ou demande.</p>
+                    <span class="land-role-tag" style="border-color: var(--primary); color: var(--primary);">Création de tickets</span>
+                </div>
+                <div class="land-role-card" style="--role-color: var(--success);">
+                    <div class="land-role-icon" style="background: rgba(34,197,94,0.1);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                            <line x1="12" y1="18" x2="12" y2="12"/>
+                            <line x1="9" y1="15" x2="15" y2="15"/>
+                        </svg>
+                    </div>
+                    <h3>Technicien</h3>
+                    <p>Prend en charge et résout les incidents. Accède à l'ensemble des tickets et met à jour leur statut.</p>
+                    <span class="land-role-tag" style="border-color: var(--success); color: var(--success);">Résolution d'incidents</span>
+                </div>
+                <div class="land-role-card" style="--role-color: var(--purple);">
+                    <div class="land-role-icon" style="background: rgba(139,92,246,0.1);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 20h9"/>
+                            <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+                        </svg>
+                    </div>
+                    <h3>Chef de Service</h3>
+                    <p>Supervise et coordonne les opérations. Assigne les tickets, gère les priorités et consulte les statistiques.</p>
+                    <span class="land-role-tag" style="border-color: var(--purple); color: var(--purple);">Supervision et pilotage</span>
+                </div>
+                <div class="land-role-card" style="--role-color: var(--warning);">
+                    <div class="land-role-icon" style="background: rgba(245,158,11,0.1);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="var(--warning)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                        </svg>
+                    </div>
+                    <h3>Ingénieur</h3>
+                    <p>Traite les problèmes techniques avancés et les incidents escaladés. Intervention sur les infrastuctures critiques.</p>
+                    <span class="land-role-tag" style="border-color: var(--warning); color: var(--warning);">Problèmes avancés</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final CTA -->
+        <section class="land-cta-section">
+            <div class="land-cta-content">
+                <h2>Prêt à optimiser la gestion de vos incidents ?</h2>
+                <p>Accédez à votre espace de travail et commencez à gérer vos tickets en toute simplicité.</p>
+                <button class="land-cta land-cta-large" onclick="showRoleStep()">
+                    <span>Accéder à l'espace de travail</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </button>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="land-footer">
+            <div class="land-footer-inner">
+                <div class="land-footer-left">
+                    <svg viewBox="0 0 20 20" fill="none">
+                        <path d="M10 1 L18 5.5 V10 C18 15 10 19 10 19 C10 19 2 15 2 10 V5.5 Z" fill="var(--primary)"/>
+                    </svg>
+                    <span>Gestion des Problèmes</span>
+                </div>
+                <span class="land-footer-copy">Application de gestion des incidents informatiques</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- ===== AUTH SPLIT SCREEN ===== -->
+    <div id="authContainer" class="auth-split" style="display:none;">
+        <div class="auth-bg">
+            <div class="auth-circle ac1"></div>
+            <div class="auth-circle ac2"></div>
+            <div class="auth-circle ac3"></div>
+            <div class="auth-circle ac4"></div>
+            <div class="auth-grid"></div>
+        </div>
+
+        <div class="auth-left">
+            <div class="auth-card">
+
+                <div id="roleStep">
+                    <div class="auth-step-header">
+                        <button class="auth-back" onclick="backToHome()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                            Accueil
+                        </button>
+                        <h2>Choisissez votre profil</h2>
+                        <p class="auth-sub">Sélectionnez votre rôle pour accéder à votre espace</p>
+                    </div>
+                    <div class="role-grid">
+                        <div class="role-card" data-role="utilisateur" onclick="selectRole('utilisateur')">
+                            <div class="role-card-icon">👤</div>
+                            <h3>Utilisateur</h3>
+                            <span class="role-card-desc">Créer et suivre mes tickets</span>
+                        </div>
+                        <div class="role-card" data-role="technicien" onclick="selectRole('technicien')">
+                            <div class="role-card-icon">🛠️</div>
+                            <h3>Technicien</h3>
+                            <span class="role-card-desc">Résoudre les incidents</span>
+                        </div>
+                        <div class="role-card" data-role="chef" onclick="selectRole('chef')">
+                            <div class="role-card-icon">👔</div>
+                            <h3>Chef de Service</h3>
+                            <span class="role-card-desc">Superviser les opérations</span>
+                        </div>
+                        <div class="role-card" data-role="ingenieur" onclick="selectRole('ingenieur')">
+                            <div class="role-card-icon">💻</div>
+                            <h3>Ingénieur</h3>
+                            <span class="role-card-desc">Problèmes techniques avancés</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="loginStep" style="display:none;">
+                    <button class="auth-back" onclick="backToRoles()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                        Profils
+                    </button>
+                    <div class="auth-role-indicator">
+                        <span id="selectedRoleIcon" class="auth-role-badge"></span>
+                        <h2>Connexion <span id="selectedRoleLabel"></span></h2>
+                    </div>
+                    <form id="loginForm" onsubmit="handleLogin(event)">
+                        <div class="auth-field">
+                            <label for="username">Email</label>
+                            <div class="input-wrap">
+                                <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                <input type="text" id="username" placeholder="Entrez votre email" required autocomplete="email">
+                            </div>
+                        </div>
+                        <div class="auth-field">
+                            <label for="password">Mot de passe</label>
+                            <div class="input-wrap">
+                                <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                <input type="password" id="password" placeholder="Entrez votre mot de passe" required autocomplete="current-password">
+                            </div>
+                        </div>
+                        <p id="loginError" class="error-msg"></p>
+                        <button type="submit" class="auth-submit">
+                            <span>Se connecter</span>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="auth-right">
+            <div class="auth-right-content">
+                <div class="auth-right-logo">
+                    <svg viewBox="0 0 64 64" fill="none">
+                        <path d="M32 2 L58 14 V32 C58 48 32 62 32 62 C32 62 6 48 6 32 V14 Z" fill="rgba(255,255,255,0.15)"/>
+                        <path d="M22 32 L30 42 L44 24" stroke="rgba(255,255,255,0.4)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    </svg>
+                </div>
+                <h3 class="auth-right-title">Gestion des Problèmes</h3>
+                <p class="auth-right-text">Plateforme de gestion des incidents informatiques. Suivez, assignez et résolvez vos tickets en équipe.</p>
+                <div class="auth-right-stats">
+                    <div class="auth-stat">
+                        <span class="auth-stat-value">4</span>
+                        <span class="auth-stat-label">Rôles</span>
+                    </div>
+                    <div class="auth-stat">
+                        <span class="auth-stat-value">10</span>
+                        <span class="auth-stat-label">Tickets</span>
+                    </div>
+                    <div class="auth-stat">
+                        <span class="auth-stat-value">6</span>
+                        <span class="auth-stat-label">Utilisateurs</span>
+                    </div>
+                </div>
+                <div class="auth-right-roles">
+                    <span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                        </svg>
+                    </span>
+                    <span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+                        </svg>
+                    </span>
+                    <span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+                            <path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+                        </svg>
+                    </span>
+                    <span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+    <script>localStorage.removeItem('currentUser');</script>
+</body>
+</html>
