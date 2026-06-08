@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Utilisateur - Gestion des Problèmes</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header>
+        <div class="sidebar-header">
+            <span class="sidebar-logo">
+                <svg viewBox="0 0 64 64" fill="none">
+                    <defs><linearGradient id="sgu" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3498db"/><stop offset="100%" stop-color="#2c3e50"/></linearGradient></defs>
+                    <path d="M32 2 L58 14 V32 C58 48 32 62 32 62 C32 62 6 48 6 32 V14 Z" fill="url(#sgu)"/>
+                    <path d="M22 32 L30 42 L44 24" stroke="#fff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                </svg>
+            </span>
+            <h1>Gestion<br>des Problemes</h1>
+        </div>
+        <nav>
+            <a href="user-dashboard.html" class="active">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="4" rx="1"/><rect x="13" y="9" width="8" height="12" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/></svg>
+                Tableau de Bord
+            </a>
+            <div class="nav-spacer"></div>
+            <a href="#" onclick="logout()" class="logout-link">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                Deconnexion
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <span id="sidebarUser"></span>
+            <span class="sidebar-role" id="sidebarRole"></span>
+        </div>
+    </header>
+    <main>
+        <div class="page-header">
+            <div>
+                <h2>Tableau de Bord</h2>
+                <p class="page-subtitle">Bienvenue, <strong id="welcomeName"></strong></p>
+            </div>
+            <div class="page-actions">
+                <span class="role-badge role-user">Utilisateur</span>
+                <button class="btn-primary btn-icon" onclick="openTicketModal()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                    Creer un Ticket
+                </button>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="card card-accent" style="--card-accent: var(--primary);">
+                <div class="stat-chart"><svg viewBox="0 0 40 32"><rect x="2" y="16" width="8" height="14" rx="2" fill="#3b82f6" opacity=".7"/><rect x="14" y="10" width="8" height="20" rx="2" fill="#3b82f6" opacity=".85"/><rect x="26" y="4" width="8" height="26" rx="2" fill="#3b82f6"/></svg></div>
+                <h3>Total Tickets</h3>
+                <div class="value" id="statTotal">0</div>
+            </div>
+            <div class="card card-accent" style="--card-accent: var(--warning);">
+                <div class="stat-chart"><svg viewBox="0 0 40 32"><rect x="2" y="12" width="8" height="18" rx="2" fill="#f59e0b" opacity=".7"/><rect x="14" y="8" width="8" height="22" rx="2" fill="#f59e0b" opacity=".85"/><rect x="26" y="2" width="8" height="28" rx="2" fill="#f59e0b"/></svg></div>
+                <h3>Ouverts / En cours</h3>
+                <div class="value" id="statOpen">0</div>
+            </div>
+            <div class="card card-accent" style="--card-accent: var(--success);">
+                <div class="stat-chart"><svg viewBox="0 0 40 32"><rect x="2" y="20" width="8" height="10" rx="2" fill="#22c55e" opacity=".6"/><rect x="14" y="14" width="8" height="16" rx="2" fill="#22c55e" opacity=".8"/><rect x="26" y="8" width="8" height="22" rx="2" fill="#22c55e"/></svg></div>
+                <h3>Resolus</h3>
+                <div class="value" id="statResolved">0</div>
+            </div>
+        </div>
+
+        <section class="card-section">
+            <div class="section-header">
+                <h3>Mes Tickets</h3>
+                <span class="section-count" id="ticketCount">0</span>
+            </div>
+            <div id="myTicketsContainer">
+                <p class="empty-msg">Aucun ticket pour le moment.</p>
+            </div>
+        </section>
+    </main>
+
+    <div class="modal-overlay" id="ticketModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Creer un Ticket</h3>
+                <button class="modal-close" onclick="closeTicketModal()">x</button>
+            </div>
+            <form id="ticketForm" onsubmit="handleCreateTicket(event)">
+                <div class="form-group">
+                    <label for="ticketTitle">Titre du probleme</label>
+                    <input type="text" id="ticketTitle" placeholder="Ex: Probleme de connexion" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group flex-1">
+                        <label for="ticketType">Type</label>
+                        <select id="ticketType">
+                            <option value="Soft">Soft</option>
+                            <option value="Hard">Hard</option>
+                            <option value="Materiel">Materiel</option>
+                        </select>
+                    </div>
+                    <div class="form-group flex-1">
+                        <label for="ticketLevel">Niveau</label>
+                        <select id="ticketLevel">
+                            <option value="Normal">Normal</option>
+                            <option value="Eleve">Eleve</option>
+                        </select>
+                    </div>
+                    <div class="form-group flex-1">
+                        <label for="ticketPriority">Priorite</label>
+                        <select id="ticketPriority">
+                            <option value="Basse">Basse</option>
+                            <option value="Moyenne" selected>Moyenne</option>
+                            <option value="Haute">Haute</option>
+                            <option value="Critique">Critique</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="ticketDesc">Description</label>
+                    <textarea id="ticketDesc" placeholder="Decrivez le probleme en detail..." rows="3" required></textarea>
+                </div>
+                <button type="submit" class="btn-primary btn-full btn-icon" style="justify-content:center;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                    Soumettre le Ticket
+                </button>
+            </form>
+        </div>
+    </div>
+    <script src="../js/auth.js"></script>
+    <script src="../js/tickets.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        const user = checkAuth(['utilisateur']);
+        if (user) {
+            $('welcomeName').textContent = user.name;
+            $('sidebarUser').textContent = user.name;
+            $('sidebarRole').textContent = 'Utilisateur';
+
+            window.openTicketModal = function() {
+                $('ticketModal').classList.add('active');
+            };
+
+            window.closeTicketModal = function() {
+                $('ticketModal').classList.remove('active');
+            };
+
+            function handleCreateTicket(e) {
+                e.preventDefault();
+                const title = $('ticketTitle').value.trim();
+                const desc = $('ticketDesc').value.trim();
+                const type = $('ticketType').value;
+                const level = $('ticketLevel').value;
+                const priority = $('ticketPriority').value;
+                if (!title || !desc) return;
+                const ticket = createTicket(title, desc, user.name, type, level);
+                ticket.priority = priority;
+                const tickets = getTickets();
+                const t = tickets.find(t => t.id === ticket.id);
+                if (t) t.priority = priority;
+                saveTickets(tickets);
+                $('ticketForm').reset();
+                closeTicketModal();
+                loadMyTickets();
+            }
+
+            function loadMyTickets() {
+                const tickets = getTicketsByUser(user.name);
+                const container = $('myTicketsContainer');
+                $('ticketCount').textContent = tickets.length;
+                $('statTotal').textContent = tickets.length;
+                $('statOpen').textContent = tickets.filter(t => t.status === 'Ouvert' || t.status === 'En cours').length;
+                $('statResolved').textContent = tickets.filter(t => t.status === 'Resolu').length;
+                if (tickets.length === 0) {
+                    container.innerHTML = '<p class="empty-msg">Aucun ticket pour le moment.</p>';
+                    return;
+                }
+                let html = '<div class="tickets-table"><div class="tickets-header"><span>ID</span><span>Titre</span><span>Type</span><span>Niveau</span><span>Statut</span><span>Date</span><span>Assigne a</span></div>';
+                tickets.forEach(t => {
+                    const tColor = { 'Soft': '#3498db', 'Hard': '#e67e22', 'Materiel': '#9b59b6' };
+                    const lColor = { 'Normal': '#27ae60', 'Eleve': '#e74c3c' };
+                    html += '<div class="ticket-row">' +
+                        '<span class="ticket-id">#' + t.id.toString().slice(-4) + '</span>' +
+                        '<span><strong>' + t.title + '</strong><span class="ticket-desc">' + t.description + '</span></span>' +
+                        '<span><span class="badge" style="background:' + (tColor[t.type] || '#95a5a6') + '">' + t.type + '</span></span>' +
+                        '<span><span class="badge" style="background:' + (lColor[t.level] || '#95a5a6') + '">' + t.level + '</span></span>' +
+                        '<span>' + getStatusBadge(t.status) + '</span>' +
+                        '<span class="ticket-date">' + t.createdAt + '</span>' +
+                        '<span>' + (t.assignedTo || '—') + '</span>' +
+                    '</div>';
+                });
+                html += '</div>';
+                container.innerHTML = html;
+            }
+
+            loadMyTickets();
+        }
+    </script>
+</body>
+</html>

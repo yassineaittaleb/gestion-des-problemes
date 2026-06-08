@@ -1,0 +1,15 @@
+# OS files
+Thumbs.db
+.DS_Store
+Desktop.ini
+
+# VS Code
+.vscode/settings.json
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Temp
+*.tmp
+*.log

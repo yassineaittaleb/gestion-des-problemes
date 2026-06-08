@@ -1,0 +1,1566 @@
+\documentclass[12pt,a4paper,twoside]{report}
+
+% ─── Packages ──────────────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage{tocloft}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{lipsum}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{pgfgantt}
+\usepackage{fontawesome}
+
+% ─── Page geometry ─────────────────────────────────────────
+\geometry{
+    top=2.5cm,
+    bottom=2.5cm,
+    left=3cm,
+    right=2.5cm
+}
+
+% ─── Colors ────────────────────────────────────────────────
+\definecolor{primaryblue}{RGB}{59,130,246}
+\definecolor{darkbg}{RGB}{30,41,59}
+\definecolor{successgreen}{RGB}{34,197,94}
+\definecolor{warningorange}{RGB}{245,158,11}
+\definecolor{purpleaccent}{RGB}{139,92,246}
+\definecolor{codegray}{RGB}{100,116,139}
+\definecolor{lightgray}{RGB}{245,247,250}
+
+% ─── Hyperlinks ────────────────────────────────────────────
+\hypersetup{
+    colorlinks=true,
+    linkcolor=primaryblue,
+    urlcolor=primaryblue,
+    citecolor=primaryblue
+}
+
+% ─── Header / Footer ───────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{\leftmark}
+\fancyhead[RE,LO]{SGRI -- Rapport de Projet}
+\fancyfoot[CE,CO]{\thepage}
+\renewcommand{\headrulewidth}{0.5pt}
+
+% ─── Title formatting ──────────────────────────────────────
+\titleformat{\chapter}[hang]{\Huge\bfseries\color{darkbg}}{}{0pt}{}
+\titleformat{\section}[hang]{\Large\bfseries\color{primaryblue}}{}{0pt}{}
+\titleformat{\subsection}[hang]{\large\bfseries\color{darkbg}}{}{0pt}{}
+\titleformat{\subsubsection}[hang]{\normalsize\bfseries\color{codegray}}{}{0pt}{}
+
+% ─── Table of contents depth ───────────────────────────────
+\setcounter{tocdepth}{3}
+\setcounter{secnumdepth}{3}
+
+% ─── Line spacing ──────────────────────────────────────────
+\onehalfspacing
+
+% ─── Listings style ────────────────────────────────────────
+\lstdefinestyle{jsstyle}{
+    language=JavaScript,
+    backgroundcolor=\color{lightgray},
+    basicstyle=\footnotesize\ttfamily,
+    keywordstyle=\color{primaryblue}\bfseries,
+    commentstyle=\color{codegray}\itshape,
+    stringstyle=\color{successgreen},
+    numberstyle=\tiny\color{codegray},
+    numbers=left,
+    breaklines=true,
+    tabsize=2,
+    frame=single,
+    rulecolor=\color{gray!30},
+    captionpos=b
+}
+
+% ─── Document ──────────────────────────────────────────────
+\begin{document}
+
+% ─── Page de garde ─────────────────────────────────────────
+\begin{titlepage}
+    \centering
+    \vspace*{4cm}
+    
+    {\Huge\bfseries\color{darkbg} Système de Gestion\par}
+    {\Huge\bfseries\color{primaryblue} des Réclamations\par}
+    {\Huge\bfseries\color{darkbg} Informatiques\par}
+    
+    \vspace{1.5cm}
+    
+    {\Large\textbf{SGRI} -- \textit{TicketFlow}\par}
+    
+    \vspace{2cm}
+    
+    {\large Projet de développement d'une plateforme SaaS\par}
+    {\large de gestion d'incidents informatiques en Vanilla JavaScript\par}
+    
+    \vspace{3cm}
+    
+    \begin{tabular}{rl}
+        \textbf{Réalisé par :} & Yassine \textsc{[Nom]} \\
+        \textbf{Encadré par :} & M. \textsc{[Nom du encadrant]} \\
+        \textbf{Établissement :} & \textsc{[Nom de l'école/entreprise]} \\
+        \textbf{Année universitaire :} & 2025 -- 2026
+    \end{tabular}
+    
+    \vfill
+\end{titlepage}
+
+% ─── Dédicaces ─────────────────────────────────────────────
+\chapter*{Dédicaces}
+\addcontentsline{toc}{chapter}{Dédicaces}
+
+\vspace*{2cm}
+
+\begin{center}
+    \textit{À mes parents, pour leur soutien inconditionnel,\\
+    À mes professeurs, pour la transmission du savoir,\\
+    À tous ceux qui croient en l'innovation et le partage.}
+\end{center}
+
+\vspace{1cm}
+
+Ce projet est dédié à toutes les équipes informatiques qui travaillent dans l'ombre pour maintenir la continuité des services numériques. Puissent-ils trouver dans ces pages les outils et l'inspiration pour améliorer encore davantage la qualité du service rendu.
+
+% ─── Remerciements ─────────────────────────────────────────
+\chapter*{Remerciements}
+\addcontentsline{toc}{chapter}{Remerciements}
+
+\vspace*{1cm}
+
+Je tiens à exprimer ma profonde gratitude à toutes les personnes qui ont contribué, de près ou de loin, à la réalisation de ce projet.
+
+Je remercie tout d'abord mon encadrant, \textbf{M. [Nom]}, pour sa disponibilité, ses conseils avisés et son suivi rigoureux tout au long de ce travail.
+
+Je remercie également l'équipe pédagogique de \textbf{[Nom de l'établissement]} pour la qualité de la formation dispensée et les valeurs transmises.
+
+Un grand merci à mes camarades de promotion pour leur esprit d'équipe et leur soutien mutuel.
+
+Enfin, je remercie ma famille pour leur patience et leurs encouragements durant ces mois de travail intense.
+
+% ─── Résumé ────────────────────────────────────────────────
+\chapter*{Résumé}
+\addcontentsline{toc}{chapter}{Résumé}
+
+\vspace*{1cm}
+
+Ce rapport présente la conception et le développement du \textbf{Système de Gestion des Réclamations Informatiques (SGRI) -- TicketFlow}, une application web légère et performante destinée à centraliser, suivre et résoudre les incidents informatiques au sein d'une organisation.
+
+Face aux limites des méthodes traditionnelles de gestion des pannes (e-mails, fichiers Excel, appels téléphoniques), le SGRI propose une solution SaaS complète avec quatre profils d'utilisateurs : Employé, Technicien, Ingénieur et Chef de Service. L'application permet la création de tickets, l'assignation par un ingénieur, le suivi en temps réel et la résolution structurée des incidents.
+
+Développée en \textbf{Vanilla JavaScript} avec une architecture modulaire et un stockage local (localStorage), l'application offre une interface réactive de type SaaS moderne sans dépendance à aucun framework lourd. Le code source est organisé selon une architecture claire séparant la logique métier (auth.js, tickets.js), les utilitaires (main.js) et les vues (pages HTML).
+
+L'analyse comparative avec des outils du marché comme GLPI et Jira Service Management démontre la pertinence d'une solution sur-mesure, plus légère et mieux adaptée aux besoins spécifiques des PME.
+
+\textbf{Mots-clés :} Gestion d'incidents, Helpdesk, Vanilla JavaScript, SaaS, Application web, Ticket informatique, Workflow.
+
+\vspace{1cm}
+
+\begin{otherlanguage}{english}
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+
+This report presents the design and development of the \textbf{IT Incident Management System (SGRI) -- TicketFlow}, a lightweight and high-performance web application aimed at centralizing, tracking, and resolving IT incidents within an organization.
+
+Faced with the limitations of traditional incident management methods (emails, Excel files, phone calls), SGRI offers a complete SaaS solution with four user profiles: Employee, Technician, Engineer, and Department Head. The application enables ticket creation, engineer-based assignment, real-time tracking, and structured incident resolution.
+
+Built with \textbf{Vanilla JavaScript} using a modular architecture and localStorage, the application provides a modern SaaS-style reactive interface without the overhead of heavy frameworks. The source code is organized following a clear architecture separating business logic (auth.js, tickets.js), utilities (main.js), and views (HTML pages).
+
+A comparative analysis with market tools such as GLPI and Jira Service Management demonstrates the relevance of a custom-built solution that is lighter and better suited to the specific needs of SMEs.
+
+\textbf{Keywords:} Incident management, Helpdesk, Vanilla JavaScript, SaaS, Web application, IT ticket, Workflow.
+\end{otherlanguage}
+
+% ─── Listes ────────────────────────────────────────────────
+\renewcommand{\listtablename}{Liste des tableaux}
+\renewcommand{\listfigurename}{Liste des figures}
+
+\listoftables
+\addcontentsline{toc}{chapter}{Liste des tableaux}
+
+\listoffigures
+\addcontentsline{toc}{chapter}{Liste des figures}
+
+% ─── Liste des abréviations ────────────────────────────────
+\chapter*{Liste des abréviations}
+\addcontentsline{toc}{chapter}{Liste des abréviations}
+
+\begin{longtable}{p{3cm} p{10cm}}
+    \toprule
+    \textbf{Abréviation} & \textbf{Signification} \\
+    \midrule
+    \endhead
+    
+    API & Application Programming Interface \\
+    CMDB & Configuration Management Database \\
+    CRUD & Create, Read, Update, Delete \\
+    CSS & Cascading Style Sheets \\
+    DOM & Document Object Model \\
+    DSI & Direction des Systèmes d'Information \\
+    GANTT & Diagramme de planification de projet \\
+    GLPI & Gestionnaire Libre de Parc Informatique \\
+    HTML & HyperText Markup Language \\
+    IDE & Integrated Development Environment \\
+    INGE & Ingénieur (rôle dans l'application) \\
+    ITIL & Information Technology Infrastructure Library \\
+    ITSM & IT Service Management \\
+    JS & JavaScript \\
+    JSON & JavaScript Object Notation \\
+    MCD & Modèle Conceptuel des Données \\
+    MVP & Minimum Viable Product \\
+    REST & Representational State Transfer \\
+    SaaS & Software as a Service \\
+    SGRI & Système de Gestion des Réclamations Informatiques \\
+    SPA & Single Page Application \\
+    UI & User Interface \\
+    UML & Unified Modeling Language \\
+    UX & User Experience \\
+    VS Code & Visual Studio Code \\
+    \bottomrule
+\end{longtable}
+
+% ─── Tables des matières ───────────────────────────────────
+\tableofcontents
+
+% ════════════════════════════════════════════════════════════
+% INTRODUCTION GÉNÉRALE
+% ════════════════════════════════════════════════════════════
+\chapter*{Introduction générale}
+\addcontentsline{toc}{chapter}{Introduction générale}
+
+\vspace*{1cm}
+
+Dans un monde où la transformation numérique est au cœur des préoccupations des entreprises, la continuité des services informatiques est devenue un enjeu stratégique majeur. Chaque minute d'arrêt d'un service critique peut représenter une perte financière significative et une dégradation de la productivité des équipes.
+
+Pourtant, de nombreuses organisations peinent encore à structurer efficacement la gestion de leurs incidents informatiques. Entre les appels téléphoniques non tracés, les e-mails perdus dans des boîtes surchargées et les fichiers Excel devenus ingérables, le suivi des pannes reste souvent chaotique. Les techniciens perdent un temps précieux à rechercher des informations dispersées, tandis que les utilisateurs finaux subissent des délais de résolution excessifs.
+
+C'est dans ce contexte qu'est né le projet \textbf{SGRI -- TicketFlow} : un système de gestion des réclamations informatiques pensé pour répondre aux besoins réels des équipes IT et de leurs utilisateurs. L'objectif est de fournir une plateforme centralisée, intuitive et légère, qui permette à chaque acteur -- de l'employé qui signale un problème à l'ingénieur qui supervise sa résolution -- de disposer d'outils adaptés à son rôle.
+
+Ce rapport retrace l'ensemble du cycle de vie du projet, de l'analyse des besoins à la réalisation technique. Après une introduction au contexte général et à la problématique, nous détaillerons les choix architecturaux et technologiques, la conception UML, la modélisation des données, ainsi que la mise en œuvre par sprints successifs selon une approche Agile.
+
+La première partie pose le cadre du projet en présentant l'organisme d'accueil, l'étude de l'existant et la solution proposée. La seconde partie détaille l'analyse des besoins et la conception. La troisième partie explore l'architecture du code et la cartographie du frontend. La quatrième partie décrit la réalisation effective du projet selon une approche itérative. Enfin, nous conclurons par un bilan des objectifs atteints et les perspectives d'évolution.
+
+% ════════════════════════════════════════════════════════════
+% I. CONTEXTE GÉNÉRAL DU PROJET
+% ════════════════════════════════════════════════════════════
+\chapter{Contexte général du projet}
+
+% ─── I.1 Introduction ──────────────────────────────────────
+\section{Introduction}
+
+La gestion des incidents informatiques constitue un pilier fondamental de la continuité d'activité des organisations modernes. Dans un environnement où les systèmes d'information sont de plus en plus complexes et interconnectés, la capacité à détecter, tracer et résoudre rapidement les dysfonctionnements devient un facteur différenciant pour la performance globale de l'entreprise.
+
+Ce chapitre présente le cadre général dans lequel s'inscrit le projet SGRI. Nous y détaillerons le contexte de l'organisme d'accueil, l'étude des méthodes existantes de gestion des pannes, les limitations identifiées, ainsi que la problématique à laquelle notre solution apporte une réponse concrète.
+
+% ─── I.2 Présentation de l'organisme d'accueil ────────────
+\section{Présentation de l'organisme d'accueil}
+
+Le projet a été réalisé dans le cadre du cursus de formation en développement informatique au sein de \textbf{[Nom de l'école ou établissement]}. Cet établissement est reconnu pour la qualité de sa formation aux métiers du numérique et dispense un enseignement alliant théorie fondamentale et pratique appliquée.
+
+Dans le cadre de ce projet, l'objectif était de répondre à un besoin réel observé au sein des organisations : la gestion inefficace des incidents informatiques faute d'outils adaptés et accessibles. Le projet a été mené en autonomie avec un suivi régulier par un encadrant pédagogique.
+
+\subsection{Organisation des services informatiques}
+
+Au sein d'une organisation type, le service informatique est généralement structuré autour de plusieurs rôles complémentaires :
+
+\begin{itemize}
+    \item \textbf{Les utilisateurs (Employés)} : Ils signalent les incidents et souhaitent un suivi transparent de leurs demandes.
+    \item \textbf{Les techniciens de proximité} : Ils interviennent sur les incidents courants et assurent la maintenance de premier niveau.
+    \item \textbf{L'ingénieur IT} : Il supervise le flux des incidents, valide les assignations et traite les problèmes complexes.
+    \item \textbf{Le chef de service} : Il pilote l'activité, consulte les statistiques et veille à la qualité du service rendu.
+\end{itemize}
+
+Cette répartition des rôles a servi de fondement à la conception des profils utilisateurs de l'application SGRI.
+
+% ─── I.3 Étude de l'existant ──────────────────────────────
+\section{Étude de l'existant}
+
+\subsection{Aperçu des méthodes actuelles de gestion des pannes}
+
+Avant la mise en place d'une solution dédiée, la gestion des incidents informatiques repose fréquemment sur des méthodes artisanales. Les observations menées dans diverses structures révèlent des pratiques courantes telles que :
+
+\paragraph{La gestion par e-mails :}
+Les utilisateurs envoient un message au support technique décrivant leur problème. Le technicien traite la demande et répond par retour d'e-mail. Cette méthode, bien que simple, présente de sérieuses limitations : absence de traçabilité centralisée, difficulté de priorisation, risque de perte des demandes dans des boîtes saturées.
+
+\paragraph{Le fichier Excel partagé :}
+Un classeur Excel centralise les demandes avec des colonnes pour la date, le demandeur, la description et l'état. Cette approche permet un suivi minimal mais devient rapidement ingérable à mesure que le volume de demandes augmente. Les conflits d'édition, l'absence de mise à jour en temps réel et la difficulté de générer des statistiques fiables rendent cette solution obsolète.
+
+\paragraph{Les appels téléphoniques :}
+L'utilisateur appelle directement le technicien. Cette méthode informelle ne laisse aucune trace écrite, ne permet pas de priorisation objective et dépend fortement de la disponibilité immédiate de l'intervenant.
+
+\paragraph{Les tickets papier :}
+Dans certaines organisations, les demandes sont encore consignées sur des formulaires papier. Cette approche, en plus d'être peu écologique, rend le suivi extrêmement laborieux et la recherche d'historiques quasiment impossible.
+
+\subsection{Limitations des solutions existantes}
+
+Les méthodes actuelles présentent des limitations structurelles qui impactent directement la qualité du service informatique :
+
+\begin{itemize}
+    \item \textbf{Perte d'informations :} Les échanges par e-mail ou téléphone ne garantissent pas une conservation exhaustive du contexte et des actions menées.
+    \item \textbf{Absence de centralisation :} Les demandes sont dispersées entre différents canaux, rendant leur vision globale difficile.
+    \item \textbf{Manque de suivi :} Les utilisateurs ignorent souvent l'état d'avancement de leurs demandes et doivent relancer plusieurs fois.
+    \item \textbf{Impossible priorisation :} Sans système centralisé, il est difficile d'identifier les incidents critiques nécessitant une intervention urgente.
+    \item \textbf{Tracabilité insuffisante :} En cas d'audit, il est quasi impossible de reconstituer l'historique complet d'un incident.
+    \item \textbf{Charge mentale élevée :} Les techniciens doivent gérer mentalement une file d'attente implicite, source de stress et d'erreurs.
+\end{itemize}
+
+\subsection{Comparaison avec d'autres outils du marché}
+
+Pour mesurer la pertinence de notre approche, nous avons comparé le SGRI avec deux solutions majeures du marché : GLPI et Jira Service Management.
+
+\begin{table}[H]
+    \centering
+    \caption{Comparaison des solutions de gestion d'incidents}
+    \label{tab:comparison}
+    \begin{tabular}{p{3cm} p{3.5cm} p{3.5cm} p{3.5cm}}
+        \toprule
+        \textbf{Critère} & \textbf{GLPI} & \textbf{Jira Service Management} & \textbf{SGRI (Notre solution)} \\
+        \midrule
+        Type & Open source (PHP) & Commercial (Cloud/Serveur) & SaaS léger (Vanilla JS) \\
+        Déploiement & Serveur requis & Cloud ou auto-hébergé & Fichier statique (aucun) \\
+        Base de données & MySQL requis & Base intégrée & localStorage (intégré) \\
+        Installation & Complexe (LAMP) & Complexe (Jira) & Aucune (ouvrir le fichier) \\
+        Performance & Moyenne (PHP/MySQL) & Bonne & Excellente (DOM natif) \\
+        Interface & Classique & Moderne & Moderne (Type SaaS) \\
+        Poids & Lourd (nombreuses fonctionnalités) & Très lourd & Ultra-léger ($<$ 1 Mo) \\
+        Personnalisation & Élevée (plugins) & Élevée (marché Atlasian) & Totale (code sur mesure) \\
+        Maintenance & Continue (mises à jour) & Continue + licence & Minimale \\
+        Coût & Gratuit (hébergement payant) & Élevé (licence par utilisateur) & Gratuit \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\paragraph{GLPI (Gestionnaire Libre de Parc Informatique)} est une solution open source mature largement adoptée dans les DSI. Elle offre des fonctionnalités complètes de gestion de parc, d'helpdesk et de base de connaissance. Cependant, sa complexité d'installation (serveur LAMP, base MySQL), son interface parfois vieillissante et sa courbe d'apprentissage élevée constituent des freins significatifs pour des structures de taille modeste.
+
+\paragraph{Jira Service Management} d'Atlassian est une solution ITSM professionnelle intégrant des fonctionnalités avancées : SLA, automatisations, portail self-service, intelligence artificielle. Néanmoins, son coût élevé (licence par utilisateur), sa complexité de configuration et son poids technologique la rendent disproportionnée pour des besoins simples de suivi d'incidents.
+
+\subsection{Avantages d'un développement personnalisé}
+
+Face aux solutions existantes, un développement sur mesure présente plusieurs avantages déterminants :
+
+\begin{itemize}
+    \item \textbf{Légèreté :} Pas de base de données, pas de serveur, pas de dépendances externes. Le projet tient dans un dossier de quelques mégaoctets.
+    \item \textbf{Interface SaaS dédiée :} Une expérience utilisateur moderne, cohérente et pensée spécifiquement pour le workflow métier.
+    \item \textbf{Déploiement instantané :} Un simple serveur HTTP statique suffit. Aucune installation, aucune configuration serveur.
+    \item \textbf{Maintenance minimale :} Pas de mise à jour de base de données, pas de correctifs de sécurité à appliquer régulièrement.
+    \item \textbf{Maîtrise totale du code :} Chaque fonctionnalité est développée pour répondre précisément au besoin, sans superflu.
+    \item \textbf{Évolutivité maîtrisée :} L'architecture modulaire permet d'ajouter des fonctionnalités sans tout réécrire.
+\end{itemize}
+
+% ─── I.4 Problématique ────────────────────────────────────
+\section{Problématique}
+
+\subsection{Centralisation défaillante des réclamations informatiques}
+
+La problématique centrale qui motive ce projet est l'absence d'un système centralisé et structuré de gestion des réclamations informatiques. Dans l'état actuel, les informations relatives aux incidents sont dispersées entre différents canaux (e-mails, fichiers partagés, communications orales), ce qui génère plusieurs conséquences néfastes :
+
+\begin{itemize}
+    \item \textbf{Inefficacité opérationnelle :} Les techniciens passent un temps considérable à rechercher des informations éparses avant de pouvoir intervenir.
+    \item \textbf{Mécontentement des utilisateurs :} Sans visibilité sur l'avancement de leurs demandes, les employés se sentent délaissés.
+    \item \textbf{Risque d'oubli :} Des demandes légitimes peuvent être oubliées ou traitées avec un retard excessif.
+    \item \textbf{Impossibilité d'analyse :} Sans historique centralisé, il est impossible d'identifier les tendances (types de pannes récurrentes, postes à problème).
+\end{itemize}
+
+\subsection{Suivi et traçabilité de l'état des postes de travail}
+
+Au-delà de la gestion des incidents ponctuels, il existe un besoin de suivi longitudinal de l'état du parc informatique. Chaque poste de travail a un cycle de vie (actif, en maintenance, en panne) et les interventions doivent être tracées pour :
+
+\begin{itemize}
+    \item \textbf{Anticiper les remplacements :} Un poste qui accumule les pannes peut nécessiter un renouvellement.
+    \item \textbf{Évaluer la charge de travail :} Connaître le nombre d'interventions par poste ou par service.
+    \item \textbf{Améliorer la qualité :} Identifier les causes racines récurrentes et mettre en place des actions préventives.
+\end{itemize}
+
+% ─── I.5 La Solution : SGRI / TicketFlow ──────────────────
+\section{La Solution : SGRI / TicketFlow}
+
+Face aux problématiques identifiées, nous proposons le \textbf{Système de Gestion des Réclamations Informatiques (SGRI)}, nommé \textbf{TicketFlow}. Il s'agit d'une application web de type SaaS conçue pour offrir une expérience de gestion d'incidents fluide, intuitive et efficace.
+
+\subsection{Architecture frontend découplée proposée}
+
+L'architecture du SGRI repose sur un modèle découplé où le frontend assume l'ensemble des responsabilités applicatives :
+
+\begin{itemize}
+    \item \textbf{Présentation :} Fichiers HTML structurés par vue (dashboard, réclamations, utilisateurs, postes).
+    \item \textbf{Logique métier :} Modules JavaScript spécialisés (auth.js pour l'authentification, tickets.js pour le CRUD des tickets).
+    \item \textbf{Persistance :} Stockage local via l'API localStorage du navigateur.
+    \item \textbf{Style :} Feuille de style unique (style.css) couvrant l'intégralité de l'interface.
+\end{itemize}
+
+Cette architecture, bien que simple, offre une séparation des préoccupations (Separation of Concerns) suffisante pour maintenir un code propre et évolutif.
+
+\subsection{Approche technologique : Performance native sans framework}
+
+Le choix du \textbf{Vanilla JavaScript} (JavaScript pur, sans framework) est une décision architecturale fondamentale. Ce choix repose sur plusieurs constats :
+
+\begin{itemize}
+    \item \textbf{Performance :} Le DOM natif du navigateur est rapide. Un framework ajoute une couche d'abstraction qui, bien que facilitant certains aspects, introduit une surcharge inutile pour une application de cette envergure.
+    \item \textbf{Légèreté :} L'ensemble du projet pèse moins de 1 Mo. Aucune dépendance, aucun \texttt{node\_modules}, aucune compilation.
+    \item \textbf{Maintenabilité :} Le code écrit en Vanilla JS aujourd'hui fonctionnera dans 10 ans, sans dépendre de la maintenance d'un cadre tiers.
+    \item \textbf{Apprentissage :} Le développement en Vanilla JS renforce la compréhension fondamentale du langage et des API du navigateur.
+\end{itemize}
+
+\subsection{Bénéfices attendus}
+
+\begin{itemize}
+    \item \textbf{Gain de temps pour les techniciens :} Toutes les informations nécessaires sont centralisées, accessibles et structurées.
+    \item \textbf{Clarté pour les utilisateurs :} Ils peuvent suivre l'état de leurs demandes en temps réel.
+    \item \textbf{Tracabilité complète :} Chaque ticket conserve l'historique complet des actions menées.
+    \item \textbf{Réduction des délais :} Le workflow Ingénieur $\rightarrow$ Technicien optimise l'assignation des ressources.
+    \item \textbf{Aide à la décision :} Les statistiques permettent au chef de service de piloter l'activité.
+\end{itemize}
+
+% ─── I.6 Gestion de projets ───────────────────────────────
+\section{Gestion de projets}
+
+\subsection{Vision du projet et cycle de vie}
+
+Le projet SGRI a été envisagé selon un cycle de vie en plusieurs phases :
+
+\begin{enumerate}
+    \item \textbf{Phase d'initiation :} Définition des objectifs, identification des besoins, analyse de l'existant.
+    \item \textbf{Phase de conception :} Modélisation UML, conception de l'architecture, maquettage de l'interface.
+    \item \textbf{Phase de réalisation :} Développement par sprints, tests unitaires et d'intégration.
+    \item \textbf{Phase de clôture :} Documentation, préparation du déploiement, bilan.
+\end{enumerate}
+
+\subsection{Méthodologie de mise en œuvre (Approche Agile)}
+
+Le projet a été développé selon une méthodologie \textbf{Agile}, privilégiant :
+
+\begin{itemize}
+    \item \textbf{L'itération :} Le produit a été construit progressivement, chaque sprint ajoutant une fonctionnalité opérationnelle.
+    \item \textbf{L'adaptation :} Les fonctionnalités ont été priorisées en fonction de leur valeur métier et ajustées en cours de route.
+    \item \textbf{L'amélioration continue :} Chaque sprint incluait une phase de refactoring pour maintenir la qualité du code.
+\end{itemize}
+
+\subsection{Le Framework Scrum appliqué au projet}
+
+Le framework Scrum a été adapté au contexte du projet individuel :
+
+\begin{table}[H]
+    \centering
+    \caption{Application du framework Scrum au projet}
+    \label{tab:scrum}
+    \begin{tabular}{lll}
+        \toprule
+        \textbf{Artéfact Scrum} & \textbf{Application dans le projet} & \textbf{Équivalent} \\
+        \midrule
+        Product Owner & L'encadrant pédagogique & Définit les priorités \\
+        Scrum Master & Le développeur (auto-gestion) & Garantit le cadre Agile \\
+        Product Backlog & Liste des fonctionnalités & Issues et tâches \\
+        Sprint Backlog & Tâches du sprint en cours & Priorité du sprint \\
+        Sprint Review & Revue par l'encadrant & Démo et feedback \\
+        Rétrospective & Auto-évaluation & Analyse des acquis \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsection{Technologies, IDE et outils utilisés}
+
+\paragraph{Environnement de développement :}
+\begin{itemize}
+    \item \textbf{IDE :} Visual Studio Code (VS Code) avec les extensions Live Server, Prettier, et ESLint.
+    \item \textbf{Versioning :} Git pour le suivi des modifications.
+    \item \textbf{Test :} Tests manuels via le navigateur Chrome en mode développement.
+    \item \textbf{Configuration VS Code :} Le fichier \texttt{.vscode/settings.json} configure le port Live Server à 5501.
+\end{itemize}
+
+\paragraph{Technologies utilisées :}
+\begin{itemize}
+    \item \textbf{HTML5} pour la structure sémantique des pages.
+    \item \textbf{CSS3} pour le style, les animations et l'adaptation responsive.
+    \item \textbf{JavaScript (ES6+)} pour la logique applicative.
+    \item \textbf{localStorage} comme mécanisme de persistance des données.
+    \item \textbf{Figma} pour le maquettage de l'interface.
+\end{itemize}
+
+\subsection{Planification et Diagramme de Gantt}
+
+Le projet a été planifié sur une durée de 12 semaines, réparties en sprints de 2 à 3 semaines :
+
+\begin{figure}[H]
+    \centering
+    \caption{Diagramme de Gantt prévisionnel du projet SGRI}
+    \label{fig:gantt}
+    \begin{ganttchart}[
+        y unit title=0.5cm,
+        y unit chart=0.6cm,
+        x unit=0.8cm,
+        vgrid,
+        title height=1,
+        bar/.style={fill=primaryblue!70},
+        bar incomplete/.style={fill=primaryblue!30},
+        bar progress label node/.style={font=\tiny},
+        group left shift=0,
+        group right shift=0,
+        group height=0.3,
+        group peaks width=0.2,
+        inline
+    ]{1}{12}
+        \gantttitle{Semaines}{12} \\
+        \gantttitle{1}{2} 
+        \gantttitle{3}{2} 
+        \gantttitle{5}{2} 
+        \gantttitle{7}{2} 
+        \gantttitle{9}{2} 
+        \gantttitle{11}{2} \\
+        \ganttgroup{Phase de conception}{1}{2} \\
+        \ganttbar{Spécifications}{1}{1} \\
+        \ganttbar{Maquettage}{2}{2} \\
+        \ganttmilestone{Validation conception}{2} \\
+        \ganttgroup{Sprint 1 : Auth}{3}{3} \\
+        \ganttbar{Authentification}{3}{3} \\
+        \ganttmilestone{Sprint 1 validé}{3} \\
+        \ganttgroup{Sprint 2 : Tickets}{4}{6} \\
+        \ganttbar{CRUD Tickets}{4}{4} \\
+        \ganttbar{Interfaces utilisateur}{5}{5} \\
+        \ganttbar{Workflow complet}{6}{6} \\
+        \ganttmilestone{Sprint 2 validé}{6} \\
+        \ganttgroup{Sprint 3 : Admin}{7}{8} \\
+        \ganttbar{Parc \& postes}{7}{7} \\
+        \ganttbar{Utilisateurs \& rôles}{8}{8} \\
+        \ganttmilestone{Sprint 3 validé}{8} \\
+        \ganttgroup{Sprint 4 : Finalisation}{9}{10} \\
+        \ganttbar{Dashboards}{9}{9} \\
+        \ganttbar{Refactoring}{10}{10} \\
+        \ganttmilestone{Sprint 4 validé}{10} \\
+        \ganttgroup{Phase de clôture}{11}{12} \\
+        \ganttbar{Documentation}{11}{11} \\
+        \ganttbar{Préparation soutenance}{12}{12}
+    \end{ganttchart}
+\end{figure}
+
+% ─── I.7 Conclusion ───────────────────────────────────────
+\section{Conclusion}
+
+Ce premier chapitre a posé le cadre général du projet. L'étude de l'existant a mis en évidence les lacunes des méthodes traditionnelles de gestion des incidents : dispersion des informations, absence de traçabilité, difficulté de priorisation. La comparaison avec des solutions comme GLPI et Jira Service Management a confirmé la pertinence d'une approche sur-mesure, plus légère et mieux adaptée aux besoins spécifiques des PME.
+
+La problématique centrale -- le besoin d'un système centralisé et traçable de gestion des réclamations -- a été clairement identifiée. Notre réponse, le SGRI, s'appuie sur une architecture frontend découplée et un choix technologique assumé en faveur du Vanilla JavaScript, garantissant performance, légèreté et maintenabilité.
+
+% ════════════════════════════════════════════════════════════
+% II. ANALYSE DES BESOINS ET CONCEPTION
+% ════════════════════════════════════════════════════════════
+\chapter{Analyse des besoins et conception}
+
+% ─── II.1 Introduction ────────────────────────────────────
+\section{Introduction}
+
+Avant de se lancer dans le développement, il est essentiel de formaliser les besoins et de concevoir une architecture solide. Ce chapitre présente l'analyse fonctionnelle et non-fonctionnelle du système, ainsi que les modèles de conception UML qui constituent le socle de la réalisation.
+
+% ─── II.2 Analyse des besoins ────────────────────────────
+\section{Analyse des besoins}
+
+\subsection{Besoins fonctionnels}
+
+L'analyse des besoins fonctionnels a permis d'identifier les fonctionnalités essentielles que doit offrir le SGRI :
+
+\begin{enumerate}
+    \item \textbf{Gestion de l'authentification :}
+    \begin{itemize}
+        \item Connexion sécurisée par identifiant et mot de passe.
+        \item Sélection du rôle lors de la connexion.
+        \item Vérification de la correspondance rôle/identifiant.
+        \item Déconnexion avec effacement de la session.
+    \end{itemize}
+    
+    \item \textbf{Gestion des réclamations (Tickets) :}
+    \begin{itemize}
+        \item Création d'un ticket avec titre, description, type (Soft/Hard/Matériel), niveau (Normal/Élevé), priorité (Basse/Moyenne/Haute/Critique).
+        \item Ajout d'informations contextualisées : numéro de poste, bureau, département, type d'équipement.
+        \item Affichage de la liste des tickets avec filtres et recherche.
+        \item Mise à jour du statut tout au long du cycle de vie.
+    \end{itemize}
+    
+    \item \textbf{Workflow d'assignation :}
+    \begin{itemize}
+        \item Un ingénieur consulte les nouvelles réclamations.
+        \item L'ingénieur assigne le ticket au technicien approprié.
+        \item Assignation avec notes et instructions pour le technicien.
+    \end{itemize}
+    
+    \item \textbf{Gestion des rôles et profils :}
+    \begin{itemize}
+        \item Quatre rôles distincts : Employé, Technicien, Ingénieur, Chef de Service.
+        \item Tableaux de bord spécifiques pour chaque rôle.
+        \item Permissions adaptées (création, assignation, résolution, consultation).
+    \end{itemize}
+    
+    \item \textbf{Tableaux de bord :}
+    \begin{itemize}
+        \item Statistiques globales pour le chef de service.
+        \item Vue des nouvelles réclamations pour l'ingénieur.
+        \item Vue des interventions assignées pour le technicien.
+        \item Suivi des tickets personnels pour l'employé.
+    \end{itemize}
+    
+    \item \textbf{Gestion du parc informatique :}
+    \begin{itemize}
+        \item Listing des postes de travail avec leur statut (Actif, Maintenance, En panne).
+        \item Association poste/département/utilisateur.
+    \end{itemize}
+    
+    \item \textbf{Gestion des utilisateurs :}
+    \begin{itemize}
+        \item Ajout de techniciens par l'ingénieur ou le chef.
+        \item Ajout d'ingénieurs par le chef.
+        \item Listing de tous les utilisateurs avec leur rôle.
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Besoins non-fonctionnels}
+
+Au-delà des fonctionnalités, le système doit répondre à des exigences de qualité :
+
+\begin{itemize}
+    \item \textbf{Sécurité :}
+    \begin{itemize}
+        \item Protection des pages par vérification de session.
+        \item Redirection automatique vers la page d'accueil en cas de session invalide.
+        \item Vérification du rôle avant l'accès à chaque page.
+    \end{itemize}
+    
+    \item \textbf{Réactivité :}
+    \begin{itemize}
+        \item Interface utilisateur réactive (responsive design).
+        \item Adaptation aux écrans de bureau, tablette et mobile.
+        \item Animations fluides pour les transitions et interactions.
+    \end{itemize}
+    
+    \item \textbf{Interface épurée (style Stripe/Linear) :}
+    \begin{itemize}
+        \item Design minimaliste et professionnel.
+        \item Palette de couleurs sobre avec accents de couleur.
+        \item Typographie lisible et hiérarchie visuelle claire.
+        \item Composants d'interface modernes (cartes, badges, modales).
+    \end{itemize}
+    
+    \item \textbf{Performance :}
+    \begin{itemize}
+        \item Temps de chargement instantané (application statique).
+        \item Manipulation DOM optimisée (pas de re-rendu inutile).
+        \item Aucune dépendance réseau pour le fonctionnement de base.
+    \end{itemize}
+    
+    \item \textbf{Maintenabilité :}
+    \begin{itemize}
+        \item Code structuré et commenté.
+        \item Séparation claire des responsabilités.
+        \item Fonctions réutilisables et modulaires.
+    \end{itemize}
+\end{itemize}
+
+% ─── II.3 Conception UML ─────────────────────────────────
+\section{Conception UML / Logique}
+
+\subsection{Diagrammes de cas d'utilisation par rôles}
+
+L'analyse des besoins a permis d'identifier les acteurs et leurs interactions avec le système. Quatre acteurs principaux émergent, chacun disposant de cas d'utilisation spécifiques :
+
+\begin{figure}[H]
+    \centering
+    \caption{Diagramme de cas d'utilisation -- Acteur Employé}
+    \label{fig:uc-employe}
+    \begin{tabular}{p{5cm} p{8cm}}
+        \toprule
+        \textbf{Acteur} & Employé \\
+        \textbf{Description} & Utilisateur final signalant un incident \\
+        \textbf{Cas d'utilisation} & 
+        \begin{itemize}
+            \item Se connecter / Se déconnecter
+            \item Créer une réclamation
+            \item Consulter ses tickets
+            \item Suivre l'état de ses demandes
+        \end{itemize} \\
+        \bottomrule
+    \end{tabular}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \caption{Diagramme de cas d'utilisation -- Acteur Technicien}
+    \label{fig:uc-tech}
+    \begin{tabular}{p{5cm} p{8cm}}
+        \toprule
+        \textbf{Acteur} & Technicien \\
+        \textbf{Description} & Intervenant technique de terrain \\
+        \textbf{Cas d'utilisation} &
+        \begin{itemize}
+            \item Se connecter / Se déconnecter
+            \item Consulter ses interventions assignées
+            \item Démarrer une intervention
+            \item Résoudre un incident
+            \item Transférer un incident à l'ingénieur
+            \item Consulter toutes les réclamations
+        \end{itemize} \\
+        \bottomrule
+    \end{tabular}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \caption{Diagramme de cas d'utilisation -- Acteur Ingénieur}
+    \label{fig:uc-ingenieur}
+    \begin{tabular}{p{5cm} p{8cm}}
+        \toprule
+        \textbf{Acteur} & Ingénieur \\
+        \textbf{Description} & Superviseur technique \\
+        \textbf{Cas d'utilisation} &
+        \begin{itemize}
+            \item Se connecter / Se déconnecter
+            \item Consulter les nouvelles réclamations
+            \item Consulter les détails d'une réclamation
+            \item Assigner un ticket à un technicien
+            \item Ajouter des instructions d'intervention
+            \item Consulter tous les tickets
+            \item Gérer les utilisateurs (ajouter technicien)
+        \end{itemize} \\
+        \bottomrule
+    \end{tabular}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \caption{Diagramme de cas d'utilisation -- Acteur Chef de Service}
+    \label{fig:uc-chef}
+    \begin{tabular}{p{5cm} p{8cm}}
+        \toprule
+        \textbf{Acteur} & Chef de Service \\
+        \textbf{Description} & Responsable du service informatique \\
+        \textbf{Cas d'utilisation} &
+        \begin{itemize}
+            \item Se connecter / Se déconnecter
+            \item Consulter les statistiques globales
+            \item Consulter tous les tickets
+            \item Gérer les utilisateurs (ajouter technicien et ingénieur)
+            \item Consulter l'état du parc informatique
+        \end{itemize} \\
+        \bottomrule
+    \end{tabular}
+\end{figure}
+
+\subsection{Diagrammes de séquences -- Cycle de vie d'un ticket}
+
+Le diagramme de séquence ci-dessous illustre le cycle de vie complet d'un ticket, de sa création par l'employé jusqu'à sa résolution par le technicien :
+
+\begin{figure}[H]
+    \centering
+    \caption{Diagramme de séquence -- Cycle de vie d'un ticket}
+    \label{fig:sequence}
+    \begin{verbatim}
+Employé            Système SGRI         Ingénieur         Technicien
+   |                    |                    |                  |
+   |-- Créer ticket --->|                    |                  |
+   |   (Nouveau)        |                    |                  |
+   |                    |-- Notifie -------->|                  |
+   |                    |                    |                  |
+   |                    |<-- Consulte -------|                  |
+   |                    |    détails         |                  |
+   |                    |                    |                  |
+   |                    |                    |-- Assigne ------>|
+   |                    |<-- Valide & ------>|   (Assigné au    |
+   |                    |    assigne         |    Technicien)   |
+   |                    |                    |                  |
+   |                    |                    |                  |
+   |                    |                    |<-- Démarre ------|
+   |                    |                    |   (En cours de   |
+   |                    |                    |    traitement)   |
+   |                    |                    |                  |
+   |                    |                    |<-- Résout -------|
+   |                    |                    |   (Résolu)       |
+   |                    |                    |                  |
+   |<-- Statut mis à jour                    |                  |
+   |    (Notifié)        |                    |                  |
+    \end{verbatim}
+\end{figure}
+
+\subsection{Modélisation des données}
+
+\subsubsection{Dictionnaire de données}
+
+Le dictionnaire de données recense l'ensemble des attributs manipulés par l'application :
+
+\begin{longtable}{p{3.5cm} p{2.5cm} p{2cm} p{5cm}}
+    \caption{Dictionnaire de données}
+    \label{tab:dictionary} \\
+    \toprule
+    \textbf{Champ} & \textbf{Type} & \textbf{Entité} & \textbf{Description} \\
+    \midrule
+    \endhead
+    \bottomrule
+    \endfoot
+    
+    id & Number & Ticket & Identifiant unique du ticket \\
+    title & String & Ticket & Titre du problème \\
+    description & String & Ticket & Description détaillée \\
+    createdBy & String & Ticket & Nom du créateur (employé) \\
+    type & String & Ticket & Catégorie (Soft/Hard/Matériel) \\
+    level & String & Ticket & Niveau (Normal/Élevé) \\
+    priority & String & Ticket & Priorité (Basse/Moyenne/Haute/Critique) \\
+    status & String & Ticket & Statut (6 états possibles) \\
+    assignedTo & String/Null & Ticket & Technicien assigné \\
+    workstationNumber & String & Ticket & Numéro du poste de travail \\
+    officeLocation & String & Ticket & Localisation du poste \\
+    department & String & Ticket & Service/Département \\
+    equipmentType & String & Ticket & Type d'équipement \\
+    assignmentDate & String/Null & Ticket & Date d'assignation par l'ingénieur \\
+    engineerNotes & String & Ticket & Instructions pour le technicien \\
+    resolutionDate & String/Null & Ticket & Date de résolution \\
+    createdAt & String & Ticket & Date de création \\
+    username & String & Utilisateur & Identifiant de connexion \\
+    password & String & Utilisateur & Mot de passe (hashé en local) \\
+    role & String & Utilisateur & Rôle (utilisateur/technicien/ingenieur/chef) \\
+    name & String & Utilisateur & Nom complet \\
+    \end{longtable}
+
+\subsubsection{Modèle Conceptuel des Données (MCD)}
+
+\begin{figure}[H]
+    \centering
+    \caption{Modèle Conceptuel des Données du SGRI}
+    \label{fig:mcd}
+    \begin{verbatim}
+    +-------------------+          +-------------------+
+    |   UTILISATEUR     |          |     TICKET        |
+    +-------------------+          +-------------------+
+    | username (PK)     |          | id (PK)           |
+    | password          |1        *| title             |
+    | role              |----------| description       |
+    | name              | créé par | createdBy         |
+    +-------------------+          | type              |
+                                   | level             |
+                                   | priority          |
+                                   | status            |
+                                   | assignedTo        |
+                                   | workstationNumber |
+                                   | officeLocation    |
+                                   | department        |
+                                   | equipmentType     |
+                                   | assignmentDate    |
+                                   | engineerNotes     |
+                                   | resolutionDate    |
+                                   | createdAt         |
+                                   +-------------------+
+    \end{verbatim}
+\end{figure}
+
+\subsection{Architecture globale du projet et flux de données}
+
+L'architecture du projet suit un modèle de flux de données unidirectionnel où :
+
+\begin{enumerate}
+    \item L'utilisateur interagit avec l'interface DOM (HTML/CSS).
+    \item Les événements sont captés par les scripts JavaScript.
+    \item Les fonctions métier (tickets.js, auth.js) traitent la demande.
+    \item Les données sont persistées dans le localStorage.
+    \item L'interface est mise à jour par manipulation directe du DOM.
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+    \caption{Architecture globale et flux de données}
+    \label{fig:architecture}
+    \begin{verbatim}
+    +----------------+       +----------------+       +----------------+
+    | Interface      | ----> | Couche Logique | ----> |  Persistance   |
+    | (HTML + CSS)   |       | (JS Modules)   |       | (localStorage) |
+    +----------------+       +----------------+       +----------------+
+           |                        |                        |
+           |-- Événements DOM       |-- CRUD Tickets         |-- setItem()
+           |-- Affichage            |-- Auth/Sessions        |-- getItem()
+           |-- Animations           |-- Gestion rôles        |-- removeItem()
+           +------------------------+------------------------+
+    \end{verbatim}
+\end{figure}
+
+% ─── II.4 Conclusion ───────────────────────────────────────
+\section{Conclusion}
+
+Ce chapitre a permis de formaliser les besoins fonctionnels et non-fonctionnels du SGRI, offrant un cadre clair pour la phase de réalisation. Les diagrammes UML présentés -- cas d'utilisation, séquences et modèle de données -- constituent le blueprint conceptuel du système. L'architecture choisie, simple mais robuste, garantit un développement structuré tout en conservant la légèreté qui fait la force de l'application.
+
+% ════════════════════════════════════════════════════════════
+% III. ARCHITECTURE DU CODE ET CARTOGRAPHIE DU FRONTEND
+% ════════════════════════════════════════════════════════════
+\chapter{Architecture du Code et Cartographie du Frontend}
+
+% ─── III.1 Introduction ────────────────────────────────────
+\section{Introduction : Rôle et structure du répertoire}
+
+La qualité d'un projet logiciel ne repose pas uniquement sur son fonctionnement, mais aussi sur la clarté de son architecture et la maintenabilité de son code source. Ce chapitre propose une cartographie détaillée de l'organisation du frontend du SGRI, en explorant la structure des répertoires, le rôle de chaque module et les choix d'implémentation qui garantissent la cohérence de l'ensemble.
+
+% ─── III.2 Analyse de l'arborescence racine ────────────────
+\section{Analyse de l'arborescence racine}
+
+Le projet est organisé selon une arborescence simple et logique, référencée dans le fichier \texttt{structure.txt} :
+
+\begin{verbatim}
+C:.
+├── index.html                 # Page d'accueil / redirection
+├── structure.txt              # Arborescence du projet
+├── .vscode/
+│   └── settings.json           # Configuration VS Code (Live Server)
+└── project/
+    ├── index.html              # Landing page + authentification
+    ├── css/
+    │   └── style.css           # Feuille de style unique (1405 lignes)
+    ├── js/
+    │   ├── auth.js             # Authentification, rôles, sessions
+    │   ├── main.js             # Utilitaires DOM
+    │   └── tickets.js          # Moteur de gestion des tickets
+    ├── pages/
+    │   ├── user-dashboard.html          # Dashboard employé
+    │   ├── technicien-dashboard.html     # Dashboard technicien
+    │   └── ingenieur-dashboard.html      # Dashboard ingénieur
+    │   ├── chef-dashboard.html           # Dashboard chef de service
+    │   ├── dashboard.html                # Page de redirection
+    │   ├── reclamations.html             # Vue globale des tickets
+    │   ├── utilisateurs.html             # Gestion des utilisateurs
+    │   └── postes.html                   # Parc informatique
+    └── assets/                 # Ressources additionnelles (vide)
+\end{verbatim}
+
+Cette organisation suit le principe de \textbf{séparation des préoccupations} (Separation of Concerns) : les fichiers sont regroupés par nature (CSS, JS, pages HTML) plutôt que par fonctionnalité.
+
+% ─── III.3 Découpage et modularité de la couche logique ───
+\section{Découpage et modularité de la couche logique (\texttt{/project/js/})}
+
+La couche logique de l'application est constituée de trois modules JavaScript, chacun ayant une responsabilité clairement définie.
+
+\subsection{auth.js : Gestion des sessions, rôles utilisateurs et sécurité d'accès}
+
+Le module \texttt{auth.js} (\textit{149 lignes}) est le gardien de la sécurité de l'application. Il assure les fonctions suivantes :
+
+\paragraph{Initialisation des données de démonstration :}
+La fonction \texttt{seedUsers()} peuple le localStorage avec 6 utilisateurs pré-définis couvrant les quatre rôles :
+
+\begin{lstlisting}[style=jsstyle]
+function seedUsers() {
+    if (localStorage.getItem('users')) return;
+    const users = [
+        { username: 'user1', password: 'pass123', role: 'utilisateur', name: 'Ahmed Benali' },
+        { username: 'user2', password: 'pass123', role: 'utilisateur', name: 'Fatima Zahra' },
+        { username: 'tech1', password: 'pass123', role: 'technicien', name: 'Karim El Fassi' },
+        { username: 'tech2', password: 'pass123', role: 'technicien', name: 'Youssef Lamrani' },
+        { username: 'eng1', password: 'pass123', role: 'ingenieur', name: 'Sara Ouazzani' },
+        { username: 'chef1', password: 'pass123', role: 'chef', name: 'Hassan El Mansouri' },
+    ];
+    localStorage.setItem('users', JSON.stringify(users));
+}
+\end{lstlisting}
+
+\paragraph{Système d'authentification :}
+Les fonctions \texttt{login()} et \texttt{logout()} gèrent la connexion et la déconnexion. La session est stockée dans \texttt{localStorage} via la clé \texttt{currentUser}.
+
+\begin{lstlisting}[style=jsstyle]
+function login(username, password) {
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    const user = users.find(u => u.username === username && u.password === password);
+    if (user) {
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        return user;
+    }
+    return null;
+}
+
+function logout() {
+    localStorage.removeItem('currentUser');
+    window.location.href = '../index.html';
+}
+\end{lstlisting}
+
+\paragraph{Protection des pages par vérification de rôle :}
+La fonction \texttt{checkAuth(allowedRoles)} est appelée au chargement de chaque page. Si l'utilisateur n'est pas connecté ou si son rôle n'est pas autorisé, il est redirigé vers la page d'accueil.
+
+\begin{lstlisting}[style=jsstyle]
+function checkAuth(allowedRoles) {
+    const user = getCurrentUser();
+    if (!user) {
+        window.location.href = '../index.html';
+        return null;
+    }
+    if (allowedRoles && !allowedRoles.includes(user.role)) {
+        window.location.href = '../index.html';
+        return null;
+    }
+    return user;
+}
+\end{lstlisting}
+
+\paragraph{Gestion des rôles :}
+Un dictionnaire \texttt{roleInfo} centralise les métadonnées de chaque rôle (libellé, icône, page de dashboard), permettant un routage dynamique après connexion.
+
+\subsection{tickets.js : Moteur de gestion des réclamations}
+
+Le module \texttt{tickets.js} (\textit{86 lignes dans sa version initiale}) constitue le cœur métier de l'application. Il implémente l'ensemble des opérations CRUD sur les tickets.
+
+\paragraph{Structure d'un ticket :}
+Chaque ticket est représenté par un objet JavaScript avec les propriétés suivantes :
+
+\begin{lstlisting}[style=jsstyle]
+const ticket = {
+    id: Date.now(),
+    title: title,
+    description: description,
+    createdBy: createdBy,
+    type: type,
+    level: level,
+    status: 'Nouveau',
+    assignedTo: null,
+    createdAt: new Date().toLocaleString('fr-FR'),
+    priority: 'Moyenne',
+    workstationNumber: '',
+    officeLocation: '',
+    department: '',
+    equipmentType: '',
+    assignmentDate: null,
+    engineerNotes: '',
+    resolutionDate: null,
+    closedDate: null
+};
+\end{lstlisting}
+
+\paragraph{Fonctions principales :}
+\begin{itemize}
+    \item \texttt{getTickets()}, \texttt{saveTickets()} : Accès et persistance des données.
+    \item \texttt{createTicket()} : Création d'un nouveau ticket avec statut "Nouveau".
+    \item \texttt{engineerAssignTicket()} : Assignation par l'ingénieur au technicien.
+    \item \texttt{techStartTicket()}, \texttt{techResolveTicket()} : Actions du cycle de vie.
+    \item \texttt{closeTicket()} : Fermeture définitive du ticket.
+    \item \texttt{getNewTickets()}, \texttt{getPendingTickets()}, \texttt{getAssignedTickets()} : Requêtes de filtrage.
+    \item \texttt{getStatusBadge()} : Génération du badge de statut.
+\end{itemize}
+
+\paragraph{Gestion des statuts :}
+Le système supporte six statuts organisés en workflow linéaire :
+
+\begin{lstlisting}[style=jsstyle]
+const statusColors = {
+    'Nouveau': '#6b7280',
+    'En attente de validation INGE': '#f59e0b',
+    'Assign\u00e9 au Technicien': '#3b82f6',
+    'En cours de traitement': '#8b5cf6',
+    'R\u00e9solu': '#22c55e',
+    'Ferm\u00e9': '#64748b'
+};
+\end{lstlisting}
+
+\subsection{main.js : Point d'entrée logique et manipulation du DOM}
+
+Le module \texttt{main.js} (\textit{9 lignes}) est délibérément minimal. Il fournit des fonctions utilitaires génériques utilisées par toutes les pages :
+
+\begin{lstlisting}[style=jsstyle]
+function $(id) { return document.getElementById(id); }
+function qs(sel) { return document.querySelector(sel); }
+function qsa(sel) { return document.querySelectorAll(sel); }
+function show(el) { if (typeof el === 'string') el = $(el); if (el) el.style.display = ''; }
+function hide(el) { if (typeof el === 'string') el = $(el); if (el) el.style.display = 'none'; }
+\end{lstlisting}
+
+Cette approche minimaliste évite la duplication de code et centralise les opérations DOM les plus courantes.
+
+% ─── III.4 Gestion de la présentation et interfaces ───────
+\section{Gestion de la présentation et interfaces (\texttt{/project/pages/})}
+
+\subsection{Centralisation des styles graphiques dans \texttt{style.css}}
+
+La feuille de style unique \texttt{style.css} (\textit{1405 lignes}) centralise l'intégralité de la présentation. Elle est organisée en sections clairement identifiées :
+
+\begin{itemize}
+    \item \textbf{Variables CSS (root) :} Palette de couleurs, ombres, bordures.
+    \item \textbf{Landing page :} Styles de la page d'accueil (navigation, hero, sections).
+    \item \textbf{Authentification :} Styles du formulaire de connexion avec écran partagé.
+    \item \textbf{Sidebar :} Navigation latérale sombre.
+    \item \textbf{Dashboards :} Cartes statistiques, tableaux de tickets.
+    \item \textbf{Modales :} Fenêtres contextuelles.
+    \item \textbf{Responsive :} Adaptations pour tablettes et mobiles.
+\end{itemize}
+
+\subsection{Les vues utilisateurs}
+
+\subsubsection{user-dashboard.html}
+Le dashboard de l'employé offre une interface simple centrée sur la création et le suivi des tickets personnels. Il comprend :
+\begin{itemize}
+    \item Un formulaire de création enrichi (titre, description, type, niveau, priorité, poste, bureau, département, équipement).
+    \item Une modale de création épurée.
+    \item Des cartes statistiques (Total, Ouverts/En cours, Résolus).
+    \item La liste des tickets de l'utilisateur avec leur statut.
+\end{itemize}
+
+\subsubsection{dashboard.html}
+Page de redirection automatique vers le dashboard spécifique au rôle connecté. Utilise la table \texttt{roleInfo} pour déterminer la destination.
+
+\subsection{Les espaces techniques}
+
+\subsubsection{technicien-dashboard.html}
+Le technicien accède à ses interventions assignées. L'interface modernisée intègre :
+\begin{itemize}
+    \item Une vue détaillée de chaque intervention avec les informations contextualisées (employé, poste, bureau, département).
+    \item La section "Intervention à réaliser" avec les notes de l'ingénieur.
+    \item Les actions disponibles : Démarrer, Résoudre, Transférer.
+    \item Des statistiques sur les tickets en cours et résolus.
+\end{itemize}
+
+\subsubsection{ingenieur-dashboard.html}
+L'ingénieur supervise le flux des réclamations. Son tableau de bord comprend :
+\begin{itemize}
+    \item La section "Nouvelles Réclamations" listant les tickets non traités.
+    \item Un modal de consultation des détails complets.
+    \item Un système d'assignation avec choix du technicien et zone de consignes.
+    \item La section des tickets escaladés.
+    \item La vue de tous les tickets.
+\end{itemize}
+
+\subsection{Les modules de gestion métier}
+
+\subsubsection{reclamations.html}
+Vue globale de toutes les réclamations, accessible aux techniciens, ingénieurs et chefs. Elle propose :
+\begin{itemize}
+    \item Des filtres par statut avec compteurs.
+    \item Une barre de recherche en temps réel.
+    \item Un tableau complet avec toutes les informations.
+\end{itemize}
+
+\subsubsection{utilisateurs.html}
+Interface de gestion des comptes utilisateurs :
+\begin{itemize}
+    \item Tableau listant tous les utilisateurs avec leur rôle.
+    \item Modal d'ajout de technicien (accessible à l'ingénieur et au chef).
+    \item Modal d'ajout d'ingénieur (accessible au chef uniquement).
+\end{itemize}
+
+\subsubsection{postes.html}
+Inventaire du parc informatique :
+\begin{itemize}
+    \item Liste des postes de travail avec leur statut (Actif, Maintenance, En panne).
+    \item Informations : département, utilisateur assigné.
+    \item Données statiques de démonstration (8 postes).
+\end{itemize}
+
+% ─── III.5 Conclusion ─────────────────────────────────────
+\section{Conclusion}
+
+L'architecture du code du SGRI repose sur des principes de simplicité et de modularité. Chaque fichier a un rôle clairement défini, les responsabilités sont séparées et le code est organisé de manière à faciliter la maintenance et les évolutions futures. La couche logique est portée par trois modules JavaScript spécialisés, tandis que la présentation est assurée par une feuille de style unique et des pages HTML dédiées. Cette organisation, bien que simple, offre un cadre solide pour le développement d'applications web légères et performantes.
+
+% ════════════════════════════════════════════════════════════
+% IV. RÉALISATION DU PROJET (Approche par Sprints)
+% ════════════════════════════════════════════════════════════
+\chapter{Réalisation du Projet (Approche par Sprints)}
+
+% ─── IV.1 Introduction ────────────────────────────────────
+\section{Introduction}
+
+La réalisation du SGRI a suivi une approche itérative inspirée de la méthodologie Agile, avec quatre sprints principaux couvrant l'ensemble des fonctionnalités. Ce chapitre détaille chaque phase, les objectifs atteints, les difficultés rencontrées et les solutions apportées.
+
+% ─── IV.2 Phase 1 : Spécifications et Maquetrage ──────────
+\section{Phase 1 : Spécifications et Maquetrage}
+
+\subsection{Définition des maquettes UI (Style SaaS minimaliste)}
+
+Avant toute ligne de code, l'interface utilisateur a été conçue sur Figma avec une approche centrée sur l'utilisateur :
+
+\begin{itemize}
+    \item \textbf{Palette de couleurs :} Bleu primaire (\#3b82f6) pour les actions principales, gris ardoise (\#1e293b) pour la sidebar, vert (\#22c55e) pour le succès.
+    \item \textbf{Composants :} Cartes avec bordures subtiles, badges de statut colorés, tableaux épurés, modales animées.
+    \item \textbf{Layout :} Sidebar fixe à gauche, contenu principal à droite, responsive adapté aux écrans modernes.
+\end{itemize}
+
+\subsection{Initialisation du workspace}
+
+L'environnement de développement a été configuré avec :
+\begin{itemize}
+    \item VS Code avec l'extension Live Server pour le rechargement automatique.
+    \item Port configuré à 5501 dans \texttt{.vscode/settings.json}.
+    \item Structure de dossiers conforme au blueprint (\texttt{js/}, \texttt{pages/}, \texttt{css/}, \texttt{assets/}).
+\end{itemize}
+
+% ─── IV.3 Sprint 1 : Authentification et Sécurisation ──────
+\section{Sprint 1 : Authentification et Sécurisation des Accès}
+
+\subsection{Objectifs du Sprint}
+
+\begin{itemize}
+    \item Mettre en place la page d'accueil (landing page) avec présentation du projet.
+    \item Implémenter le système d'authentification (connexion/déconnexion).
+    \item Créer le système de sélection de rôles avec validation croisée.
+    \item Assurer la protection des pages par vérification de session.
+\end{itemize}
+
+\subsection{Tâches réalisées}
+
+\begin{enumerate}
+    \item \textbf{Landing page} (\texttt{index.html}) : Page d'accueil multi-section avec navigation, hero, fonctionnalités, rôles et CTA.
+    \item \textbf{Écran d'authentification} : Écran partagé avec sélection de rôle et formulaire de connexion.
+    \item \textbf{Module auth.js} : Fonctions de login/logout, gestion des sessions, \texttt{checkAuth()}.
+    \item \textbf{Fichier structure.txt} : Documentation de l'arborescence du projet.
+\end{enumerate}
+
+\subsection{Problèmes rencontrés et solutions}
+
+\paragraph{Problème : Protection des pages HTML en pur JavaScript}
+Dans une application multi-pages classique, chaque page HTML est accessible directement via son URL. Un utilisateur pourrait potentiellement accéder à une page sans être connecté.
+
+\paragraph{Solution :} Chaque page appelle \texttt{checkAuth(allowedRoles)} au chargement. Cette fonction vérifie la session dans le localStorage et redirige vers la page d'accueil si l'utilisateur n'est pas connecté ou si son rôle n'est pas autorisé. Bien que cette approche ne soit pas infaillible (un utilisateur technique pourrait manipuler le localStorage), elle offre un niveau de sécurité suffisant pour une application de démonstration.
+
+\subsection{Livrables du Sprint 1}
+
+\begin{itemize}
+    \item Landing page complète et responsive.
+    \item Système d'authentification fonctionnel avec 6 utilisateurs de démonstration.
+    \item Routage par rôle fonctionnel.
+    \item Protection des pages assurée.
+\end{itemize}
+
+% ─── IV.4 Sprint 2 : Module de Gestion des Tickets ────────
+\section{Sprint 2 : Module de Gestion des Réclamations (Tickets)}
+
+\subsection{Objectifs du Sprint}
+
+\begin{itemize}
+    \item Implémenter le CRUD complet des tickets.
+    \item Créer l'interface de création de réclamation pour l'employé.
+    \item Mettre en place l'affichage dynamique des tickets.
+    \item Développer le système de mise à jour des statuts.
+\end{itemize}
+
+\subsection{Tâches réalisées}
+
+\begin{enumerate}
+    \item \textbf{Module tickets.js} : Fonctions \texttt{getTickets()}, \texttt{createTicket()}, \texttt{saveTickets()}, filtres.
+    \item \textbf{Interface employé} (\texttt{user-dashboard.html}) : Formulaire de création, liste des tickets personnels, modale.
+    \item \textbf{Interface globale} (\texttt{reclamations.html}) : Tableau complet avec recherche et filtres.
+    \item \textbf{Workflow de statuts} : Six statuts avec transitions contrôlées.
+\end{enumerate}
+
+\subsection{Problèmes rencontrés et solutions}
+
+\paragraph{Problème : Redondance de code JavaScript entre les pages}
+Chaque page HTML contient du JavaScript inline. La même logique (affichage des tickets, génération des badges) se retrouvait dans plusieurs fichiers avec des variations mineures.
+
+\paragraph{Solution :} Les fonctions communes ont été centralisées dans \texttt{tickets.js} et \texttt{main.js}. Les variables de configuration (couleurs par type, par niveau) ont été uniformisées. Le pattern adopté est : chaque page déclare uniquement les fonctions spécifiques à son rôle et délègue les opérations génériques aux modules partagés.
+
+\subsection{Livrables du Sprint 2}
+
+\begin{itemize}
+    \item CRUD tickets complet et fonctionnel.
+    \item Création de ticket avec tous les champs contextualisés.
+    \item Workflow de statuts opérationnel.
+    \item Interface de listing avec recherche.
+\end{itemize}
+
+% ─── IV.5 Sprint 3 : Espace Administration ─────────────────
+\section{Sprint 3 : Espace Administration \& Parc Informatique}
+
+\subsection{Objectifs du Sprint}
+
+\begin{itemize}
+    \item Créer l'interface de gestion des utilisateurs.
+    \item Implémenter l'ajout de techniciens et d'ingénieurs.
+    \item Créer la vue du parc informatique (postes de travail).
+\end{itemize}
+
+\subsection{Tâches réalisées}
+
+\begin{enumerate}
+    \item \textbf{Gestion des utilisateurs} (\texttt{utilisateurs.html}) :
+    \begin{itemize}
+        \item Tableau listant tous les utilisateurs avec leur rôle.
+        \item Modal d'ajout de technicien (accessible à l'ingénieur et au chef).
+        \item Modal d'ajout d'ingénieur (accessible au chef uniquement).
+    \end{itemize}
+    \item \textbf{Parc informatique} (\texttt{postes.html}) :
+    \begin{itemize}
+        \item Listing des 8 postes de travail de démonstration.
+        \item Statuts : Actif, Maintenance, En panne.
+        \item Association poste/département/utilisateur.
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Livrables du Sprint 3}
+
+\begin{itemize}
+    \item Gestion des utilisateurs opérationnelle.
+    \item Parc informatique visible.
+    \item Rôles et permissions respectés.
+\end{itemize}
+
+% ─── IV.6 Sprint 4 : Unification des Dashboards ──────────
+\section{Sprint 4 : Unification des Dashboards et Clean Code}
+
+\subsection{Objectifs du Sprint}
+
+\begin{itemize}
+    \item Finaliser les 5 dashboards métiers spécifiques.
+    \item Refactorer le code pour assurer une qualité optimale.
+    \item Mettre en place le protocole de suivi des modifications.
+\end{itemize}
+
+\subsection{Tâches réalisées}
+
+\begin{enumerate}
+    \item \textbf{Dashboards métiers} :
+    \begin{itemize}
+        \item \textbf{Employé} (\texttt{user-dashboard.html}) : Création et suivi de tickets.
+        \item \textbf{Technicien} (\texttt{technicien-dashboard.html}) : Interventions assignées, détails, actions.
+        \item \textbf{Ingénieur} (\texttt{ingenieur-dashboard.html}) : Nouvelles réclamations, assignation, escalades.
+        \item \textbf{Chef de Service} (\texttt{chef-dashboard.html}) : Statistiques, vue globale.
+    \end{itemize}
+    \item \textbf{Refactoring} :
+    \begin{itemize}
+        \item Uniformisation des noms de variables et fonctions.
+        \item Standardisation du code HTML (indentation, attributs).
+        \item Centralisation des constantes (couleurs, libellés).
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Livrables du Sprint 4}
+
+\begin{itemize}
+    \item 5 dashboards métiers fonctionnels et cohérents.
+    \item Code refactoré et lisible.
+\end{itemize}
+
+% ─── IV.7 Phase Finale : Intégration et Validation ─────────
+\section{Phase Finale : Intégration et Validation}
+
+\subsection{Recette globale et validation de la cohérence de l'interface}
+
+La phase finale a consisté à :
+\begin{itemize}
+    \item Tester l'ensemble des parcours utilisateur complets.
+    \item Vérifier la cohérence visuelle entre les pages.
+    \item Tester le responsive design sur différentes résolutions.
+    \item Valider le workflow complet : création $\rightarrow$ assignation $\rightarrow$ résolution.
+\end{itemize}
+
+\subsection{Conclusion de la phase de réalisation}
+
+La réalisation du SGRI en quatre sprints a permis de livrer une application complète, fonctionnelle et testée. L'approche Agile a facilité l'adaptation continue du produit aux besoins et la résolution progressive des difficultés techniques.
+
+% ════════════════════════════════════════════════════════════
+% V. CONCLUSION ET PERSPECTIVES
+% ════════════════════════════════════════════════════════════
+\chapter{Conclusion et perspectives}
+
+% ─── V.1 Conclusion générale ──────────────────────────────
+\section{Conclusion générale}
+
+Le projet SGRI -- TicketFlow a permis de concevoir et développer une application web complète de gestion des réclamations informatiques, répondant aux besoins identifiés lors de l'analyse préliminaire.
+
+Parti d'un constat simple -- l'absence d'outil centralisé, léger et adapté aux besoins des PME -- ce projet a livré une solution fonctionnelle qui couvre l'ensemble du cycle de vie d'un incident : de la création par l'employé jusqu'à la résolution par le technicien, en passant par l'assignation supervisée par l'ingénieur.
+
+% ─── V.2 Évaluation des objectifs atteints ────────────────
+\section{Évaluation des objectifs atteints}
+
+\begin{itemize}
+    \item \textbf{Interface fluide et rapide :} L'application se charge instantanément et répond aux interactions sans latence, grâce à l'absence de dépendances et à l'utilisation du DOM natif.
+    \item \textbf{Code sans dette technique :} La séparation des préoccupations, la centralisation des fonctions réutilisables et l'absence de dépendances externes garantissent un code propre et maintenable.
+    \item \textbf{Expérience SaaS complète :} L'application offre une expérience utilisateur moderne avec des tableaux de bord personnalisés, des notifications et un design épuré.
+    \item \textbf{Couverture fonctionnelle :} 100\% des fonctionnalités prévues dans le cahier des charges sont implémentées et opérationnelles.
+\end{itemize}
+
+% ─── V.3 Validation des choix technologiques ──────────────
+\section{Validation des choix technologiques}
+
+Le choix du \textbf{Vanilla JavaScript} comme technologie principale s'est révélé pleinement justifié :
+
+\begin{itemize}
+    \item \textbf{Performance :} L'application se charge en quelques millisecondes, sans temps d'attente pour le téléchargement de frameworks ou de bibliothèques tierces.
+    \item \textbf{Légèreté :} L'ensemble du projet tient dans quelques centaines de kilooctets, contre plusieurs mégaoctets pour une application React ou Angular équivalente.
+    \item \textbf{Maîtrise :} Le développement sans framework a renforcé la compréhension des mécanismes fondamentaux du navigateur (DOM, événements, stockage local).
+    \item \textbf{Déploiement simplifié :} Aucun serveur, aucune base de données, aucune compilation. Un simple serveur HTTP statique suffit.
+\end{itemize}
+
+Les alternatives existantes (GLPI, Jira Service Management) ont été écartées en raison de leur complexité d'installation, de leur poids technologique ou de leur coût. Notre solution sur-mesure offre un rapport qualité-fonctionnalités optimal pour les structures de taille modeste.
+
+% ─── V.4 Perspectives d'évolution ──────────────────────────
+\section{Perspectives d'évolution}
+
+\subsection{Connexion à une API REST ou intégration d'un backend}
+
+La version actuelle utilise le localStorage comme mécanisme de persistance, ce qui limite l'application à un seul poste. Les données ne sont pas partagées entre les utilisateurs. Une évolution majeure consisterait à ajouter un backend REST (Node.js/Express) avec une base de données (MongoDB ou PostgreSQL) pour permettre :
+
+\begin{itemize}
+    \item Le partage des données en temps réel entre tous les utilisateurs.
+    \item La persistance durable des données au-delà du navigateur.
+    \item L'authentification côté serveur avec tokens JWT.
+    \item La mise en place de notifications en temps réel via WebSocket.
+\end{itemize}
+
+\subsection{Automatisation des notifications}
+
+L'intégration d'un outil d'automatisation comme \textbf{n8n} permettrait de :
+\begin{itemize}
+    \item Envoyer des notifications par e-mail lors des changements de statut.
+    \item Notifier l'ingénieur sur Slack/Teams lors de la création d'un ticket.
+    \item Générer des rapports hebdomadaires automatisés.
+    \item Mettre en place des escalades automatiques après un délai défini.
+\end{itemize}
+
+Ces évolutions pourraient être déployées via Docker pour faciliter la gestion de l'infrastructure.
+
+% ════════════════════════════════════════════════════════════
+% BIBLIOGRAPHIE & WEBographie
+% ════════════════════════════════════════════════════════════
+\chapter*{Bibliographie \& Webographie}
+\addcontentsline{toc}{chapter}{Bibliographie \& Webographie}
+
+\section*{Ouvrages et articles}
+
+\begin{enumerate}
+    \item FOWLER, Martin. \textit{Patterns of Enterprise Application Architecture}. Addison-Wesley, 2002.
+    \item COCKBURN, Alistair. \textit{Agile Software Development}. Addison-Wesley, 2001.
+    \item FLANAGAN, David. \textit{JavaScript: The Definitive Guide}, 7th Edition. O'Reilly Media, 2020.
+    \item RESIG, John, BIBEAULT, Bear. \textit{Secrets of the JavaScript Ninja}. Manning Publications, 2016.
+    \item SCHWABER, Ken, SUTHERLAND, Jeff. \textit{The Scrum Guide}, 2020.
+\end{enumerate}
+
+\section*{Ressources web}
+
+\begin{enumerate}
+    \item \href{https://glpi-project.org}{GLPI Project -- Site officiel}. [Consulté le 08/06/2026].
+    \item \href{https://www.atlassian.com/software/jira/service-management}{Atlassian -- Jira Service Management}. [Consulté le 08/06/2026].
+    \item \href{https://developer.mozilla.org/fr/docs/Web/JavaScript}{MDN Web Docs -- JavaScript}. [Consulté le 08/06/2026].
+    \item \href{https://thenewstack.io/why-developers-are-ditching-frameworks-for-vanilla-javascript/}{"Why Developers Are Ditching Frameworks for Vanilla JavaScript" -- The New Stack, 2025}. [Consulté le 08/06/2026].
+    \item \href{https://solid-web.com/when-to-use-framework-vs-vanilla-javascript/}{"When to Use a Framework vs Vanilla JS: The 5-Question Test" -- Solid Web, 2026}. [Consulté le 08/06/2026].
+\end{enumerate}
+
+% ════════════════════════════════════════════════════════════
+% ANNEXES
+% ════════════════════════════════════════════════════════════
+\appendix
+\chapter{Annexes}
+
+% ─── Annexe A : structure.txt ─────────────────────────────
+\section{Annexe A : Contenu brut du fichier structure.txt}
+
+Le fichier \texttt{structure.txt} décrit l'arborescence complète du projet :
+
+\begin{verbatim}
+Folder PATH listing
+Volume serial number is C656-A0A0
+C:.
++---.vscode
++---project
+    +---assets
+    +---css
+    +---js
+    +---pages
+Folder PATH listing
+Volume serial number is C656-A0A0
+C:.
+    index.html
+    structure.txt
+    
++---.vscode
+        settings.json
+        
++---project
+        index.html
+        
+    +---assets
+    +---css
+            style.css
+            
+    +---js
+            auth.js
+            main.js
+            tickets.js
+            
+    +---pages
+            chef-dashboard.html
+            dashboard.html
+            ingenieur-dashboard.html
+            postes.html
+            reclamations.html
+            technicien-dashboard.html
+            user-dashboard.html
+            utilisateurs.html
+\end{verbatim}
+
+% ─── Annexe B : Extraits du DOM ───────────────────────────
+\section{Annexe B : Extraits de scripts de manipulation du DOM (main.js)}
+
+Le module \texttt{main.js} constitue le point d'entrée logique de l'application. Il fournit des raccourcis pour les opérations DOM les plus courantes :
+
+\begin{lstlisting}[style=jsstyle]
+// Raccourci pour document.getElementById
+function $(id) { return document.getElementById(id); }
+
+// Raccourci pour document.querySelector
+function qs(sel) { return document.querySelector(sel); }
+
+// Raccourci pour document.querySelectorAll
+function qsa(sel) { return document.querySelectorAll(sel); }
+
+// Afficher un element
+function show(el) {
+    if (typeof el === 'string') el = $(el);
+    if (el) el.style.display = '';
+}
+
+// Masquer un element
+function hide(el) {
+    if (typeof el === 'string') el = $(el);
+    if (el) el.style.display = 'none';
+}
+\end{lstlisting}
+
+Ces fonctions utilitaires sont utilisées dans toutes les pages de l'application pour simplifier la manipulation du DOM et éviter la répétition de code.
+
+% ─── Annexe C : Exemple de code de gestion des tickets ────
+\section{Annexe C : Fonctions clés du module tickets.js}
+
+\begin{lstlisting}[style=jsstyle]
+// Creer un nouveau ticket
+function createTicket(title, description, createdBy, type, level,
+                     workstationNumber, officeLocation,
+                     department, equipmentType) {
+    const tickets = getTickets();
+    const ticket = {
+        id: Date.now(),
+        title, description, createdBy, type, level,
+        status: 'Nouveau',
+        assignedTo: null,
+        createdAt: new Date().toLocaleString('fr-FR'),
+        priority: 'Moyenne',
+        workstationNumber, officeLocation,
+        department, equipmentType,
+        assignmentDate: null,
+        engineerNotes: '',
+        resolutionDate: null,
+        closedDate: null
+    };
+    tickets.push(ticket);
+    saveTickets(tickets);
+    return ticket;
+}
+
+// Assigner un ticket a un technicien (par l'ingenieur)
+function engineerAssignTicket(ticketId, techName, notes) {
+    const tickets = getTickets();
+    const ticket = tickets.find(t => t.id === ticketId);
+    if (ticket) {
+        ticket.status = "Assign\u00e9 au Technicien";
+        ticket.assignedTo = techName;
+        ticket.assignmentDate = new Date().toLocaleString('fr-FR');
+        if (notes) ticket.engineerNotes = notes;
+        saveTickets(tickets);
+    }
+}
+\end{lstlisting}
+
+\end{document}

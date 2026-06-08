@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Utilisateurs - Gestion des Problemes</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header>
+        <div class="sidebar-header">
+            <span class="sidebar-logo">
+                <svg viewBox="0 0 64 64" fill="none">
+                    <defs><linearGradient id="sgusr" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3498db"/><stop offset="100%" stop-color="#2c3e50"/></linearGradient></defs>
+                    <path d="M32 2 L58 14 V32 C58 48 32 62 32 62 C32 62 6 48 6 32 V14 Z" fill="url(#sgusr)"/>
+                    <path d="M22 32 L30 42 L44 24" stroke="#fff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                </svg>
+            </span>
+            <h1>Gestion<br>des Problemes</h1>
+        </div>
+        <nav>
+            <a href="#" id="dashboardLink">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="4" rx="1"/><rect x="13" y="9" width="8" height="12" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/></svg>
+                Tableau de Bord
+            </a>
+            <a href="utilisateurs.html" class="active">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                Utilisateurs
+            </a>
+            <a href="reclamations.html">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                Reclamations
+            </a>
+            <div class="nav-spacer"></div>
+            <a href="#" onclick="logout()" class="logout-link">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                Deconnexion
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <span id="sidebarUser"></span>
+            <span class="sidebar-role" id="sidebarRole"></span>
+        </div>
+    </header>
+    <main>
+        <div class="page-header">
+            <h2>Liste des Utilisateurs</h2>
+            <div class="page-actions">
+                <span class="section-count" id="userCount">0</span>
+                <button class="btn-primary btn-icon" id="addTechBtn" style="display:none;" onclick="openTechModal()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                    Ajouter Technicien
+                </button>
+                <button class="btn-primary btn-icon" id="addEngBtn" style="display:none;" onclick="openEngModal()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                    Ajouter Ingenieur
+                </button>
+            </div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Nom d'utilisateur</th>
+                    <th>Role</th>
+                </tr>
+            </thead>
+            <tbody id="usersTableBody">
+            </tbody>
+        </table>
+    </main>
+
+    <div class="modal-overlay" id="techModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Ajouter un Technicien</h3>
+                <button class="modal-close" onclick="closeTechModal()">x</button>
+            </div>
+            <form id="addTechForm" onsubmit="handleAddTech(event)">
+                <div class="form-group">
+                    <label>Nom complet</label>
+                    <input type="text" id="techName" placeholder="Ex: Nouveau Technicien" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group flex-1">
+                        <label>Nom d'utilisateur</label>
+                        <input type="text" id="techUsername" placeholder="Ex: tech3" required>
+                    </div>
+                    <div class="form-group flex-1">
+                        <label>Mot de passe</label>
+                        <input type="password" id="techPass" placeholder="pass123" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary btn-full">Ajouter</button>
+                <p id="addTechMsg" class="success-msg" style="text-align:center;margin-top:0.5rem;"></p>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="engModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Ajouter un Ingenieur</h3>
+                <button class="modal-close" onclick="closeEngModal()">x</button>
+            </div>
+            <form id="addEngForm" onsubmit="handleAddEng(event)">
+                <div class="form-group">
+                    <label>Nom complet</label>
+                    <input type="text" id="engName" placeholder="Ex: Nouvel Ingenieur" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group flex-1">
+                        <label>Nom d'utilisateur</label>
+                        <input type="text" id="engUsername" placeholder="Ex: eng2" required>
+                    </div>
+                    <div class="form-group flex-1">
+                        <label>Mot de passe</label>
+                        <input type="password" id="engPass" placeholder="pass123" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary btn-full">Ajouter</button>
+                <p id="addEngMsg" class="success-msg" style="text-align:center;margin-top:0.5rem;"></p>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/auth.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        const user = checkAuth(['technicien', 'ingenieur', 'chef']);
+        if (user) {
+            $('sidebarUser').textContent = user.name;
+            $('sidebarRole').textContent = roleInfo[user.role].label;
+            $('dashboardLink').href = roleInfo[user.role].dashboard;
+
+            if (user.role === 'ingenieur' || user.role === 'chef') {
+                $('addTechBtn').style.display = '';
+            }
+            if (user.role === 'chef') {
+                $('addEngBtn').style.display = '';
+            }
+
+            function loadUsers() {
+                const users = JSON.parse(localStorage.getItem('users')) || [];
+                const tbody = $('usersTableBody');
+                $('userCount').textContent = users.length;
+                tbody.innerHTML = '';
+                const labels = { utilisateur: 'Utilisateur', technicien: 'Technicien', ingenieur: 'Ingenieur', chef: 'Chef Departement' };
+                const classes = { utilisateur: 'role-user', technicien: 'role-tech', ingenieur: 'role-eng', chef: 'role-chef' };
+                users.forEach(u => {
+                    tbody.innerHTML += '<tr><td>' + u.name + '</td><td>' + u.username + '</td><td><span class="role-badge ' + (classes[u.role] || '') + '" style="padding:0.2rem 0.6rem;font-size:0.75rem;">' + (labels[u.role] || u.role) + '</span></td></tr>';
+                });
+            }
+
+            window.openTechModal = function() {
+                $('techModal').classList.add('active');
+            };
+            window.closeTechModal = function() {
+                $('techModal').classList.remove('active');
+            };
+            window.handleAddTech = function(e) {
+                e.preventDefault();
+                const name = $('techName').value.trim();
+                const username = $('techUsername').value.trim();
+                const pass = $('techPass').value.trim();
+                if (addUser(username, pass, 'technicien', name)) {
+                    $('addTechMsg').textContent = 'Technicien ' + name + ' ajoute avec succes.';
+                    $('addTechMsg').className = 'success-msg';
+                    $('addTechForm').reset();
+                    loadUsers();
+                    setTimeout(closeTechModal, 1000);
+                } else {
+                    $('addTechMsg').textContent = 'Ce nom d\'utilisateur existe deja.';
+                    $('addTechMsg').className = 'error-msg';
+                }
+            };
+
+            window.openEngModal = function() {
+                $('engModal').classList.add('active');
+            };
+            window.closeEngModal = function() {
+                $('engModal').classList.remove('active');
+            };
+            window.handleAddEng = function(e) {
+                e.preventDefault();
+                const name = $('engName').value.trim();
+                const username = $('engUsername').value.trim();
+                const pass = $('engPass').value.trim();
+                if (addUser(username, pass, 'ingenieur', name)) {
+                    $('addEngMsg').textContent = 'Ingenieur ' + name + ' ajoute avec succes.';
+                    $('addEngMsg').className = 'success-msg';
+                    $('addEngForm').reset();
+                    loadUsers();
+                    setTimeout(closeEngModal, 1000);
+                } else {
+                    $('addEngMsg').textContent = 'Ce nom d\'utilisateur existe deja.';
+                    $('addEngMsg').className = 'error-msg';
+                }
+            };
+
+            loadUsers();
+        }
+    </script>
+</body>
+</html>
