@@ -182,15 +182,17 @@ Enfin, j'adresse mes sincères remerciements à ma famille pour leur soutien inc
 
 \vspace*{1cm}
 
-Ce rapport présente la conception et le développement du \textbf{Système de Gestion des Réclamations Informatiques (SGRI) -- TicketFlow}, une application web légère et performante destinée à centraliser, suivre et résoudre les incidents informatiques au sein d'une organisation.
+Ce rapport présente la conception et le développement d'un \textbf{Système de Gestion des Réclamations Informatiques}, une application web légère et simple destinée à centraliser, suivre et gérer les incidents informatiques au sein d'une organisation.
 
-Face aux limites des méthodes traditionnelles de gestion des pannes (e-mails, fichiers Excel, appels téléphoniques), le SGRI propose une solution SaaS complète avec quatre profils d'utilisateurs : Employé, Technicien, Ingénieur et Chef de Service. L'application permet la création de tickets, l'assignation par un ingénieur, le suivi en temps réel et la résolution structurée des incidents.
+Face aux limites des méthodes traditionnelles de gestion des problèmes informatiques telles que les e-mails, les appels téléphoniques ou les fichiers manuels, cette solution propose une plateforme centralisée permettant aux utilisateurs de signaler facilement leurs réclamations et de suivre leur état en temps réel.
 
-Développée en \textbf{Vanilla JavaScript} avec une architecture modulaire et un stockage local (localStorage), l'application offre une interface réactive de type SaaS moderne sans dépendance à aucun framework lourd. Le code source est organisé selon une architecture claire séparant la logique métier (auth.js, tickets.js), les utilitaires (main.js) et les vues (pages HTML).
+L'application permet la création de tickets, la consultation de leur statut (en attente, en cours, résolu), ainsi que la gestion et le suivi des demandes par l'équipe informatique. Elle vise à améliorer la communication entre les utilisateurs et le service technique, tout en optimisant le traitement des incidents.
 
-L'analyse comparative avec des outils du marché comme GLPI et Jira Service Management démontre la pertinence d'une solution sur-mesure, plus légère et mieux adaptée aux besoins spécifiques des PME.
+Le système a été développé en utilisant des technologies web simples telles que HTML, CSS et JavaScript, avec une gestion locale des données via le navigateur (localStorage). L'architecture de l'application a été conçue de manière modulaire afin de garantir une meilleure organisation du code et une facilité de maintenance.
 
-\textbf{Mots-clés :} Gestion d'incidents, Helpdesk, Vanilla JavaScript, SaaS, Application web, Ticket informatique, Workflow.
+Cette solution démontre qu'une application web légère peut répondre efficacement aux besoins de gestion des incidents dans un environnement informatique, sans recourir à des technologies complexes.
+
+\textbf{Mots-clés :} Gestion des réclamations, Helpdesk, Système d'information, Tickets, Application web, HTML, CSS, JavaScript.
 
 \vspace{1cm}
 
@@ -198,24 +200,28 @@ L'analyse comparative avec des outils du marché comme GLPI et Jira Service Mana
 \chapter*{Abstract}
 \addcontentsline{toc}{chapter}{Abstract}
 
-This report presents the design and development of the \textbf{IT Incident Management System (SGRI) -- TicketFlow}, a lightweight and high-performance web application aimed at centralizing, tracking, and resolving IT incidents within an organization.
+This report presents the design and development of an \textbf{IT Incident Management System}, a lightweight web application aimed at centralizing, tracking, and resolving IT-related problems within an organization.
 
-Faced with the limitations of traditional incident management methods (emails, Excel files, phone calls), SGRI offers a complete SaaS solution with four user profiles: Employee, Technician, Engineer, and Department Head. The application enables ticket creation, engineer-based assignment, real-time tracking, and structured incident resolution.
+Faced with the limitations of traditional incident management methods such as emails, phone calls, and manual tracking tools, this system provides a centralized solution that allows users to easily report IT issues and follow their resolution status in real time.
 
-Built with \textbf{Vanilla JavaScript} using a modular architecture and localStorage, the application provides a modern SaaS-style reactive interface without the overhead of heavy frameworks. The source code is organized following a clear architecture separating business logic (auth.js, tickets.js), utilities (main.js), and views (HTML pages).
+The application enables ticket creation, status tracking (pending, in progress, resolved), and efficient handling of requests by the IT support team. It aims to improve communication between users and technicians while ensuring better organization of incident management.
 
-A comparative analysis with market tools such as GLPI and Jira Service Management demonstrates the relevance of a custom-built solution that is lighter and better suited to the specific needs of SMEs.
+The system was developed using simple web technologies such as HTML, CSS, and JavaScript, with local data storage using the browser (localStorage). The architecture was designed in a modular way to ensure clarity, maintainability, and simplicity.
 
-\textbf{Keywords:} Incident management, Helpdesk, Vanilla JavaScript, SaaS, Web application, IT ticket, Workflow.
+This project demonstrates that a lightweight web application can effectively improve IT support efficiency in small and medium-sized organizations without relying on complex frameworks.
+
+\textbf{Keywords:} IT Support, Incident Management, Helpdesk, Web Application, Tickets, HTML, CSS, JavaScript.
 \end{otherlanguage}
 
 % ─── Listes ────────────────────────────────────────────────
 \renewcommand{\listtablename}{Liste des tableaux}
 \renewcommand{\listfigurename}{Liste des figures}
 
+\newpage
 \listoftables
 \addcontentsline{toc}{chapter}{Liste des tableaux}
 
+\newpage
 \listoffigures
 \addcontentsline{toc}{chapter}{Liste des figures}
 
