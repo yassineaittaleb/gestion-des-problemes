@@ -3,8 +3,12 @@ function seedUsers() {
     const users = [
         { username: 'user1', password: 'pass123', role: 'utilisateur', name: 'Ahmed Benali' },
         { username: 'user2', password: 'pass123', role: 'utilisateur', name: 'Fatima Zahra' },
+        { username: 'user3', password: 'pass123', role: 'utilisateur', name: 'Omar Yassine' },
+        { username: 'user4', password: 'pass123', role: 'utilisateur', name: 'Mouna Tazi' },
+        { username: 'user5', password: 'pass123', role: 'utilisateur', name: 'Rachid Fassi' },
         { username: 'tech1', password: 'pass123', role: 'technicien', name: 'Karim El Fassi' },
         { username: 'tech2', password: 'pass123', role: 'technicien', name: 'Youssef Lamrani' },
+        { username: 'tech3', password: 'pass123', role: 'technicien', name: 'Salim Haddaoui' },
         { username: 'eng1', password: 'pass123', role: 'ingenieur', name: 'Sara Ouazzani' },
         { username: 'chef1', password: 'pass123', role: 'chef', name: 'Hassan El Mansouri' },
     ];
@@ -13,18 +17,63 @@ function seedUsers() {
 
 function seedTickets() {
     if (localStorage.getItem('tickets')) return;
-    const tickets = [
-        { id: 1001, title: 'Problème de connexion VPN', description: 'Impossible de se connecter au VPN depuis mon poste à distance.', createdBy: 'Ahmed Benali', type: 'Soft', level: 'Eleve', status: 'Ouvert', assignedTo: null, createdAt: '01/06/2026 08:30', priority: 'Haute' },
-        { id: 1002, title: 'Imprimante réseau bloquée', description: 'L\'imprimante du bureau 203 n\'imprime plus et affiche une erreur papier.', createdBy: 'Fatima Zahra', type: 'Materiel', level: 'Normal', status: 'Ouvert', assignedTo: null, createdAt: '01/06/2026 09:15', priority: 'Moyenne' },
-        { id: 1003, title: 'Application CRM plante', description: 'L\'application CRM se ferme automatiquement après 5 minutes d\'utilisation.', createdBy: 'Ahmed Benali', type: 'Soft', level: 'Eleve', status: 'Ouvert', assignedTo: null, createdAt: '01/06/2026 10:00', priority: 'Critique' },
-        { id: 1004, title: 'Mise à jour Adobe', description: 'Besoin de mettre à jour la suite Adobe sur 5 postes du service compta.', createdBy: 'Fatima Zahra', type: 'Soft', level: 'Normal', status: 'En cours', assignedTo: 'Karim El Fassi', createdAt: '31/05/2026 14:20', priority: 'Moyenne' },
-        { id: 1005, title: 'Accès serveur refusé', description: 'Accès refusé au répertoire partagé \\\\serveur\\docs pour le nouveau stagiaire.', createdBy: 'Ahmed Benali', type: 'Hard', level: 'Eleve', status: 'En cours', assignedTo: 'Youssef Lamrani', createdAt: '31/05/2026 16:45', priority: 'Haute' },
-        { id: 1006, title: 'Mot de passe expiré', description: 'Réinitialisation du mot de passe Windows pour l\'utilisateur du bureau 105.', createdBy: 'Fatima Zahra', type: 'Soft', level: 'Normal', status: 'Resolu', assignedTo: 'Karim El Fassi', createdAt: '30/05/2026 09:00', priority: 'Basse' },
-        { id: 1007, title: 'Problème Outlook', description: 'Les emails Outlook ne s\'envoient pas, erreur de connexion au serveur SMTP.', createdBy: 'Ahmed Benali', type: 'Soft', level: 'Normal', status: 'Resolu', assignedTo: 'Youssef Lamrani', createdAt: '29/05/2026 11:30', priority: 'Haute' },
-        { id: 1008, title: 'Installer Zoom', description: 'Installation de Zoom sur le poste de la réception pour les réunions clients.', createdBy: 'Fatima Zahra', type: 'Soft', level: 'Normal', status: 'Resolu', assignedTo: 'Karim El Fassi', createdAt: '28/05/2026 15:10', priority: 'Basse' },
-        { id: 1009, title: 'Panne serveur base données', description: 'Le serveur SQL ne répond plus depuis la mise à jour nocturne. Toute l\'équipe est bloquée.', createdBy: 'Ahmed Benali', type: 'Hard', level: 'Eleve', status: 'Escalade', assignedTo: null, createdAt: '01/06/2026 07:00', priority: 'Critique' },
-        { id: 1010, title: 'Règle firewall bloque apps', description: 'Le pare-feu bloque des applications légitimes après la dernière mise à jour de sécurité.', createdBy: 'Fatima Zahra', type: 'Soft', level: 'Eleve', status: 'Escalade', assignedTo: null, createdAt: '31/05/2026 18:00', priority: 'Critique' },
+    
+    const types = ['Soft', 'Hard', 'Materiel'];
+    const levels = ['Normal', 'Eleve'];
+    const statuses = ['Ouvert', 'En cours', 'Resolu', 'Escalade'];
+    const priorities = ['Basse', 'Moyenne', 'Haute', 'Critique'];
+    
+    const titles = [
+        'Problème de connexion VPN', 'Imprimante réseau bloquée', 'Application CRM plante', 
+        'Mise à jour Adobe', 'Accès serveur refusé', 'Mot de passe expiré', 'Problème Outlook',
+        'Installer Zoom', 'Panne serveur base données', 'Règle firewall bloque apps',
+        'Ecran bleu au démarrage', 'Clavier défectueux', 'Souris ne répond pas',
+        'Connexion lente', 'Plus de wifi', 'Erreur système 404', 'Disque dur plein',
+        'Logiciel métier figé', 'Micro ne marche plus en visio', 'Webcam hors service'
     ];
+    
+    const authors = ['Ahmed Benali', 'Fatima Zahra', 'Omar Yassine', 'Mouna Tazi', 'Rachid Fassi'];
+    const techs = ['Karim El Fassi', 'Youssef Lamrani', 'Salim Haddaoui'];
+    
+    const tickets = [];
+    const now = Date.now();
+    
+    for (let i = 0; i < 200; i++) {
+        // Random date within the last 30 days
+        const randomTimeOffset = Math.floor(Math.random() * 30 * 24 * 60 * 60 * 1000);
+        const createdAtDate = new Date(now - randomTimeOffset);
+        
+        const type = types[Math.floor(Math.random() * types.length)];
+        const level = levels[Math.floor(Math.random() * levels.length)];
+        let status = statuses[Math.floor(Math.random() * statuses.length)];
+        const priority = priorities[Math.floor(Math.random() * priorities.length)];
+        const title = titles[Math.floor(Math.random() * titles.length)] + ' #' + (i + 1);
+        
+        let assignedTo = null;
+        if (status === 'En cours' || status === 'Resolu') {
+            assignedTo = techs[Math.floor(Math.random() * techs.length)];
+        } else if (status === 'Escalade') {
+            assignedTo = null; // En attente ingénieur
+        }
+        
+        tickets.push({
+            id: 1000 + i,
+            title: title,
+            description: 'Description générique pour ce problème signalé par l\'utilisateur. Vérification requise.',
+            createdBy: authors[Math.floor(Math.random() * authors.length)],
+            type: type,
+            level: level,
+            status: status,
+            assignedTo: assignedTo,
+            createdAt: createdAtDate.toLocaleString('fr-FR'),
+            createdAtMs: createdAtDate.getTime(),
+            priority: priority
+        });
+    }
+    
+    // Sort by descending created date
+    tickets.sort((a, b) => b.createdAtMs - a.createdAtMs);
+    
     localStorage.setItem('tickets', JSON.stringify(tickets));
 }
 
@@ -87,21 +136,20 @@ function backToHome() {
     document.getElementById('homeStep').style.display = '';
     document.getElementById('roleStep').style.display = '';
     document.getElementById('loginStep').style.display = 'none';
-    document.querySelectorAll('.role-card').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('.role-card-new').forEach(c => c.classList.remove('active'));
     selectedRole = null;
     document.getElementById('loginError').textContent = '';
 }
 
 function selectRole(role) {
     selectedRole = role;
-    document.querySelectorAll('.role-card').forEach(c => c.classList.remove('active'));
-    document.querySelector(`.role-card[data-role="${role}"]`).classList.add('active');
+    document.querySelectorAll('.role-card-new').forEach(c => c.classList.remove('active'));
+    document.querySelector(`.role-card-new[data-role="${role}"]`).classList.add('active');
 
     document.getElementById('roleStep').style.display = 'none';
     document.getElementById('loginStep').style.display = '';
 
-    document.getElementById('selectedRoleLabel').textContent = '- ' + roleInfo[role].label;
-    document.getElementById('selectedRoleIcon').textContent = roleInfo[role].icon;
+    document.getElementById('selectedRoleLabel').textContent = roleInfo[role].label;
     document.getElementById('loginError').textContent = '';
 }
 
@@ -109,7 +157,7 @@ function backToRoles() {
     selectedRole = null;
     document.getElementById('roleStep').style.display = '';
     document.getElementById('loginStep').style.display = 'none';
-    document.querySelectorAll('.role-card').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('.role-card-new').forEach(c => c.classList.remove('active'));
     document.getElementById('loginError').textContent = '';
 }
 
@@ -145,5 +193,7 @@ function getCurrentUserRole() {
     return user ? user.role : '';
 }
 
+localStorage.removeItem('users');
+localStorage.removeItem('tickets');
 seedUsers();
 seedTickets();
