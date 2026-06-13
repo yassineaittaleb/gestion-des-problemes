@@ -1,16 +1,34 @@
 function seedUsers() {
-    if (localStorage.getItem('users')) return;
-    const users = [
-        { username: 'user1', password: 'pass123', role: 'utilisateur', name: 'Ahmed Benali' },
-        { username: 'user2', password: 'pass123', role: 'utilisateur', name: 'Fatima Zahra' },
-        { username: 'user3', password: 'pass123', role: 'utilisateur', name: 'Omar Yassine' },
-        { username: 'user4', password: 'pass123', role: 'utilisateur', name: 'Mouna Tazi' },
-        { username: 'user5', password: 'pass123', role: 'utilisateur', name: 'Rachid Fassi' },
-        { username: 'tech1', password: 'pass123', role: 'technicien', name: 'Karim El Fassi' },
-        { username: 'tech2', password: 'pass123', role: 'technicien', name: 'Youssef Lamrani' },
-        { username: 'tech3', password: 'pass123', role: 'technicien', name: 'Salim Haddaoui' },
-        { username: 'eng1', password: 'pass123', role: 'ingenieur', name: 'Sara Ouazzani' },
-        { username: 'chef1', password: 'pass123', role: 'chef', name: 'Hassan El Mansouri' },
+    var existing = JSON.parse(localStorage.getItem('users') || '[]');
+    if (existing.length >= 18) return;
+    var users = [
+        // Utilisateurs (15)
+        { username: 'user1', password: 'pass123', role: 'utilisateur', name: 'Ahmed Benali', email: 'ahmed.benali@itconnect.ma', phone: '06 12 34 56 78', department: 'Comptabilité' },
+        { username: 'user2', password: 'pass123', role: 'utilisateur', name: 'Fatima Zahra', email: 'fatima.zahra@itconnect.ma', phone: '06 23 45 67 89', department: 'RH' },
+        { username: 'user3', password: 'pass123', role: 'utilisateur', name: 'Omar Yassine', email: 'omar.yassine@itconnect.ma', phone: '06 34 56 78 90', department: 'Marketing' },
+        { username: 'user4', password: 'pass123', role: 'utilisateur', name: 'Mouna Tazi', email: 'mouna.tazi@itconnect.ma', phone: '06 45 67 89 01', department: 'Direction' },
+        { username: 'user5', password: 'pass123', role: 'utilisateur', name: 'Rachid Fassi', email: 'rachid.fassi@itconnect.ma', phone: '06 56 78 90 12', department: 'Logistique' },
+        { username: 'user6', password: 'pass123', role: 'utilisateur', name: 'Youssef Berrada', email: 'y.berrada@itconnect.ma', phone: '06 67 89 01 23', department: 'Finance' },
+        { username: 'user7', password: 'pass123', role: 'utilisateur', name: 'Nadia Cherkaoui', email: 'n.cherkaoui@itconnect.ma', phone: '06 78 90 12 34', department: 'Juridique' },
+        { username: 'user8', password: 'pass123', role: 'utilisateur', name: 'Mehdi Lahlou', email: 'm.lahlou@itconnect.ma', phone: '06 89 01 23 45', department: 'Production' },
+        { username: 'user9', password: 'pass123', role: 'utilisateur', name: 'Karima Bennani', email: 'k.bennani@itconnect.ma', phone: '06 90 12 34 56', department: 'Commercial' },
+        { username: 'user10', password: 'pass123', role: 'utilisateur', name: 'Hicham Tazi', email: 'h.tazi@itconnect.ma', phone: '06 01 23 45 67', department: 'R&D' },
+        { username: 'user11', password: 'pass123', role: 'utilisateur', name: 'Leila Amrani', email: 'l.amrani@itconnect.ma', phone: '06 11 22 33 44', department: 'Support' },
+        { username: 'user12', password: 'pass123', role: 'utilisateur', name: 'Amine Rifi', email: 'a.rifi@itconnect.ma', phone: '06 22 33 44 55', department: 'IT' },
+        { username: 'user13', password: 'pass123', role: 'utilisateur', name: 'Samia Belhaj', email: 's.belhaj@itconnect.ma', phone: '06 33 44 55 66', department: 'Achats' },
+        { username: 'user14', password: 'pass123', role: 'utilisateur', name: 'Driss Idrissi', email: 'd.idrissi@itconnect.ma', phone: '06 44 55 66 77', department: 'Maintenance' },
+        { username: 'user15', password: 'pass123', role: 'utilisateur', name: 'Sara Ouazzani', email: 's.ouazzani@itconnect.ma', phone: '06 55 66 77 88', department: 'Qualité' },
+        // Techniciens (5)
+        { username: 'tech1', password: 'pass123', role: 'technicien', name: 'Karim El Fassi', email: 'karim.elfassi@itconnect.ma', phone: '06 61 23 45 67', department: 'Support IT', speciality: 'Réseaux' },
+        { username: 'tech2', password: 'pass123', role: 'technicien', name: 'Youssef Lamrani', email: 'y.lamrani@itconnect.ma', phone: '06 62 34 56 78', department: 'Support IT', speciality: 'Hardware' },
+        { username: 'tech3', password: 'pass123', role: 'technicien', name: 'Salim Haddaoui', email: 's.haddaoui@itconnect.ma', phone: '06 63 45 67 89', department: 'Support IT', speciality: 'Logiciel' },
+        { username: 'tech4', password: 'pass123', role: 'technicien', name: 'Nabil Benkirane', email: 'n.benkirane@itconnect.ma', phone: '06 64 56 78 90', department: 'Support IT', speciality: 'Systèmes' },
+        { username: 'tech5', password: 'pass123', role: 'technicien', name: 'Hassan Mansouri', email: 'h.mansouri@itconnect.ma', phone: '06 65 67 89 01', department: 'Support IT', speciality: 'Sécurité' },
+        // Ingénieurs (2)
+        { username: 'eng1', password: 'pass123', role: 'ingenieur', name: 'Zineb El Alaoui', email: 'z.elalaoui@itconnect.ma', phone: '06 71 23 45 67', department: 'Infrastructure', speciality: 'Architecture Réseau' },
+        { username: 'eng2', password: 'pass123', role: 'ingenieur', name: 'Adil Chraibi', email: 'a.chraibi@itconnect.ma', phone: '06 72 34 56 78', department: 'Infrastructure', speciality: 'Bases de Données' },
+        // Chef Département
+        { username: 'chef1', password: 'pass123', role: 'chef', name: 'Hassan El Mansouri', email: 'hassan.elmansouri@itconnect.ma', phone: '06 81 23 45 67', department: 'IT', speciality: 'Management IT' }
     ];
     localStorage.setItem('users', JSON.stringify(users));
 }
@@ -77,10 +95,14 @@ function seedTickets() {
     localStorage.setItem('tickets', JSON.stringify(tickets));
 }
 
-function addUser(username, password, role, name) {
+function addUser(username, password, role, name, spec) {
     const users = JSON.parse(localStorage.getItem('users')) || [];
     if (users.find(u => u.username === username)) return false;
-    users.push({ username, password, role, name });
+    
+    var newUser = { username: username, password: password, role: role, name: name };
+    if (spec) newUser.speciality = spec;
+    
+    users.push(newUser);
     localStorage.setItem('users', JSON.stringify(users));
     return true;
 }
@@ -101,17 +123,17 @@ function getCurrentUser() {
 
 function logout() {
     localStorage.removeItem('currentUser');
-    window.location.href = '../index.html';
+    window.location.href = '/project/';
 }
 
 function checkAuth(allowedRoles) {
     const user = getCurrentUser();
     if (!user) {
-        window.location.href = '../index.html';
+        window.location.href = '/project/';
         return null;
     }
     if (allowedRoles && !allowedRoles.includes(user.role)) {
-        window.location.href = '../index.html';
+        window.location.href = '/project/';
         return null;
     }
     return user;

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chef Département - Gestion des Problèmes</title>
+    <title>Chef Département - IT CONNECT</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
@@ -15,7 +15,7 @@
                     <path d="M32 2 L58 14 V32 C58 48 32 62 32 62 C32 62 6 48 6 32 V14 Z" fill="var(--primary)"/>
                     <path d="M22 32 L30 42 L44 24" stroke="#fff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
                 </svg>
-                <span class="sidebar-title">Gestion des Problèmes</span>
+                <span class="sidebar-title">IT CONNECT</span>
             </a>
             <button class="sidebar-toggle" onclick="toggleSidebar()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
@@ -34,10 +34,14 @@
                 <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
                 <span class="nav-label">Réclamations</span>
             </a>
+                    <a href="chef-profil.html" class="nav-item">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span class="nav-label">Profil</span>
+            </a>
         </nav>
         <div class="sidebar-footer">
             <div class="sidebar-user">
-                <div class="sidebar-avatar" id="sidebarAvatar">C</div>
+                <div class="sidebar-avatar" id="sidebarAvatar" onclick="window.location.href='chef-profil.html'" style="cursor:pointer;" title="Mon Profil">C</div>
                 <div class="sidebar-user-info">
                     <span class="sidebar-user-name" id="sidebarUser"></span>
                     <span class="sidebar-user-role" id="sidebarRole">Chef</span>
@@ -128,191 +132,333 @@
                 </div>
             </div>
 
-            <div class="charts-grid">
-                <div class="chart-card">
-                    <h3 class="chart-title">Tickets par Statut</h3>
-                    <div class="donut-container">
-                        <div class="donut-chart" id="donutChart">
-                            <div class="donut-center">
-                                <div class="donut-total" id="donutTotal">0</div>
-                                <div class="donut-label">Tickets</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="donut-legend">
-                        <div class="legend-item"><span class="legend-color" style="background: var(--primary-light)"></span>Ouvert (<span id="lgOpen">0</span>)</div>
-                        <div class="legend-item"><span class="legend-color" style="background: var(--warning)"></span>En cours (<span id="lgProg">0</span>)</div>
-                        <div class="legend-item"><span class="legend-color" style="background: var(--success)"></span>Résolu (<span id="lgRes">0</span>)</div>
-                        <div class="legend-item"><span class="legend-color" style="background: var(--error)"></span>Escaladé (<span id="lgEsc">0</span>)</div>
-                    </div>
+            
+            <div class="charts-grid" style="display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin-bottom: 2rem;">
+                <!-- Trend Chart (full width) -->
+                <div style="background: #fff; border-radius: 12px; border: 1px solid var(--border); padding: 1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+                    <h3 style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 1.5rem;">Évolution des Tickets (14 Jours)</h3>
+                    <div style="height: 280px; width: 100%;"><canvas id="trendChart"></canvas></div>
                 </div>
-                <div class="chart-card">
-                    <h3 class="chart-title">Activité (7 derniers jours)</h3>
-                    <div class="bar-chart" id="barChart">
-                        <!-- Bars injected via JS -->
+                
+                <!-- 3 charts row -->
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
+                    <div style="background: #fff; border-radius: 12px; border: 1px solid var(--border); padding: 1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+                        <h3 style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 1rem;">Tickets par Priorité</h3>
+                        <div style="height: 180px; width: 100%;"><canvas id="priorityChart"></canvas></div>
+                    </div>
+                    <div style="background: #fff; border-radius: 12px; border: 1px solid var(--border); padding: 1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+                        <h3 style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 1rem;">Répartition par Type</h3>
+                        <div style="height: 180px; width: 100%;"><canvas id="typeChart"></canvas></div>
+                    </div>
+                    <div style="background: #fff; border-radius: 12px; border: 1px solid var(--border); padding: 1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+                        <h3 style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 1rem;">Performance</h3>
+                        <div style="height: 180px; width: 100%;"><canvas id="gaugeChart"></canvas></div>
                     </div>
                 </div>
             </div>
-
-            <!-- Bottom Split -->
-            <div style="display:grid; grid-template-columns: 2fr 1fr; gap:1.5rem;">
-                <section class="card-section" style="margin-bottom:0; background:#fff; border-radius:12px; border:1px solid var(--border); padding:1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
-                    <div class="section-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
-                        <h3 style="font-size:0.75rem; color:var(--text-secondary); font-weight:700; text-transform:uppercase;">TOUS LES TICKETS</h3>
-                        <span class="section-count" id="ticketCount">0</span>
+            
+            <!-- Tickets Section (Page-like) -->
+            <section style="background:#fff; border-radius:12px; border:1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.02); overflow:hidden;">
+                <div style="display:flex; align-items:center; justify-content:space-between; padding:1.25rem 1.5rem; border-bottom:1px solid var(--border);">
+                    <div style="display:flex; gap:0.5rem;">
+                        <button id="fAll" onclick="filterTickets('all')" style="padding:0.45rem 1rem; border-radius:20px; border:none; font-size:0.8rem; font-weight:600; cursor:pointer; background:var(--primary); color:#fff;">Tous <span id="ticketCount" style="background:rgba(255,255,255,0.25); padding:0 6px; border-radius:10px; margin-left:4px; font-size:0.7rem;">0</span></button>
+                        <button id="fOuvert" onclick="filterTickets('Ouvert')" style="padding:0.45rem 1rem; border-radius:20px; border:1px solid var(--border); font-size:0.8rem; font-weight:600; cursor:pointer; background:#fff; color:var(--text-secondary);">Ouverts</button>
+                        <button id="fEncours" onclick="filterTickets('En cours')" style="padding:0.45rem 1rem; border-radius:20px; border:1px solid var(--border); font-size:0.8rem; font-weight:600; cursor:pointer; background:#fff; color:var(--text-secondary);">En cours</button>
+                        <button id="fResolu" onclick="filterTickets('Resolu')" style="padding:0.45rem 1rem; border-radius:20px; border:1px solid var(--border); font-size:0.8rem; font-weight:600; cursor:pointer; background:#fff; color:var(--text-secondary);">Résolus</button>
+                        <button id="fEscalade" onclick="filterTickets('Escalade')" style="padding:0.45rem 1rem; border-radius:20px; border:1px solid var(--border); font-size:0.8rem; font-weight:600; cursor:pointer; background:#fff; color:var(--text-secondary);">Escaladés</button>
                     </div>
-                    <div id="allTicketsContainer" style="max-height: 400px; overflow-y: auto;">
-                        <p class="empty-msg">Aucun ticket.</p>
-                    </div>
-                </section>
-
-                <section class="card-section" style="margin-bottom:0; background:#fff; border-radius:12px; border:1px solid var(--border); padding:1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
-                    <h3 style="font-size:0.75rem; color:var(--text-secondary); font-weight:700; margin-bottom:1rem; text-transform:uppercase;">ACTIONS RAPIDES</h3>
-                    <div style="display:grid; grid-template-columns: 1fr; gap:1rem;">
-                        <button style="background:#fff; border:1px solid var(--border); border-radius:8px; padding:1.5rem; text-align:center; cursor:pointer; font-weight:600; color:var(--dark); transition:all 0.2s;">
-                            <svg style="margin:0 auto 0.5rem; color:var(--text-secondary);" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-                            Rapport Hebdomadaire
-                        </button>
-                        <button style="background:#fff; border:1px solid var(--border); border-radius:8px; padding:1.5rem; text-align:center; cursor:pointer; font-weight:600; color:var(--dark); transition:all 0.2s;">
-                            <svg style="margin:0 auto 0.5rem; color:var(--text-secondary);" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                            Gérer les Équipes
-                        </button>
-                    </div>
-                </section>
-            </div>
+                </div>
+                <div id="allTicketsContainer" style="padding:0; max-height:500px; overflow-y:auto;"></div>
+            </section>
         </main>
     </div>
 </div>
 <script src="../js/auth.js"></script>
 <script src="../js/tickets.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="../js/main.js"></script>
+<script src="../js/ticketDetail.js"></script>
 <script>
     const user = checkAuth(['chef']);
     if (user) {
         $('welcomeName').textContent = user.name;
         $('sidebarUser').textContent = user.name;
         $('sidebarRole').textContent = 'Chef Département';
-        $('topbarName').textContent = user.name;
         $('sidebarAvatar').textContent = user.name.charAt(0);
 
-        function loadAllTickets() {
-            const tickets = getTickets();
-            const users = JSON.parse(localStorage.getItem('users')) || [];
-            const container = $('allTicketsContainer');
-            $('ticketCount').textContent = tickets.length;
-            $('statTotal').textContent = tickets.length;
-            $('statOpen').textContent = tickets.filter(t => t.status === 'Ouvert').length;
-            $('statProgress').textContent = tickets.filter(t => t.status === 'En cours').length;
-            $('statResolved').textContent = tickets.filter(t => t.status === 'Resolu').length;
-            $('statEscalated').textContent = tickets.filter(t => t.status === 'Escalade').length;
-            $('statUsers').textContent = users.filter(u => u.role === 'utilisateur').length;
-            $('statTechs').textContent = users.filter(u => u.role === 'technicien').length;
-            $('statEngs').textContent = users.filter(u => u.role === 'ingenieur').length;
-            $('statSoft').textContent = tickets.filter(t => t.type === 'Soft').length;
-            $('statHard').textContent = tickets.filter(t => t.type === 'Hard' || t.type === 'Materiel').length;
+        var el = function(id) { return document.getElementById(id); };
 
-            renderCharts(tickets);
+        var currentFilter = 'all';
+        var chefPage = 1;
+        var chefPageSize = 12;
 
-            const techs = users.filter(u => u.role === 'technicien');
+        function renderTicketTable(filterStatus) {
+            var tickets = getTickets();
+            var filtered = filterStatus === 'all' ? tickets : tickets.filter(function(t){ return t.status === filterStatus; });
+            var container = $('allTicketsContainer');
+            if(el('ticketCount')) el('ticketCount').textContent = tickets.length;
 
-            if (tickets.length === 0) {
-                container.innerHTML = '<p class="empty-msg">Aucun ticket.</p>';
+            var totalPages = Math.ceil(filtered.length / chefPageSize) || 1;
+            if (chefPage > totalPages) chefPage = totalPages;
+
+            if (filtered.length === 0) {
+                container.innerHTML = '<div style="padding:3rem; text-align:center; color:var(--text-muted); font-size:0.9rem;">Aucun ticket dans cette catégorie.</div>';
                 return;
             }
-            let html = '<div class="tickets-table"><div class="tickets-header"><span>ID</span><span>Titre</span><span>Créé par</span><span>Type</span><span>Niveau</span><span>Statut</span><span>Technicien</span><span>Action</span></div>';
-            tickets.forEach(t => {
-                let assignHtml = t.assignedTo || '—';
-                if (t.status === 'Ouvert') {
-                    assignHtml = '<select id="assignSelect_' + t.id + '" class="assign-select">' +
-                        '<option value="">— Choisir —</option>';
-                    techs.forEach(tech => {
-                        assignHtml += '<option value="' + tech.name + '">' + tech.name + '</option>';
-                    });
-                    assignHtml += '</select>' +
-                        '<button class="btn-sm btn-primary" onclick="assignTicket(' + t.id + ')">Assigner</button>';
-                }
-                html += '<div class="ticket-row">' +
-                    '<span class="ticket-id">#' + t.id.toString().slice(-4) + '</span>' +
-                    '<span><strong>' + t.title + '</strong><span class="ticket-desc">' + t.description + '</span></span>' +
-                    '<span class="ticket-author">' + t.createdBy + '</span>' +
-                    '<span>' + t.type + '</span>' +
-                    '<span>' + t.level + '</span>' +
-                    '<span>' + getStatusBadge(t.status) + '</span>' +
-                    '<span>' + (t.assignedTo || '—') + '</span>' +
-                    '<span>' + assignHtml + '</span>' +
-                '</div>';
+
+            var paginated = filtered.slice((chefPage - 1) * chefPageSize, chefPage * chefPageSize);
+
+            var html = '<table style="width:100%; border-collapse:collapse; font-size:0.85rem;">';
+            html += '<thead><tr style="border-bottom:1px solid var(--border); text-align:left;"><th style="padding:0.75rem 1.5rem; font-size:0.7rem; font-weight:700; text-transform:uppercase; color:var(--text-muted);">N° TICKET</th><th style="padding:0.75rem 0.5rem; font-size:0.7rem; font-weight:700; text-transform:uppercase; color:var(--text-muted);">CLIENT</th><th style="padding:0.75rem 0.5rem; font-size:0.7rem; font-weight:700; text-transform:uppercase; color:var(--text-muted);">DATE</th><th style="padding:0.75rem 0.5rem; font-size:0.7rem; font-weight:700; text-transform:uppercase; color:var(--text-muted);">TYPE</th><th style="padding:0.75rem 1.5rem; font-size:0.7rem; font-weight:700; text-transform:uppercase; color:var(--text-muted);">STATUT</th></tr></thead><tbody>';
+            paginated.forEach(function(t) {
+                var initials = t.createdBy.split(' ').map(function(n){return n[0];}).join('').substring(0,2).toUpperCase();
+                var colors = ['#b91c1c','#2563eb','#7c3aed','#d97706','#16a34a'];
+                var bgColor = colors[Math.abs(t.id) % colors.length];
+                var dateStr = t.createdAt.split(' ')[0];
+                html += '<tr style="border-bottom:1px solid var(--border-light); transition:background 0.1s; cursor:pointer;" onmouseenter="this.style.background=\'var(--bg-alt)\'" onmouseleave="this.style.background=\'#fff\'" onclick="openTicketDetail(' + t.id + ', chefDetailActions)">';
+                html += '<td style="padding:0.85rem 1.5rem; font-weight:600; color:var(--text-secondary);">#' + t.id.toString().slice(-4) + '</td>';
+                html += '<td style="padding:0.85rem 0.5rem;"><div style="display:flex; align-items:center; gap:0.65rem;"><div style="width:32px;height:32px;border-radius:50%;background:' + bgColor + ';color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;flex-shrink:0;">' + initials + '</div><div><div style="font-weight:600; color:var(--text);">' + t.createdBy + '</div><div style="font-size:0.75rem; color:var(--text-muted); margin-top:1px; max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">' + t.title + '</div></div></div></td>';
+                html += '<td style="padding:0.85rem 0.5rem; color:var(--text-secondary);">' + dateStr + '</td>';
+                html += '<td style="padding:0.85rem 0.5rem; color:var(--text-secondary);">' + t.type + '</td>';
+                html += '<td style="padding:0.85rem 1.5rem;">' + getStatusBadge(t.status) + '</td>';
+                html += '</tr>';
             });
-            html += '</div>';
+            html += '</tbody></table>';
+
+            // Pagination Controls
+            if (totalPages > 1) {
+                html += '<div style="display:flex; justify-content:space-between; align-items:center; padding:1rem 1.5rem; border-top:1px solid var(--border); background:#fff;">';
+                html += '<span style="font-size:0.8rem; color:var(--text-muted);">Affichage de ' + (((chefPage-1)*chefPageSize)+1) + ' à ' + Math.min(chefPage*chefPageSize, filtered.length) + ' sur ' + filtered.length + ' tickets</span>';
+                html += '<div style="display:flex; gap:0.25rem;">';
+                html += '<button onclick="changePageChef(' + (chefPage-1) + ')" ' + (chefPage===1?'disabled':'') + ' style="padding:0.4rem 0.75rem; border:1px solid var(--border); border-radius:6px; background:#fff; cursor:'+(chefPage===1?'default':'pointer')+'; color:var(--text-secondary); font-size:0.8rem;">Précédent</button>';
+                
+                var startP = Math.max(1, chefPage - 2);
+                var endP = Math.min(totalPages, chefPage + 2);
+                for(var p=startP; p<=endP; p++) {
+                    var isAct = (p === chefPage);
+                    html += '<button onclick="changePageChef(' + p + ')" style="padding:0.4rem 0.75rem; border:1px solid '+(isAct?'var(--primary)':'var(--border)')+'; border-radius:6px; background:'+(isAct?'var(--primary)':'#fff')+'; cursor:pointer; color:'+(isAct?'#fff':'var(--text-secondary)')+'; font-weight:'+(isAct?'700':'400')+'; font-size:0.8rem;">'+p+'</button>';
+                }
+
+                html += '<button onclick="changePageChef(' + (chefPage+1) + ')" ' + (chefPage===totalPages?'disabled':'') + ' style="padding:0.4rem 0.75rem; border:1px solid var(--border); border-radius:6px; background:#fff; cursor:'+(chefPage===totalPages?'default':'pointer')+'; color:var(--text-secondary); font-size:0.8rem;">Suivant</button>';
+                html += '</div></div>';
+            }
+
             container.innerHTML = html;
         }
 
-        window.assignTicket = function(id) {
-            const select = document.getElementById('assignSelect_' + id);
-            const techName = select.value;
+        window.changePageChef = function(newPage) {
+            chefPage = newPage;
+            renderTicketTable(currentFilter);
+        };
+
+        var chefDetailActions = function(t) {
+            var users = JSON.parse(localStorage.getItem('users')) || [];
+            var techs = users.filter(function(u){ return u.role === 'technicien'; });
+            if (t.status === 'Ouvert') {
+                var h = '<select id="detailAssignSelect" style="padding:0.45rem 0.75rem;border:1px solid var(--border);border-radius:8px;font-size:0.82rem;margin-right:6px;"><option value="">Choisir un technicien</option>';
+                techs.forEach(function(tech){ h += '<option value="' + tech.name + '">' + tech.name + '</option>'; });
+                h += '</select>';
+                h += '<button class="td-btn td-btn-primary" onclick="var s=document.getElementById(\'detailAssignSelect\'); if(s.value){ assignTicket(' + t.id + ',s.value); closeTicketDetail(); }"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Assigner</button>';
+                return h;
+            }
+            return '';
+        };
+
+        window.filterTickets = function(status) {
+            currentFilter = status;
+            var btns = ['fAll','fOuvert','fEncours','fResolu','fEscalade'];
+            btns.forEach(function(id) {
+                var b = document.getElementById(id);
+                if (b) { b.style.background = '#fff'; b.style.color = 'var(--text-secondary)'; b.style.border = '1px solid var(--border)'; }
+            });
+            var map = { all:'fAll', Ouvert:'fOuvert', 'En cours':'fEncours', Resolu:'fResolu', Escalade:'fEscalade' };
+            var active = document.getElementById(map[status]);
+            if (active) { active.style.background = 'var(--primary)'; active.style.color = '#fff'; active.style.border = 'none'; }
+            renderTicketTable(status);
+        };
+
+        function loadAllTickets() {
+            var tickets = getTickets();
+            var el = function(id) { return document.getElementById(id); };
+            if(el('ticketCount')) el('ticketCount').textContent = tickets.length;
+            if(el('statTotal')) el('statTotal').textContent = tickets.length;
+            if(el('statOpen')) el('statOpen').textContent = tickets.filter(function(t){return t.status==='Ouvert';}).length;
+            if(el('statProgress')) el('statProgress').textContent = tickets.filter(function(t){return t.status==='En cours';}).length;
+            if(el('statResolved')) el('statResolved').textContent = tickets.filter(function(t){return t.status==='Resolu';}).length;
+            renderTicketTable(currentFilter);
+        }
+
+        // -----------------------------------------------------
+        // DYNAMIC CHARTS FOR CHEF DASHBOARD (Chart.js)
+        // -----------------------------------------------------
+        let chartsDrawn = false;
+        function drawChefCharts(tickets) {
+            if (chartsDrawn) return;
+            chartsDrawn = true;
+
+            Chart.defaults.font.family = 'Inter, sans-serif';
+            Chart.defaults.color = '#64748b';
+
+            // 1. Trend Chart (Area)
+            const trendEl = document.getElementById('trendChart');
+            if (trendEl) {
+                const trendCtx = trendEl.getContext('2d');
+                const days = 14;
+                const now = new Date();
+                const created = new Array(days).fill(0);
+                const resolved = new Array(days).fill(0);
+                const labels = [];
+
+                for (let i = days - 1; i >= 0; i--) {
+                    const d = new Date(now);
+                    d.setDate(d.getDate() - i);
+                    labels.push(d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }));
+                }
+
+                tickets.forEach(t => {
+                    const parts = t.createdAt.split(' ')[0].split('/');
+                    if (parts.length === 3) {
+                        const tDate = new Date(parts[2], parts[1] - 1, parts[0]);
+                        const diffDays = Math.floor((now - tDate) / (86400000));
+                        if (diffDays >= 0 && diffDays < days) {
+                            created[days - 1 - diffDays]++;
+                            if (t.status === 'Resolu') resolved[days - 1 - diffDays]++;
+                        }
+                    }
+                });
+
+                const grad1 = trendCtx.createLinearGradient(0, 0, 0, 300);
+                grad1.addColorStop(0, 'rgba(185,28,28,0.3)');
+                grad1.addColorStop(1, 'rgba(185,28,28,0)');
+                const grad2 = trendCtx.createLinearGradient(0, 0, 0, 300);
+                grad2.addColorStop(0, 'rgba(22,163,74,0.2)');
+                grad2.addColorStop(1, 'rgba(22,163,74,0)');
+
+                new Chart(trendCtx, {
+                    type: 'line',
+                    data: {
+                        labels,
+                        datasets: [{
+                            label: 'Créés', data: created,
+                            borderColor: '#b91c1c', backgroundColor: grad1,
+                            borderWidth: 2.5, pointRadius: 3,
+                            pointBackgroundColor: '#fff', pointBorderColor: '#b91c1c',
+                            fill: true, tension: 0.4
+                        }, {
+                            label: 'Résolus', data: resolved,
+                            borderColor: '#16a34a', backgroundColor: grad2,
+                            borderWidth: 2.5, pointRadius: 3,
+                            pointBackgroundColor: '#fff', pointBorderColor: '#16a34a',
+                            fill: true, tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        plugins: { legend: { labels: { boxWidth: 12 } } },
+                        scales: {
+                            y: { beginAtZero: true, grid: { color: '#f1f5f9' } },
+                            x: { grid: { display: false } }
+                        }
+                    }
+                });
+            }
+
+            // 2. Priority Bar Chart
+            const prioEl = document.getElementById('priorityChart');
+            if (prioEl) {
+                const prioCtx = prioEl.getContext('2d');
+                const pc = { Basse: 0, Moyenne: 0, Haute: 0, Critique: 0 };
+                tickets.forEach(t => { if (pc[t.priority] !== undefined) pc[t.priority]++; });
+
+                new Chart(prioCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: Object.keys(pc),
+                        datasets: [{ data: Object.values(pc), backgroundColor: ['#94a3b8','#3b82f6','#f59e0b','#ef4444'], borderRadius: 6 }]
+                    },
+                    options: {
+                        responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+                        plugins: { legend: { display: false } },
+                        scales: { x: { beginAtZero: true, grid: { color: '#f1f5f9' } }, y: { grid: { display: false } } }
+                    }
+                });
+            }
+
+            // 3. Type Doughnut
+            const typeEl = document.getElementById('typeChart');
+            if (typeEl) {
+                const typeCtx = typeEl.getContext('2d');
+                const tc = { Soft: 0, Hard: 0, Materiel: 0 };
+                tickets.forEach(t => { if (tc[t.type] !== undefined) tc[t.type]++; });
+
+                new Chart(typeCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Logiciel', 'Hardware', 'Matériel'],
+                        datasets: [{ data: Object.values(tc), backgroundColor: ['#b91c1c','#dc2626','#f87171'], borderWidth: 0 }]
+                    },
+                    options: {
+                        responsive: true, maintainAspectRatio: false, cutout: '70%',
+                        plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, padding: 15 } } }
+                    }
+                });
+            }
+
+            // 4. Resolution Gauge
+            const gaugeEl = document.getElementById('gaugeChart');
+            if (gaugeEl) {
+                const total = tickets.length;
+                const resolvedCount = tickets.filter(t => t.status === 'Resolu').length;
+                const pct = total > 0 ? Math.round((resolvedCount / total) * 100) : 0;
+                const gaugeCtx = gaugeEl.getContext('2d');
+
+                new Chart(gaugeCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Résolus', 'Restants'],
+                        datasets: [{ data: [pct, 100 - pct], backgroundColor: ['#16a34a', '#e2e8f0'], borderWidth: 0 }]
+                    },
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        rotation: -90, circumference: 180, cutout: '80%',
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: { enabled: false }
+                        }
+                    },
+                    plugins: [{
+                        id: 'gaugeText',
+                        afterDraw(chart) {
+                            const { ctx, chartArea: { left, right, top, bottom } } = chart;
+                            const cx = (left + right) / 2;
+                            const cy = bottom - 10;
+                            ctx.save();
+                            ctx.font = 'bold 28px Inter, sans-serif';
+                            ctx.fillStyle = '#0f172a';
+                            ctx.textAlign = 'center';
+                            ctx.fillText(pct + '%', cx, cy - 10);
+                            ctx.font = '12px Inter, sans-serif';
+                            ctx.fillStyle = '#64748b';
+                            ctx.fillText('Taux de résolution', cx, cy + 10);
+                            ctx.restore();
+                        }
+                    }]
+                });
+            }
+        }
+
+        window.assignTicket = function(id, techName) {
+            if (!techName) {
+                var select = document.getElementById('assignSelect_' + id);
+                techName = select ? select.value : '';
+            }
             if (!techName) return alert('Veuillez choisir un technicien.');
             takeTicket(id, techName);
             loadAllTickets();
         };
 
-        function renderCharts(tickets) {
-            // Donut Chart
-            const open = tickets.filter(t => t.status === 'Ouvert').length;
-            const prog = tickets.filter(t => t.status === 'En cours').length;
-            const res = tickets.filter(t => t.status === 'Resolu').length;
-            const esc = tickets.filter(t => t.status === 'Escalade').length;
-            const total = tickets.length;
-            
-            $('donutTotal').textContent = total;
-            $('lgOpen').textContent = open;
-            $('lgProg').textContent = prog;
-            $('lgRes').textContent = res;
-            $('lgEsc').textContent = esc;
-            
-            if (total > 0) {
-                const pOpen = (open / total) * 100;
-                const pProg = (prog / total) * 100;
-                const pRes = (res / total) * 100;
-                const pEsc = (esc / total) * 100;
-                const c1 = '#fef2f2'; const c2 = '#d97706'; const c3 = '#16a34a'; const c4 = '#dc2626';
-                $('donutChart').style.background = `conic-gradient(${c1} 0% ${pOpen}%, ${c2} ${pOpen}% ${pOpen+pProg}%, ${c3} ${pOpen+pProg}% ${pOpen+pProg+pRes}%, ${c4} ${pOpen+pProg+pRes}% 100%)`;
-            }
-            
-            // Bar Chart (Last 7 days)
-            const now = new Date();
-            const days = [];
-            for (let i = 6; i >= 0; i--) {
-                const d = new Date(now);
-                d.setDate(d.getDate() - i);
-                days.push(d.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric' }));
-            }
-            
-            const counts = [0, 0, 0, 0, 0, 0, 0];
-            tickets.forEach(t => {
-                const parts = t.createdAt.split(' ')[0].split('/');
-                if (parts.length === 3) {
-                    const tDate = new Date(parts[2], parts[1] - 1, parts[0]);
-                    const diffTime = now.getTime() - tDate.getTime();
-                    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-                    if (diffDays >= 0 && diffDays < 7) {
-                        counts[6 - diffDays]++;
-                    }
-                }
-            });
-            
-            const maxCount = Math.max(...counts, 10);
-            let barHtml = '';
-            for (let i = 0; i < 7; i++) {
-                const heightPct = (counts[i] / maxCount) * 100;
-                barHtml += `<div class="bar-col">
-                        <div class="bar-value">${counts[i]}</div>
-                        <div class="bar" style="height: ${heightPct}%"></div>
-                        <div class="bar-label">${days[i]}</div>
-                    </div>`;
-            }
-            $('barChart').innerHTML = barHtml;
-        }
-
         loadAllTickets();
+        drawChefCharts(getTickets());
     }
 </script>
 </body>

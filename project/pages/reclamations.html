@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Réclamations - Gestion des Problèmes</title>
+    <title>Réclamations - IT CONNECT</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
@@ -15,7 +15,7 @@
                     <path d="M32 2 L58 14 V32 C58 48 32 62 32 62 C32 62 6 48 6 32 V14 Z" fill="var(--primary)"/>
                     <path d="M22 32 L30 42 L44 24" stroke="#fff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
                 </svg>
-                <span class="sidebar-title">Gestion des Problèmes</span>
+                <span class="sidebar-title">IT CONNECT</span>
             </a>
             <button class="sidebar-toggle" onclick="toggleSidebar()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
@@ -33,6 +33,10 @@
             <a href="reclamations.html" class="nav-item active">
                 <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
                 <span class="nav-label">Réclamations</span>
+            </a>
+            <a href="#" id="profilLink" class="nav-item">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span class="nav-label">Profil</span>
             </a>
         </nav>
         <div class="sidebar-footer">
@@ -119,6 +123,10 @@
         $('topbarRole').textContent = roleInfo[user.role].label;
         $('dashboardLink').href = roleInfo[user.role].dashboard;
         $('dashboardLink2').href = roleInfo[user.role].dashboard;
+
+        // Set profil link
+        var profilMap = { utilisateur:'user-profil.html', technicien:'technicien-profil.html', ingenieur:'ingenieur-profil.html', chef:'chef-profil.html' };
+        if ($('profilLink')) $('profilLink').href = profilMap[user.role] || 'user-profil.html';
 
         if (user.role === 'chef' || user.role === 'ingenieur') {
             $('usersLink').style.display = '';

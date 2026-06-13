@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Technicien - Gestion des Problèmes</title>
+    <title>Technicien - IT CONNECT</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
@@ -15,7 +15,7 @@
                     <path d="M32 2 L58 14 V32 C58 48 32 62 32 62 C32 62 6 48 6 32 V14 Z" fill="var(--primary)"/>
                     <path d="M22 32 L30 42 L44 24" stroke="#fff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
                 </svg>
-                <span class="sidebar-title">Gestion des Problèmes</span>
+                <span class="sidebar-title">IT CONNECT</span>
             </a>
             <button class="sidebar-toggle" onclick="toggleSidebar()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
@@ -30,10 +30,14 @@
                 <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
                 <span class="nav-label">Réclamations</span>
             </a>
+                    <a href="technicien-profil.html" class="nav-item">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span class="nav-label">Profil</span>
+            </a>
         </nav>
         <div class="sidebar-footer">
             <div class="sidebar-user">
-                <div class="sidebar-avatar" id="sidebarAvatar">T</div>
+                <div class="sidebar-avatar" id="sidebarAvatar" onclick="window.location.href='technicien-profil.html'" style="cursor:pointer;" title="Mon Profil">T</div>
                 <div class="sidebar-user-info">
                     <span class="sidebar-user-name" id="sidebarUser"></span>
                     <span class="sidebar-user-role" id="sidebarRole">Technicien</span>
@@ -113,124 +117,162 @@
                 </div>
             </div>
 
-            <!-- Big Chart Section -->
+            <!-- Chart Section -->
             <div class="card-section" style="padding:1.5rem; background:#fff; border-radius:12px; border:1px solid var(--border); margin-bottom:2rem; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
-                <h3 style="font-size:0.75rem; color:var(--text-secondary); font-weight:700; margin-bottom:1.5rem; text-transform:uppercase;">ACTIVITÉ DES TICKETS (30 DERNIERS JOURS)</h3>
-                <div id="activityChart" style="height: 250px; width: 100%;"></div>
+                <h3 style="font-size:0.75rem; color:var(--text-secondary); font-weight:700; margin-bottom:1.5rem; text-transform:uppercase;">ACTIVITÉ DES TICKETS (14 JOURS)</h3>
+                <div style="height: 250px; width: 100%;"><canvas id="techChart"></canvas></div>
             </div>
 
-            <!-- Bottom Split -->
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1.5rem;">
-                <section class="card-section" style="margin-bottom:0; background:#fff; border-radius:12px; border:1px solid var(--border); padding:1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
-                    <div class="section-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
-                        <h3 style="font-size:0.75rem; color:var(--text-secondary); font-weight:700; text-transform:uppercase;">TICKETS OUVERTS</h3>
-                        <span class="section-count" id="openCount">0</span>
+            <!-- Tickets Section (Page-like) -->
+            <section style="background:#fff; border-radius:12px; border:1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.02); overflow:hidden;">
+                <!-- Tab Header -->
+                <div style="display:flex; align-items:center; justify-content:space-between; padding:1.25rem 1.5rem; border-bottom:1px solid var(--border);">
+                    <div style="display:flex; gap:0.5rem;">
+                        <button id="tabOpen" onclick="switchTab('open')" style="padding:0.45rem 1rem; border-radius:20px; border:none; font-size:0.8rem; font-weight:600; cursor:pointer; background:var(--primary); color:#fff; transition:all 0.15s;">Tickets Ouverts <span id="openCount" style="background:rgba(255,255,255,0.25); padding:0 6px; border-radius:10px; margin-left:4px; font-size:0.7rem;">0</span></button>
+                        <button id="tabMy" onclick="switchTab('my')" style="padding:0.45rem 1rem; border-radius:20px; border:1px solid var(--border); font-size:0.8rem; font-weight:600; cursor:pointer; background:#fff; color:var(--text-secondary); transition:all 0.15s;">Mes Tickets <span id="myCount" style="background:var(--bg-alt); padding:0 6px; border-radius:10px; margin-left:4px; font-size:0.7rem;">0</span></button>
                     </div>
-                    <div id="openTicketsContainer">
-                        <p class="empty-msg">Aucun ticket ouvert.</p>
-                    </div>
-                </section>
-
-                <section class="card-section" style="margin-bottom:0; background:#fff; border-radius:12px; border:1px solid var(--border); padding:1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
-                    <div class="section-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
-                        <h3 style="font-size:0.75rem; color:var(--text-secondary); font-weight:700; text-transform:uppercase;">MES TICKETS EN COURS</h3>
-                        <span class="section-count" id="myCount">0</span>
-                    </div>
-                    <div id="myTicketsContainer">
-                        <p class="empty-msg">Aucun ticket en cours.</p>
-                    </div>
-                </section>
-            </div>
+                </div>
+                <!-- Table Content -->
+                <div id="openTicketsContainer" style="padding:0;"></div>
+                <div id="myTicketsContainer" style="padding:0; display:none;"></div>
+            </section>
         </main>
     </div>
 </div>
 <script src="../js/auth.js"></script>
 <script src="../js/tickets.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="../js/main.js"></script>
+<script src="../js/ticketDetail.js"></script>
 <script>
     const user = checkAuth(['technicien']);
     if (user) {
         $('welcomeName').textContent = user.name;
         $('sidebarUser').textContent = user.name;
         $('sidebarRole').textContent = 'Technicien';
-        $('topbarName').textContent = user.name;
+        
         $('sidebarAvatar').textContent = user.name.charAt(0);
 
-        function loadOpenTickets() {
-            const tickets = getOpenTickets();
-            const all = getTickets();
-            const container = $('openTicketsContainer');
-            $('openCount').textContent = tickets.length;
-            $('statOpen').textContent = tickets.length;
-            $('statInProgress').textContent = all.filter(t => t.status === 'En cours').length;
-            $('statResolved').textContent = all.filter(t => t.status === 'Resolu').length;
+        var pageStates = { 'openTicketsContainer': 1, 'myTicketsContainer': 1 };
+        var pageSize = 12;
+
+        function renderCleanTable(tickets, container, detailActionFn) {
+            var containerId = container.id;
+            var page = pageStates[containerId] || 1;
+            var totalPages = Math.ceil(tickets.length / pageSize) || 1;
+            if (page > totalPages) page = totalPages;
+            pageStates[containerId] = page;
+
             if (tickets.length === 0) {
-                container.innerHTML = '<p class="empty-msg">Aucun ticket ouvert.</p>';
+                container.innerHTML = '<div style="padding:3rem; text-align:center; color:var(--text-muted); font-size:0.9rem;">Aucun ticket dans cette catégorie.</div>';
                 return;
             }
-            let html = '<div class="tickets-table"><div class="tickets-header"><span>ID</span><span>Titre</span><span>Type</span><span>Niveau</span><span>Date</span><span>Action</span></div>';
-            tickets.forEach(t => {
-                html += '<div class="ticket-row">' +
-                    '<span class="ticket-id">#' + t.id.toString().slice(-4) + '</span>' +
-                    '<span><strong>' + t.title + '</strong><span class="ticket-desc">' + t.description + '</span><span class="ticket-author">par ' + t.createdBy + '</span></span>' +
-                    '<span>' + t.type + '</span>' +
-                    '<span>' + t.level + '</span>' +
-                    '<span class="ticket-date">' + t.createdAt + '</span>' +
-                    '<span><button class="btn-sm btn-primary" onclick="claimTicket(' + t.id + ')">Prendre</button></span>' +
-                '</div>';
+
+            var paginated = tickets.slice((page - 1) * pageSize, page * pageSize);
+            
+            var html = '<table style="width:100%; border-collapse:collapse; font-size:0.85rem;">';
+            html += '<thead><tr style="border-bottom:1px solid var(--border); text-align:left;"><th style="padding:0.75rem 1.5rem; font-size:0.7rem; font-weight:700; text-transform:uppercase; color:var(--text-muted);">N° TICKET</th><th style="padding:0.75rem 0.5rem; font-size:0.7rem; font-weight:700; text-transform:uppercase; color:var(--text-muted);">CLIENT</th><th style="padding:0.75rem 0.5rem; font-size:0.7rem; font-weight:700; text-transform:uppercase; color:var(--text-muted);">DATE</th><th style="padding:0.75rem 0.5rem; font-size:0.7rem; font-weight:700; text-transform:uppercase; color:var(--text-muted);">TYPE</th><th style="padding:0.75rem 1.5rem; font-size:0.7rem; font-weight:700; text-transform:uppercase; color:var(--text-muted);">STATUT</th></tr></thead><tbody>';
+            paginated.forEach(function(t) {
+                var initials = t.createdBy.split(' ').map(function(n){return n[0];}).join('').substring(0,2).toUpperCase();
+                var colors = ['#b91c1c','#2563eb','#7c3aed','#d97706','#16a34a'];
+                var bgColor = colors[Math.abs(t.id) % colors.length];
+                var dateStr = t.createdAt.split(' ')[0];
+                html += '<tr style="border-bottom:1px solid var(--border-light); transition:background 0.1s; cursor:pointer;" onmouseenter="this.style.background=\'var(--bg-alt)\'" onmouseleave="this.style.background=\'#fff\'" onclick="openTicketDetail(' + t.id + ', currentDetailActions)">';
+                html += '<td style="padding:0.85rem 1.5rem; font-weight:600; color:var(--text-secondary);">#' + t.id.toString().slice(-4) + '</td>';
+                html += '<td style="padding:0.85rem 0.5rem;"><div style="display:flex; align-items:center; gap:0.65rem;"><div style="width:32px;height:32px;border-radius:50%;background:' + bgColor + ';color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;flex-shrink:0;">' + initials + '</div><div><div style="font-weight:600; color:var(--text);">' + t.createdBy + '</div><div style="font-size:0.75rem; color:var(--text-muted); margin-top:1px; max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">' + t.title + '</div></div></div></td>';
+                html += '<td style="padding:0.85rem 0.5rem; color:var(--text-secondary);">' + dateStr + '</td>';
+                html += '<td style="padding:0.85rem 0.5rem; color:var(--text-secondary);">' + t.type + '</td>';
+                html += '<td style="padding:0.85rem 1.5rem;">' + getStatusBadge(t.status) + '</td>';
+                html += '</tr>';
             });
-            html += '</div>';
+            html += '</tbody></table>';
+
+            // Pagination Controls
+            if (totalPages > 1) {
+                html += '<div style="display:flex; justify-content:space-between; align-items:center; padding:1rem 1.5rem; border-top:1px solid var(--border); background:#fff;">';
+                html += '<span style="font-size:0.8rem; color:var(--text-muted);">Affichage de ' + (((page-1)*pageSize)+1) + ' à ' + Math.min(page*pageSize, tickets.length) + ' sur ' + tickets.length + ' tickets</span>';
+                html += '<div style="display:flex; gap:0.25rem;">';
+                html += '<button onclick="changePage(\'' + containerId + '\', ' + (page-1) + ')" ' + (page===1?'disabled':'') + ' style="padding:0.4rem 0.75rem; border:1px solid var(--border); border-radius:6px; background:#fff; cursor:'+(page===1?'default':'pointer')+'; color:var(--text-secondary); font-size:0.8rem;">Précédent</button>';
+                
+                var startP = Math.max(1, page - 2);
+                var endP = Math.min(totalPages, page + 2);
+                for(var p=startP; p<=endP; p++) {
+                    var isAct = (p === page);
+                    html += '<button onclick="changePage(\'' + containerId + '\', ' + p + ')" style="padding:0.4rem 0.75rem; border:1px solid '+(isAct?'var(--primary)':'var(--border)')+'; border-radius:6px; background:'+(isAct?'var(--primary)':'#fff')+'; cursor:pointer; color:'+(isAct?'#fff':'var(--text-secondary)')+'; font-weight:'+(isAct?'700':'400')+'; font-size:0.8rem;">'+p+'</button>';
+                }
+
+                html += '<button onclick="changePage(\'' + containerId + '\', ' + (page+1) + ')" ' + (page===totalPages?'disabled':'') + ' style="padding:0.4rem 0.75rem; border:1px solid var(--border); border-radius:6px; background:#fff; cursor:'+(page===totalPages?'default':'pointer')+'; color:var(--text-secondary); font-size:0.8rem;">Suivant</button>';
+                html += '</div></div>';
+            }
+
             container.innerHTML = html;
+        }
+
+        window.changePage = function(containerId, newPage) {
+            pageStates[containerId] = newPage;
+            if (containerId === 'openTicketsContainer') loadOpenTickets();
+            else if (containerId === 'myTicketsContainer') loadMyTickets();
+            else if (containerId === 'allTicketsContainer') loadAllTickets();
+        };
+
+        var currentDetailActions = null;
+
+        function loadOpenTickets() {
+            var tickets = getOpenTickets();
+            var all = getTickets();
+            $('openCount').textContent = tickets.length;
+            $('statOpen').textContent = tickets.length;
+            $('statInProgress').textContent = all.filter(function(t){return t.status==='En cours';}).length;
+            $('statResolved').textContent = all.filter(function(t){return t.status==='Resolu';}).length;
+            currentDetailActions = function(t) {
+                return '<button class="td-btn td-btn-primary" onclick="claimTicket(' + t.id + '); closeTicketDetail();"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Prendre en charge</button>';
+            };
+            renderCleanTable(tickets, $('openTicketsContainer'), currentDetailActions);
         }
 
         function loadMyTickets() {
-            const tickets = getTechnicianTickets(user.name);
-            const container = $('myTicketsContainer');
+            var tickets = getTechnicianTickets(user.name);
             $('myCount').textContent = tickets.length;
-            if (tickets.length === 0) {
-                container.innerHTML = '<p class="empty-msg">Aucun ticket en cours.</p>';
-                return;
-            }
-            let html = '<div class="tickets-table"><div class="tickets-header"><span>ID</span><span>Titre</span><span>Type</span><span>Niveau</span><span>Statut</span><span>Date</span><span>Action</span></div>';
-            tickets.forEach(t => {
-                const canResolve = t.level === 'Normal';
-                html += '<div class="ticket-row">' +
-                    '<span class="ticket-id">#' + t.id.toString().slice(-4) + '</span>' +
-                    '<span><strong>' + t.title + '</strong><span class="ticket-desc">' + t.description + '</span></span>' +
-                    '<span>' + t.type + '</span>' +
-                    '<span>' + t.level + '</span>' +
-                    '<span>' + getStatusBadge(t.status) + '</span>' +
-                    '<span class="ticket-date">' + t.createdAt + '</span>' +
-                    '<span>' +
-                        '<button class="btn-sm btn-primary" onclick="solveTicket(' + t.id + ')" ' + (canResolve ? '' : 'disabled title="Niveau Élevé - doit être transféré"') + '>Résoudre</button>' +
-                        '<button class="btn-sm btn-warning" onclick="escalate(' + t.id + ')">Transférer</button>' +
-                    '</span>' +
-                '</div>';
-            });
-            html += '</div>';
-            container.innerHTML = html;
+            currentDetailActions = function(t) {
+                var canResolve = t.level === 'Normal';
+                var html = '<button class="td-btn td-btn-primary" onclick="solveTicket(' + t.id + '); closeTicketDetail();" ' + (canResolve ? '' : 'disabled title="Niveau Élevé"') + '><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Résoudre</button>';
+                html += '<button class="td-btn td-btn-danger" onclick="escalate(' + t.id + '); closeTicketDetail();"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/></svg> Transférer</button>';
+                return html;
+            };
+            renderCleanTable(tickets, $('myTicketsContainer'), currentDetailActions);
         }
 
-        window.claimTicket = function(id) {
-            takeTicket(id, user.name);
-            loadOpenTickets();
-            loadMyTickets();
+        window.switchTab = function(tab) {
+            if (tab === 'open') {
+                $('openTicketsContainer').style.display = '';
+                $('myTicketsContainer').style.display = 'none';
+                $('tabOpen').style.background = 'var(--primary)'; $('tabOpen').style.color = '#fff'; $('tabOpen').style.border = 'none';
+                $('tabMy').style.background = '#fff'; $('tabMy').style.color = 'var(--text-secondary)'; $('tabMy').style.border = '1px solid var(--border)';
+            } else {
+                $('openTicketsContainer').style.display = 'none';
+                $('myTicketsContainer').style.display = '';
+                $('tabMy').style.background = 'var(--primary)'; $('tabMy').style.color = '#fff'; $('tabMy').style.border = 'none';
+                $('tabOpen').style.background = '#fff'; $('tabOpen').style.color = 'var(--text-secondary)'; $('tabOpen').style.border = '1px solid var(--border)';
+            }
         };
 
-        window.solveTicket = function(id) {
-            resolveTicket(id);
-            loadMyTickets();
-            loadOpenTickets();
-        };
-
-        window.escalate = function(id) {
-            escalateTicket(id);
-            loadMyTickets();
-            loadOpenTickets();
-        };
+        window.claimTicket = function(id) { takeTicket(id, user.name); loadOpenTickets(); loadMyTickets(); };
+        window.solveTicket = function(id) { resolveTicket(id); loadMyTickets(); loadOpenTickets(); };
+        window.escalate = function(id) { escalateTicket(id); loadMyTickets(); loadOpenTickets(); };
 
         loadOpenTickets();
         loadMyTickets();
+
+        // Draw chart
+        var all = getTickets();
+        var ctx = document.getElementById('techChart');
+        if (ctx && typeof Chart !== 'undefined') {
+            var days = 14, now = new Date(), created = new Array(days).fill(0), labels = [];
+            for (var i = days-1; i >= 0; i--) { var d = new Date(now); d.setDate(d.getDate()-i); labels.push(d.toLocaleDateString('fr-FR',{day:'numeric',month:'short'})); }
+            all.forEach(function(t) { var p = t.createdAt.split(' ')[0].split('/'); if(p.length===3){ var dd=Math.floor((now-new Date(p[2],p[1]-1,p[0]))/86400000); if(dd>=0&&dd<days) created[days-1-dd]++; } });
+            var g = ctx.getContext('2d'), grad = g.createLinearGradient(0,0,0,250); grad.addColorStop(0,'rgba(185,28,28,0.3)'); grad.addColorStop(1,'rgba(185,28,28,0)');
+            new Chart(g, { type:'line', data:{ labels:labels, datasets:[{label:'Tickets',data:created,borderColor:'#b91c1c',backgroundColor:grad,borderWidth:2.5,pointRadius:3,pointBackgroundColor:'#fff',pointBorderColor:'#b91c1c',fill:true,tension:0.4}] }, options:{ responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true,grid:{color:'#f1f5f9'}},x:{grid:{display:false}}} } });
+        }
     }
 </script>
 </body>
