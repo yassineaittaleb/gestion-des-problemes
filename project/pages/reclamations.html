@@ -132,6 +132,9 @@
             $('usersLink').style.display = '';
         }
 
+        var recPage = 1;
+        var recPageSize = 12;
+
         function renderTickets(filter) {
             const tickets = getTickets();
             const container = $('allTicketsContainer');
@@ -149,12 +152,18 @@
                 )
                 : tickets;
 
+            var totalPages = Math.ceil(filtered.length / recPageSize) || 1;
+            if (recPage > totalPages) recPage = totalPages;
+
             if (filtered.length === 0) {
                 container.innerHTML = '<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><p>' + (filter ? 'Aucun résultat pour "' + filter + '".' : 'Aucune réclamation.') + '</p></div>';
                 return;
             }
+
+            var paginated = filtered.slice((recPage - 1) * recPageSize, recPage * recPageSize);
+
             let html = '<div class="tickets-table"><div class="tickets-header"><span>ID</span><span>Titre</span><span>Auteur</span><span>Statut</span><span>Date</span></div>';
-            filtered.forEach(t => {
+            paginated.forEach(t => {
                 html += '<div class="ticket-row">' +
                     '<span class="ticket-id">#' + t.id.toString().slice(-4) + '</span>' +
                     '<span><strong>' + t.title + '</strong><span class="ticket-desc">' + t.description + '</span></span>' +
@@ -164,12 +173,37 @@
                 '</div>';
             });
             html += '</div>';
+
+            // Pagination Controls
+            if (totalPages > 1) {
+                html += '<div style="display:flex; justify-content:space-between; align-items:center; padding:1rem 1.5rem; border-top:1px solid var(--border); background:#fff;">';
+                html += '<span style="font-size:0.8rem; color:var(--text-muted);">Affichage de ' + (((recPage-1)*recPageSize)+1) + ' à ' + Math.min(recPage*recPageSize, filtered.length) + ' sur ' + filtered.length + ' réclamations</span>';
+                html += '<div style="display:flex; gap:0.25rem;">';
+                html += '<button onclick="changePageRec(' + (recPage-1) + ')" ' + (recPage===1?'disabled':'') + ' style="padding:0.4rem 0.75rem; border:1px solid var(--border); border-radius:6px; background:#fff; cursor:'+(recPage===1?'default':'pointer')+'; color:var(--text-secondary); font-size:0.8rem;">Précédent</button>';
+                
+                var startP = Math.max(1, recPage - 2);
+                var endP = Math.min(totalPages, recPage + 2);
+                for(var p=startP; p<=endP; p++) {
+                    var isAct = (p === recPage);
+                    html += '<button onclick="changePageRec(' + p + ')" style="padding:0.4rem 0.75rem; border:1px solid '+(isAct?'var(--primary)':'var(--border)')+'; border-radius:6px; background:'+(isAct?'var(--primary)':'#fff')+'; cursor:pointer; color:'+(isAct?'#fff':'var(--text-secondary)')+'; font-weight:'+(isAct?'700':'400')+'; font-size:0.8rem;">'+p+'</button>';
+                }
+
+                html += '<button onclick="changePageRec(' + (recPage+1) + ')" ' + (recPage===totalPages?'disabled':'') + ' style="padding:0.4rem 0.75rem; border:1px solid var(--border); border-radius:6px; background:#fff; cursor:'+(recPage===totalPages?'default':'pointer')+'; color:var(--text-secondary); font-size:0.8rem;">Suivant</button>';
+                html += '</div></div>';
+            }
+
             container.innerHTML = html;
         }
+
+        window.changePageRec = function(newPage) {
+            recPage = newPage;
+            renderTickets($('searchInput').value.toLowerCase().trim());
+        };
 
         let searchTimeout;
         $('searchInput').addEventListener('input', function() {
             clearTimeout(searchTimeout);
+            recPage = 1; // Reset to page 1 on search
             searchTimeout = setTimeout(() => renderTickets(this.value.toLowerCase().trim()), 200);
         });
 
