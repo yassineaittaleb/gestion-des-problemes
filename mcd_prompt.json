@@ -1,0 +1,73 @@
+{
+  "prompt": "Génère un diagramme MCD (Modèle Conceptuel de Données) en français selon la méthode Merise pour le projet SGRI (Système de Gestion des Réclamations Informatiques). Utilise le formalisme Entité-Association avec cardinalités (0,1 / 1,1 / 0,N / 1,N).",
+  "project": {
+    "name": "SGRI - Système de Gestion des Réclamations Informatiques",
+    "description": "Application web de ticketing pour gérer les incidents informatiques. Les employés créent des tickets, les ingénieurs les assignent aux techniciens, les techniciens les résolvent. Persistance via localStorage."
+  },
+  "entities": [
+    {
+      "name": "UTILISATEUR",
+      "description": "Personne utilisant l'application (employé, technicien, ingénieur, chef)",
+      "attributes": [
+        { "name": "username", "type": "String", "PK": true, "description": "Identifiant unique de connexion (ex: user1, tech1, eng1, chef1)" },
+        { "name": "password", "type": "String", "PK": false, "description": "Mot de passe en clair (stocké localement)" },
+        { "name": "role", "type": "String", "PK": false, "description": "Rôle: 'utilisateur' | 'technicien' | 'ingenieur' | 'chef'" },
+        { "name": "name", "type": "String", "PK": false, "description": "Nom complet affiché (ex: Ahmed Benali)" }
+      ]
+    },
+    {
+      "name": "TICKET",
+      "description": "Réclamation ou incident informatique signalé par un employé",
+      "attributes": [
+        { "name": "id", "type": "Number", "PK": true, "description": "Identifiant unique généré par Date.now()" },
+        { "name": "title", "type": "String", "PK": false, "description": "Titre court du problème" },
+        { "name": "description", "type": "String", "PK": false, "description": "Description détaillée de l'incident" },
+        { "name": "createdBy", "type": "String", "PK": false, "description": "Nom du créateur (FK → UTILISATEUR.name)" },
+        { "name": "type", "type": "String", "PK": false, "description": "Catégorie: 'Soft' | 'Hard' | 'Materiel'" },
+        { "name": "level", "type": "String", "PK": false, "description": "Niveau: 'Normal' | 'Eleve'" },
+        { "name": "priority", "type": "String", "PK": false, "description": "Priorité: 'Basse' | 'Moyenne' | 'Haute' | 'Critique'" },
+        { "name": "status", "type": "String", "PK": false, "description": "Statut: 'Ouvert' | 'En cours' | 'Resolu' | 'Escalade'" },
+        { "name": "assignedTo", "type": "String", "PK": false, "description": "Nom du technicien assigné (FK → UTILISATEUR.name, nullable)" },
+        { "name": "createdAt", "type": "String", "PK": false, "description": "Date/heure de création en format français (ex: 01/06/2026 08:30)" }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "from": "UTILISATEUR",
+      "to": "TICKET",
+      "name": "crée",
+      "cardinality_from": "1,N",
+      "cardinality_to": "1,1",
+      "description": "Un UTILISATEUR (employé) peut créer plusieurs TICKETs. Un TICKET est créé par un seul UTILISATEUR. Liaison via UTILISATEUR.name → TICKET.createdBy."
+    },
+    {
+      "from": "UTILISATEUR",
+      "to": "TICKET",
+      "name": "est assigné à",
+      "cardinality_from": "0,N",
+      "cardinality_to": "0,1",
+      "description": "Un UTILISATEUR (technicien) peut être assigné à plusieurs TICKETs. Un TICKET peut être assigné à 0 ou 1 UTILISATEUR (aucun technicien au début). Liaison via UTILISATEUR.name → TICKET.assignedTo (nullable)."
+    }
+  ],
+  "business_rules": {
+    "role_constraints": [
+      "Seuls les utilisateurs avec le rôle 'utilisateur' peuvent créer des tickets",
+      "Seuls les utilisateurs avec le rôle 'ingenieur' peuvent assigner des tickets aux techniciens",
+      "Seuls les utilisateurs avec le rôle 'technicien' peuvent prendre, résoudre ou escalader des tickets",
+      "Les utilisateurs avec le rôle 'chef' peuvent consulter tous les tickets et gérer les utilisateurs"
+    ],
+    "status_workflow": [
+      "Nouveau ticket → statut 'Ouvert'",
+      "Prise en charge par technicien → statut 'En cours'",
+      "Résolution par technicien → statut 'Resolu'",
+      "Escalade par technicien → statut 'Escalade' (retourne à l'ingénieur)"
+    ]
+  },
+  "notes": [
+    "Ne pas inclure l'entité POSTE (Workstation) car elle n'est pas gérée dynamiquement - c'est juste un tableau statique HTML",
+    "Les champs workstationNumber, officeLocation, department, equipmentType, assignmentDate, engineerNotes, resolutionDate existent dans le formulaire HTML mais ne sont pas sauvegardés dans le code JS - ne pas les inclure",
+    "La clé étrangère entre UTILISATEUR et TICKET utilise le champ 'name' (nom complet), pas 'username'",
+    "Les cardinalités suivent la notation Merise: min,max"
+  ]
+}
