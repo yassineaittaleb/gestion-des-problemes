@@ -34,11 +34,11 @@ function getOpenTickets() {
 }
 
 function getTechnicianTickets(username) {
-    return getTickets().filter(t => t.assignedTo === username && t.status !== 'Résolu');
+    return getTickets().filter(t => t.assignedTo === username && t.status !== 'Resolu');
 }
 
 function getEscalatedTickets() {
-    return getTickets().filter(t => t.status === 'Escaladé');
+    return getTickets().filter(t => t.status === 'Escalade');
 }
 
 function takeTicket(ticketId, technician) {
@@ -55,7 +55,7 @@ function resolveTicket(ticketId) {
     const tickets = getTickets();
     const ticket = tickets.find(t => t.id === ticketId);
     if (ticket) {
-        ticket.status = 'Résolu';
+        ticket.status = 'Resolu';
         saveTickets(tickets);
     }
 }
@@ -64,7 +64,7 @@ function escalateTicket(ticketId) {
     const tickets = getTickets();
     const ticket = tickets.find(t => t.id === ticketId);
     if (ticket) {
-        ticket.status = 'Escaladé';
+        ticket.status = 'Escalade';
         saveTickets(tickets);
     }
 }

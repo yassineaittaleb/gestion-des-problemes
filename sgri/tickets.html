@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGRI - Réclamations</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app">
+        <aside class="side" id="side"></aside>
+        <div class="main">
+            <nav class="nav">
+                <div>
+                    <button class="nav-menu" onclick="tsb()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                    </button>
+                    <span style="font-weight:600;font-size:1rem;">Réclamations</span>
+                </div>
+                <div class="ui" id="ud"></div>
+            </nav>
+            <div class="cont">
+                <div class="cd">
+                    <div class="cd-h">
+                        <h3>Liste des réclamations</h3>
+                        <select id="fs" onchange="rts()" style="padding:0.3rem 0.5rem;border:1px solid var(--border);border-radius:var(--radius);font-size:0.8rem;outline:none;">
+                            <option value="">Tous</option>
+                            <option value="Ouvert">Ouvert</option>
+                            <option value="En cours">En cours</option>
+                            <option value="Résolu">Résolu</option>
+                            <option value="Escaladé">Escaladé</option>
+                        </select>
+                    </div>
+                    <div class="cd-b">
+                        <div class="tw">
+                            <table id="tt">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Titre</th>
+                                        <th>Créé par</th>
+                                        <th>Type</th>
+                                        <th>Priorité</th>
+                                        <th>Statut</th>
+                                        <th>Date</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tb"></tbody>
+                            </table>
+                        </div>
+                        <div class="emp h" id="es">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                            <h3>Aucune réclamation</h3>
+                            <p>Aucune réclamation trouvée.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/app.js"></script>
+    <script>
+        var u = ca();
+        rs('tickets.html');
+        document.getElementById('ud').innerHTML = 'Connecté en tant que <strong>' + u.n + '</strong>';
+
+        function rts() {
+            var ts = gts();
+            var f = document.getElementById('fs').value;
+
+            if (u.r === 'user') ts = ts.filter(function(x) { return x.cu === u.u; });
+            if (f) ts = ts.filter(function(x) { return x.s === f; });
+
+            var tb = document.getElementById('tb');
+            var es = document.getElementById('es');
+
+            if (ts.length === 0) {
+                es.classList.remove('h');
+                document.getElementById('tt').classList.add('h');
+                return;
+            }
+
+            es.classList.add('h');
+            document.getElementById('tt').classList.remove('h');
+
+            var h = '';
+            ts.slice().reverse().forEach(function(x) {
+                var a = '';
+                if (u.r === 'tech' && (x.s === 'Ouvert' || x.s === 'En cours')) {
+                    var ns = x.s === 'Ouvert' ? 'En cours' : 'Résolu';
+                    var lbl = ns === 'En cours' ? 'Prendre' : 'Résoudre';
+                    a = '<button class="btn btn-p btn-s" onclick="uts(' + x.id + ',\'' + ns + '\');rts();">' + lbl + '</button>';
+                    if (x.s === 'En cours') {
+                        a += ' <button class="btn btn-o btn-s" onclick="uts(' + x.id + ',\'Escaladé\');rts();" style="margin-left:0.25rem;">Escalader</button>';
+                    }
+                }
+                if (u.r === 'user' && x.s === 'Résolu') {
+                    a = '<button class="btn btn-o btn-s" onclick="uts(' + x.id + ',\'Ouvert\');rts();">Réouvrir</button>';
+                }
+                if (!a) a = '<span style="color:var(--text-muted);font-size:0.78rem;">—</span>';
+                h += '<tr><td><strong>#' + x.id + '</strong></td><td>' + x.t + '</td><td>' + x.cb + '</td><td>' + x.tp + '</td><td>' + pbdg(x.pr) + '</td><td>' + bdg(x.s) + '</td><td>' + x.c + '</td><td>' + a + '</td></tr>';
+            });
+            tb.innerHTML = h;
+        }
+
+        rts();
+    </script>
+</body>
+</html>

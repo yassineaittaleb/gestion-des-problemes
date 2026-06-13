@@ -3,34 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Technicien - Gestion des Problemes</title>
+    <title>Technicien — Gestion des Problèmes</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <header>
+    <header class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <span class="sidebar-logo">
-                <svg viewBox="0 0 64 64" fill="none">
-                    <defs><linearGradient id="sgt" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3498db"/><stop offset="100%" stop-color="#2c3e50"/></linearGradient></defs>
-                    <path d="M32 2 L58 14 V32 C58 48 32 62 32 62 C32 62 6 48 6 32 V14 Z" fill="url(#sgt)"/>
-                    <path d="M22 32 L30 42 L44 24" stroke="#fff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                </svg>
-            </span>
-            <h1>Gestion<br>des Problemes</h1>
+            <span class="sidebar-logo">GP</span>
+            <h1>Gestion des Problèmes</h1>
+            <button class="sidebar-toggle" title="Réduire/Agrandir">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+            </button>
         </div>
-        <nav>
+        <nav class="sidebar-nav">
             <a href="technicien-dashboard.html" class="active">
-                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="4" rx="1"/><rect x="13" y="9" width="8" height="12" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/></svg>
-                Tableau de Bord
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="4" rx="1"/><rect x="14" y="9" width="7" height="12" rx="1"/><rect x="3" y="13" width="7" height="8" rx="1"/></svg>
+                <span class="nav-label">Tableau de Bord</span>
             </a>
             <a href="reclamations.html">
                 <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-                Reclamations
+                <span class="nav-label">Réclamations</span>
             </a>
             <div class="nav-spacer"></div>
             <a href="#" onclick="logout()" class="logout-link">
                 <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-                Deconnexion
+                <span class="nav-label">Déconnexion</span>
             </a>
         </nav>
         <div class="sidebar-footer">
@@ -38,144 +35,138 @@
             <span class="sidebar-role" id="sidebarRole"></span>
         </div>
     </header>
-    <main>
-        <div class="page-header">
-            <div>
-                <h2>Tableau de Bord Technicien</h2>
-                <p class="page-subtitle">Bienvenue, <strong id="welcomeName"></strong></p>
+    <div class="main-content">
+        <div class="topbar">
+            <div class="topbar-left">
+                <h2 style="font-size:1rem;font-weight:700;">Tableau de Bord Technicien</h2>
             </div>
-            <div class="page-actions">
+            <div class="topbar-right">
                 <span class="role-badge role-tech">Technicien</span>
+                <div class="topbar-avatar" id="avatarInitial">T</div>
             </div>
         </div>
+        <main class="page-container">
+            <div class="page-header">
+                <div>
+                    <p class="page-subtitle">Bienvenue, <strong id="welcomeName"></strong></p>
+                </div>
+            </div>
 
-        <div class="stats">
-            <div class="card card-accent" style="--card-accent: var(--primary);">
-                <div class="stat-chart"><svg viewBox="0 0 40 32"><rect x="2" y="16" width="8" height="14" rx="2" fill="#3b82f6" opacity=".7"/><rect x="14" y="10" width="8" height="20" rx="2" fill="#3b82f6" opacity=".85"/><rect x="26" y="4" width="8" height="26" rx="2" fill="#3b82f6"/></svg></div>
-                <h3>Tickets Ouverts</h3>
-                <div class="value" id="statOpen">0</div>
+            <div class="stats">
+                <div class="card card-accent" style="--card-accent: var(--warning);">
+                    <h3>En Cours</h3>
+                    <div class="value" id="statInProgress">0</div>
+                </div>
+                <div class="card card-accent" style="--card-accent: var(--success);">
+                    <h3>Résolus</h3>
+                    <div class="value" id="statResolved">0</div>
+                </div>
             </div>
-            <div class="card card-accent" style="--card-accent: var(--warning);">
-                <div class="stat-chart"><svg viewBox="0 0 40 32"><rect x="2" y="12" width="8" height="18" rx="2" fill="#f59e0b" opacity=".7"/><rect x="14" y="8" width="8" height="22" rx="2" fill="#f59e0b" opacity=".85"/><rect x="26" y="2" width="8" height="28" rx="2" fill="#f59e0b"/></svg></div>
-                <h3>En Cours</h3>
-                <div class="value" id="statInProgress">0</div>
-            </div>
-            <div class="card card-accent" style="--card-accent: var(--success);">
-                <div class="stat-chart"><svg viewBox="0 0 40 32"><rect x="2" y="20" width="8" height="10" rx="2" fill="#22c55e" opacity=".6"/><rect x="14" y="14" width="8" height="16" rx="2" fill="#22c55e" opacity=".8"/><rect x="26" y="8" width="8" height="22" rx="2" fill="#22c55e"/></svg></div>
-                <h3>Resolus</h3>
-                <div class="value" id="statResolved">0</div>
-            </div>
-        </div>
 
-        <section class="card-section">
-            <div class="section-header">
-                <h3>Tickets Ouverts</h3>
-                <span class="section-count" id="openCount">0</span>
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <h3>Activité mensuelle</h3>
+                    <canvas id="techAreaChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3>Répartition par type</h3>
+                    <canvas id="techPieChart"></canvas>
+                </div>
             </div>
-            <div id="openTicketsContainer">
-                <p class="empty-msg">Aucun ticket ouvert.</p>
-            </div>
-        </section>
 
-        <section class="card-section">
-            <div class="section-header">
-                <h3>Mes Tickets en Cours</h3>
-                <span class="section-count" id="myCount">0</span>
-            </div>
-            <div id="myTicketsContainer">
-                <p class="empty-msg">Aucun ticket en cours.</p>
-            </div>
-        </section>
-    </main>
+            <section class="card-section">
+                <div class="section-header">
+                    <h3>Mes Tickets en Cours</h3>
+                    <span class="section-count" id="myCount">0</span>
+                </div>
+                <div id="myTicketsContainer">
+                    <p class="empty-msg">Aucun ticket en cours.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
     <script src="../js/auth.js"></script>
     <script src="../js/tickets.js"></script>
     <script src="../js/main.js"></script>
+    <script src="../js/sidebar.js"></script>
+    <script src="../js/charts.js"></script>
     <script>
         const user = checkAuth(['technicien']);
         if (user) {
             $('welcomeName').textContent = user.name;
             $('sidebarUser').textContent = user.name;
             $('sidebarRole').textContent = 'Technicien';
-
-            function loadOpenTickets() {
-                const tickets = getOpenTickets();
-                const all = getTickets();
-                const container = $('openTicketsContainer');
-                $('openCount').textContent = tickets.length;
-                $('statOpen').textContent = tickets.length;
-                $('statInProgress').textContent = all.filter(t => t.status === 'En cours').length;
-                $('statResolved').textContent = all.filter(t => t.status === 'Resolu').length;
-                if (tickets.length === 0) {
-                    container.innerHTML = '<p class="empty-msg">Aucun ticket ouvert.</p>';
-                    return;
-                }
-                let html = '<div class="tickets-table"><div class="tickets-header"><span>ID</span><span>Titre</span><span>Type</span><span>Niveau</span><span>Date</span><span>Action</span></div>';
-                tickets.forEach(t => {
-                    const tColor = { 'Soft': '#3498db', 'Hard': '#e67e22', 'Materiel': '#9b59b6' };
-                    const lColor = { 'Normal': '#27ae60', 'Eleve': '#e74c3c' };
-                    html += '<div class="ticket-row">' +
-                        '<span class="ticket-id">#' + t.id.toString().slice(-4) + '</span>' +
-                        '<span><strong>' + t.title + '</strong><span class="ticket-desc">' + t.description + '</span><span class="ticket-author">par ' + t.createdBy + '</span></span>' +
-                        '<span><span class="badge" style="background:' + (tColor[t.type] || '#95a5a6') + '">' + t.type + '</span></span>' +
-                        '<span><span class="badge" style="background:' + (lColor[t.level] || '#95a5a6') + '">' + t.level + '</span></span>' +
-                        '<span class="ticket-date">' + t.createdAt + '</span>' +
-                        '<span><button class="btn-sm btn-primary" onclick="claimTicket(' + t.id + ')">Prendre</button></span>' +
-                    '</div>';
-                });
-                html += '</div>';
-                container.innerHTML = html;
-            }
+            $('avatarInitial').textContent = user.name.charAt(0).toUpperCase();
 
             function loadMyTickets() {
                 const tickets = getTechnicianTickets(user.name);
+                const all = getTickets();
                 const container = $('myTicketsContainer');
                 $('myCount').textContent = tickets.length;
+                $('statInProgress').textContent = all.filter(t => t.status === 'En cours').length;
+                $('statResolved').textContent = all.filter(t => t.status === 'Resolu').length;
                 if (tickets.length === 0) {
-                    container.innerHTML = '<p class="empty-msg">Aucun ticket en cours.</p>';
+                    container.innerHTML = '<p class="empty-msg">Aucun ticket assigné.</p>';
                     return;
                 }
-                let html = '<div class="tickets-table"><div class="tickets-header"><span>ID</span><span>Titre</span><span>Type</span><span>Niveau</span><span>Statut</span><span>Date</span><span>Action</span></div>';
+                let html = '<div class="tickets-grid">';
+                const tColors = { 'Soft': '#B30016', 'Hard': '#EA580C', 'Materiel': '#8B5CF6' };
+                const sColors = { 'Ouvert': '#B30016', 'En cours': '#F59E0B', 'Resolu': '#16A34A', 'Escalade': '#DC2626' };
                 tickets.forEach(t => {
-                    const tColor = { 'Soft': '#3498db', 'Hard': '#e67e22', 'Materiel': '#9b59b6' };
-                    const lColor = { 'Normal': '#27ae60', 'Eleve': '#e74c3c' };
-                    const canResolve = t.level === 'Normal';
-                    html += '<div class="ticket-row">' +
-                        '<span class="ticket-id">#' + t.id.toString().slice(-4) + '</span>' +
-                        '<span><strong>' + t.title + '</strong><span class="ticket-desc">' + t.description + '</span></span>' +
-                        '<span><span class="badge" style="background:' + (tColor[t.type] || '#95a5a6') + '">' + t.type + '</span></span>' +
-                        '<span><span class="badge" style="background:' + (lColor[t.level] || '#95a5a6') + '">' + t.level + '</span></span>' +
-                        '<span>' + getStatusBadge(t.status) + '</span>' +
-                        '<span class="ticket-date">' + t.createdAt + '</span>' +
-                        '<span>' +
-                            '<button class="btn-sm btn-success" onclick="solveTicket(' + t.id + ')" ' + (canResolve ? '' : 'disabled title="Niveau Eleve - doit etre transfere"') + '>Resoudre</button>' +
-                            '<button class="btn-sm btn-warning" onclick="escalate(' + t.id + ')">Transferer</button>' +
-                        '</span>' +
+                    html += '<div class="ticket-card">' +
+                        '<div class="ticket-card-top" style="background:' + (sColors[t.status] || '#64748B') + '"></div>' +
+                        '<div class="ticket-card-body">' +
+                            '<div class="ticket-card-header">' +
+                                '<span class="ticket-card-title">' + t.title + '</span>' +
+                                '<span class="ticket-card-id">#' + t.id.toString().slice(-4) + '</span>' +
+                            '</div>' +
+                            '<div class="ticket-card-desc">' + t.description + '</div>' +
+                            '<div class="ticket-card-meta">' +
+                                '<span class="badge" style="background:' + (tColors[t.type] || '#64748B') + '">' + t.type + '</span>' +
+                                '<span class="badge" style="background:' + (sColors[t.status] || '#64748B') + '">' + t.status + '</span>' +
+                            '</div>' +
+                            '<div class="ticket-card-footer">' +
+                                '<span class="ticket-card-date">' +
+                                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;vertical-align:middle;margin-right:3px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>' +
+                                    t.createdAt +
+                                '</span>' +
+                                '<button class="btn-sm btn-success" onclick="solveTicket(' + t.id + ')">Résoudre</button>' +
+                            '</div>' +
+                        '</div>' +
                     '</div>';
                 });
                 html += '</div>';
                 container.innerHTML = html;
             }
 
-            window.claimTicket = function(id) {
-                takeTicket(id, user.name);
-                loadOpenTickets();
-                loadMyTickets();
-            };
-
-            window.solveTicket = function(id) {
+            window.solveTicket = function (id) {
                 resolveTicket(id);
                 loadMyTickets();
-                loadOpenTickets();
+                drawCharts();
             };
 
-            window.escalate = function(id) {
-                escalateTicket(id);
-                loadMyTickets();
-                loadOpenTickets();
-            };
+            function drawCharts() {
+                const all = getTickets();
+                const months = ['Jan','Fév','Mar','Avr','Mai','Juin'];
+                const monthly = months.map(() => 0);
+                all.forEach(t => {
+                    const parts = t.createdAt.split('/');
+                    if (parts.length === 3) {
+                        const m = parseInt(parts[1], 10) - 1;
+                        if (m >= 0 && m < 6) monthly[m]++;
+                    }
+                });
+                drawAreaChart('techAreaChart', { labels: months, values: monthly }, '#0EA5E9');
 
-            loadOpenTickets();
+                const types = ['Soft', 'Hard', 'Materiel'];
+                const tColors = ['#B30016', '#EA580C', '#8B5CF6'];
+                const counts = types.map(tp => all.filter(t => t.type === tp).length);
+                drawPieChart('techPieChart', { labels: types, values: counts }, tColors);
+            }
+
             loadMyTickets();
+            drawCharts();
         }
     </script>
 </body>

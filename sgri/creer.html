@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGRI - Nouvelle réclamation</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app">
+        <aside class="side" id="side"></aside>
+        <div class="main">
+            <nav class="nav">
+                <div>
+                    <button class="nav-menu" onclick="tsb()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                    </button>
+                    <span style="font-weight:600;font-size:1rem;">Nouvelle réclamation</span>
+                </div>
+                <div class="ui" id="ud"></div>
+            </nav>
+            <div class="cont">
+                <div class="cd fc">
+                    <div class="cd-h">
+                        <h3>Détails de la réclamation</h3>
+                    </div>
+                    <div class="cd-b">
+                        <div id="alt" class="alt h"></div>
+                        <form id="f">
+                            <div class="fld">
+                                <label for="t">Titre</label>
+                                <input type="text" id="t" placeholder="Ex: Problème de connexion VPN" required>
+                            </div>
+                            <div class="fld">
+                                <label for="d">Description</label>
+                                <textarea id="d" placeholder="Décrivez le problème en détail..."></textarea>
+                            </div>
+                            <div class="fr">
+                                <div class="fld">
+                                    <label for="tp">Type</label>
+                                    <select id="tp">
+                                        <option value="Logiciel">Logiciel</option>
+                                        <option value="Matériel">Matériel</option>
+                                        <option value="Réseau">Réseau</option>
+                                        <option value="Serveur">Serveur</option>
+                                        <option value="Autre">Autre</option>
+                                    </select>
+                                </div>
+                                <div class="fld">
+                                    <label for="pr">Priorité</label>
+                                    <select id="pr">
+                                        <option value="Basse">Basse</option>
+                                        <option value="Moyenne" selected>Moyenne</option>
+                                        <option value="Haute">Haute</option>
+                                        <option value="Critique">Critique</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="fa">
+                                <button type="submit" class="btn btn-p" style="width:auto;">Soumettre</button>
+                                <a href="dashboard.html" class="btn btn-o">Annuler</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/app.js"></script>
+    <script>
+        var u = ca();
+        rs('creer.html');
+        document.getElementById('ud').innerHTML = '<strong>' + u.n + '</strong>';
+
+        document.getElementById('f').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var t = document.getElementById('t').value.trim();
+            var d = document.getElementById('d').value.trim();
+            var tp = document.getElementById('tp').value;
+            var pr = document.getElementById('pr').value;
+            var alt = document.getElementById('alt');
+
+            if (!t) {
+                alt.className = 'alt alt-e';
+                alt.textContent = 'Veuillez saisir un titre.';
+                alt.classList.remove('h');
+                return;
+            }
+
+            ct(t, d, tp, pr);
+
+            alt.className = 'alt alt-s';
+            alt.textContent = 'Réclamation créée ! Redirection...';
+            alt.classList.remove('h');
+            document.getElementById('f').reset();
+            setTimeout(function() { window.location.href = 'tickets.html'; }, 1200);
+        });
+    </script>
+</body>
+</html>

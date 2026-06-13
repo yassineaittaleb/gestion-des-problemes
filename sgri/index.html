@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGRI - Connexion</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="login-page">
+        <div class="login-card">
+            <div class="logo">SG</div>
+            <h1>SGRI</h1>
+            <p id="err" class="err"></p>
+            <form id="f">
+                <div class="fld">
+                    <label for="u">Identifiant</label>
+                    <input type="text" id="u" placeholder="user1, tech1..." required>
+                </div>
+                <div class="fld">
+                    <label for="p">Mot de passe</label>
+                    <input type="password" id="p" placeholder="pass123" required>
+                </div>
+                <div class="fld">
+                    <label for="r">Rôle</label>
+                    <select id="r">
+                        <option value="user">Utilisateur</option>
+                        <option value="tech">Technicien</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-p">Se connecter</button>
+            </form>
+            <div style="margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--border);font-size:0.75rem;color:var(--text-muted);line-height:1.8;">
+                <strong style="color:var(--text);">Test :</strong><br>
+                user1 / pass123 (Utilisateur)<br>
+                tech1 / pass123 (Technicien)
+            </div>
+        </div>
+    </div>
+    <script src="js/app.js"></script>
+    <script>
+        document.getElementById('f').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var u = document.getElementById('u').value.trim();
+            var p = document.getElementById('p').value.trim();
+            var r = document.getElementById('r').value;
+            var user = login(u, p);
+            if (!user) {
+                document.getElementById('err').textContent = 'Identifiants incorrects.';
+                document.getElementById('err').classList.add('s');
+                return;
+            }
+            if (user.r !== r) {
+                document.getElementById('err').textContent = 'Ce compte n\'est pas un ' + (r === 'tech' ? 'technicien' : 'utilisateur') + '.';
+                document.getElementById('err').classList.add('s');
+                return;
+            }
+            window.location.href = 'dashboard.html';
+        });
+    </script>
+</body>
+</html>

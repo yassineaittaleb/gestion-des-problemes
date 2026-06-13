@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGRI - Tableau de bord</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app">
+        <aside class="side" id="side"></aside>
+        <div class="main">
+            <nav class="nav">
+                <div>
+                    <button class="nav-menu" onclick="tsb()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                    </button>
+                    <span style="font-weight:600;font-size:1rem;">Tableau de bord</span>
+                </div>
+                <div class="ui" id="ud"></div>
+            </nav>
+            <div class="cont">
+                <div class="sg" id="sg"></div>
+                <div class="cd">
+                    <div class="cd-h">
+                        <h3>Réclamations récentes</h3>
+                        <a href="tickets.html" class="btn btn-o btn-s">Voir tout</a>
+                    </div>
+                    <div class="cd-b">
+                        <div class="tw">
+                            <table id="rt">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Titre</th>
+                                        <th>Type</th>
+                                        <th>Priorité</th>
+                                        <th>Statut</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="rb"></tbody>
+                            </table>
+                        </div>
+                        <div class="emp h" id="es">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                            <h3>Aucune réclamation</h3>
+                            <p>Vous n'avez pas encore créé de réclamation.</p>
+                            <a href="creer.html" class="btn btn-p" style="width:auto;margin-top:0.75rem;">Créer une réclamation</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/app.js"></script>
+    <script>
+        var u = ca();
+        rs('dashboard.html');
+        document.getElementById('ud').innerHTML = 'Connecté en tant que <strong>' + u.n + '</strong>';
+
+        var ts = gts();
+        if (u.r === 'user') ts = ts.filter(function(x) { return x.cu === u.u; });
+
+        var tot = ts.length;
+        var op = ts.filter(function(x) { return x.s === 'Ouvert'; }).length;
+        var ip = ts.filter(function(x) { return x.s === 'En cours'; }).length;
+        var rs2 = ts.filter(function(x) { return x.s === 'Résolu'; }).length;
+
+        document.getElementById('sg').innerHTML =
+            '<div class="sc"><div class="sl">Total</div><div class="sv">' + tot + '</div></div>' +
+            '<div class="sc"><div class="sl">Ouvertes</div><div class="sv b">' + op + '</div></div>' +
+            '<div class="sc"><div class="sl">En cours</div><div class="sv">' + ip + '</div></div>' +
+            '<div class="sc"><div class="sl">Résolues</div><div class="sv">' + rs2 + '</div></div>';
+
+        if (ts.length === 0) {
+            document.getElementById('es').classList.remove('h');
+            document.getElementById('rt').classList.add('h');
+        } else {
+            var html = '';
+            ts.slice(-5).reverse().forEach(function(x) {
+                html += '<tr><td><strong>#' + x.id + '</strong></td><td>' + x.t + '</td><td>' + x.tp + '</td><td>' + pbdg(x.pr) + '</td><td>' + bdg(x.s) + '</td><td>' + x.c + '</td></tr>';
+            });
+            document.getElementById('rb').innerHTML = html;
+        }
+    </script>
+</body>
+</html>

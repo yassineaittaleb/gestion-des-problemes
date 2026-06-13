@@ -101,6 +101,8 @@ function selectRole(role) {
     document.getElementById('loginStep').style.display = '';
 
     document.getElementById('selectedRoleLabel').textContent = '- ' + roleInfo[role].label;
+    const lbl2 = document.getElementById('selectedRoleLabel2');
+    if (lbl2) lbl2.textContent = roleInfo[role].label;
     document.getElementById('selectedRoleIcon').textContent = roleInfo[role].icon;
     document.getElementById('loginError').textContent = '';
 }

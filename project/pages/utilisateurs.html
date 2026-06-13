@@ -3,38 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Utilisateurs - Gestion des Problemes</title>
+    <title>Utilisateurs — Gestion des Problèmes</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <header>
+    <header class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <span class="sidebar-logo">
-                <svg viewBox="0 0 64 64" fill="none">
-                    <defs><linearGradient id="sgusr" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3498db"/><stop offset="100%" stop-color="#2c3e50"/></linearGradient></defs>
-                    <path d="M32 2 L58 14 V32 C58 48 32 62 32 62 C32 62 6 48 6 32 V14 Z" fill="url(#sgusr)"/>
-                    <path d="M22 32 L30 42 L44 24" stroke="#fff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                </svg>
-            </span>
-            <h1>Gestion<br>des Problemes</h1>
+            <span class="sidebar-logo">GP</span>
+            <h1>Gestion des Problèmes</h1>
+            <button class="sidebar-toggle" title="Réduire/Agrandir">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+            </button>
         </div>
-        <nav>
+        <nav class="sidebar-nav">
             <a href="#" id="dashboardLink">
-                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="4" rx="1"/><rect x="13" y="9" width="8" height="12" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/></svg>
-                Tableau de Bord
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="4" rx="1"/><rect x="14" y="9" width="7" height="12" rx="1"/><rect x="3" y="13" width="7" height="8" rx="1"/></svg>
+                <span class="nav-label">Tableau de Bord</span>
             </a>
             <a href="utilisateurs.html" class="active">
                 <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                Utilisateurs
+                <span class="nav-label">Utilisateurs</span>
             </a>
             <a href="reclamations.html">
                 <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-                Reclamations
+                <span class="nav-label">Réclamations</span>
             </a>
             <div class="nav-spacer"></div>
             <a href="#" onclick="logout()" class="logout-link">
                 <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-                Deconnexion
+                <span class="nav-label">Déconnexion</span>
             </a>
         </nav>
         <div class="sidebar-footer">
@@ -42,10 +39,12 @@
             <span class="sidebar-role" id="sidebarRole"></span>
         </div>
     </header>
-    <main>
-        <div class="page-header">
-            <h2>Liste des Utilisateurs</h2>
-            <div class="page-actions">
+    <div class="main-content">
+        <div class="topbar">
+            <div class="topbar-left">
+                <h2 style="font-size:1rem;font-weight:700;">Liste des Utilisateurs</h2>
+            </div>
+            <div class="topbar-right">
                 <span class="section-count" id="userCount">0</span>
                 <button class="btn-primary btn-icon" id="addTechBtn" style="display:none;" onclick="openTechModal()">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
@@ -53,28 +52,31 @@
                 </button>
                 <button class="btn-primary btn-icon" id="addEngBtn" style="display:none;" onclick="openEngModal()">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-                    Ajouter Ingenieur
+                    Ajouter Ingénieur
                 </button>
+                <div class="topbar-avatar" id="avatarInitial">U</div>
             </div>
         </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Nom</th>
-                    <th>Nom d'utilisateur</th>
-                    <th>Role</th>
-                </tr>
-            </thead>
-            <tbody id="usersTableBody">
-            </tbody>
-        </table>
-    </main>
+        <main class="page-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Nom d'utilisateur</th>
+                        <th>Rôle</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                </tbody>
+            </table>
+        </main>
+    </div>
 
     <div class="modal-overlay" id="techModal">
         <div class="modal">
             <div class="modal-header">
                 <h3>Ajouter un Technicien</h3>
-                <button class="modal-close" onclick="closeTechModal()">x</button>
+                <button class="modal-close" onclick="closeTechModal()">×</button>
             </div>
             <form id="addTechForm" onsubmit="handleAddTech(event)">
                 <div class="form-group">
@@ -100,13 +102,13 @@
     <div class="modal-overlay" id="engModal">
         <div class="modal">
             <div class="modal-header">
-                <h3>Ajouter un Ingenieur</h3>
-                <button class="modal-close" onclick="closeEngModal()">x</button>
+                <h3>Ajouter un Ingénieur</h3>
+                <button class="modal-close" onclick="closeEngModal()">×</button>
             </div>
             <form id="addEngForm" onsubmit="handleAddEng(event)">
                 <div class="form-group">
                     <label>Nom complet</label>
-                    <input type="text" id="engName" placeholder="Ex: Nouvel Ingenieur" required>
+                    <input type="text" id="engName" placeholder="Ex: Nouvel Ingénieur" required>
                 </div>
                 <div class="form-row">
                     <div class="form-group flex-1">
@@ -126,12 +128,14 @@
 
     <script src="../js/auth.js"></script>
     <script src="../js/main.js"></script>
+    <script src="../js/sidebar.js"></script>
     <script>
         const user = checkAuth(['technicien', 'ingenieur', 'chef']);
         if (user) {
             $('sidebarUser').textContent = user.name;
             $('sidebarRole').textContent = roleInfo[user.role].label;
             $('dashboardLink').href = roleInfo[user.role].dashboard;
+            $('avatarInitial').textContent = user.name.charAt(0).toUpperCase();
 
             if (user.role === 'ingenieur' || user.role === 'chef') {
                 $('addTechBtn').style.display = '';
@@ -145,55 +149,55 @@
                 const tbody = $('usersTableBody');
                 $('userCount').textContent = users.length;
                 tbody.innerHTML = '';
-                const labels = { utilisateur: 'Utilisateur', technicien: 'Technicien', ingenieur: 'Ingenieur', chef: 'Chef Departement' };
+                const labels = { utilisateur: 'Utilisateur', technicien: 'Technicien', ingenieur: 'Ingénieur', chef: 'Chef Département' };
                 const classes = { utilisateur: 'role-user', technicien: 'role-tech', ingenieur: 'role-eng', chef: 'role-chef' };
                 users.forEach(u => {
                     tbody.innerHTML += '<tr><td>' + u.name + '</td><td>' + u.username + '</td><td><span class="role-badge ' + (classes[u.role] || '') + '" style="padding:0.2rem 0.6rem;font-size:0.75rem;">' + (labels[u.role] || u.role) + '</span></td></tr>';
                 });
             }
 
-            window.openTechModal = function() {
+            window.openTechModal = function () {
                 $('techModal').classList.add('active');
             };
-            window.closeTechModal = function() {
+            window.closeTechModal = function () {
                 $('techModal').classList.remove('active');
             };
-            window.handleAddTech = function(e) {
+            window.handleAddTech = function (e) {
                 e.preventDefault();
                 const name = $('techName').value.trim();
                 const username = $('techUsername').value.trim();
                 const pass = $('techPass').value.trim();
                 if (addUser(username, pass, 'technicien', name)) {
-                    $('addTechMsg').textContent = 'Technicien ' + name + ' ajoute avec succes.';
+                    $('addTechMsg').textContent = 'Technicien ' + name + ' ajouté avec succès.';
                     $('addTechMsg').className = 'success-msg';
                     $('addTechForm').reset();
                     loadUsers();
                     setTimeout(closeTechModal, 1000);
                 } else {
-                    $('addTechMsg').textContent = 'Ce nom d\'utilisateur existe deja.';
+                    $('addTechMsg').textContent = 'Ce nom d\'utilisateur existe déjà.';
                     $('addTechMsg').className = 'error-msg';
                 }
             };
 
-            window.openEngModal = function() {
+            window.openEngModal = function () {
                 $('engModal').classList.add('active');
             };
-            window.closeEngModal = function() {
+            window.closeEngModal = function () {
                 $('engModal').classList.remove('active');
             };
-            window.handleAddEng = function(e) {
+            window.handleAddEng = function (e) {
                 e.preventDefault();
                 const name = $('engName').value.trim();
                 const username = $('engUsername').value.trim();
                 const pass = $('engPass').value.trim();
                 if (addUser(username, pass, 'ingenieur', name)) {
-                    $('addEngMsg').textContent = 'Ingenieur ' + name + ' ajoute avec succes.';
+                    $('addEngMsg').textContent = 'Ingénieur ' + name + ' ajouté avec succès.';
                     $('addEngMsg').className = 'success-msg';
                     $('addEngForm').reset();
                     loadUsers();
                     setTimeout(closeEngModal, 1000);
                 } else {
-                    $('addEngMsg').textContent = 'Ce nom d\'utilisateur existe deja.';
+                    $('addEngMsg').textContent = 'Ce nom d\'utilisateur existe déjà.';
                     $('addEngMsg').className = 'error-msg';
                 }
             };

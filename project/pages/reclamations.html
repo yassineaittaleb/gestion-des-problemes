@@ -3,60 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reclamations - Gestion des Problemes</title>
+    <title>Réclamations — Gestion des Problèmes</title>
     <link rel="stylesheet" href="../css/style.css">
-    <style>
-        .search-box { padding: 0.4rem 0.7rem; border: 1.5px solid var(--border); border-radius: 8px; font-size: 0.8rem; font-family: inherit; outline: none; width: 170px; background: var(--bg); transition: border-color 0.2s; }
-        .search-box:focus { border-color: var(--primary); }
-        .ticket-id { color: var(--text-muted); font-size: 0.78rem; font-weight: 700; font-family: monospace; }
-        .tickets-table .badge { padding: 0.2rem 0.5rem; font-size: 0.72rem; }
-        .card-section { margin-top: 1.5rem; }
-
-        .ticket-row { transition: transform .15s, box-shadow .15s; cursor: default; }
-        .ticket-row:hover { transform: translateY(-1px); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-        .ticket-row .ticket-desc { display: block; font-size: .75rem; color: var(--text-muted); margin-top: .15rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 280px; }
-
-        .empty-state { text-align: center; padding: 3rem 1rem; color: var(--text-muted); }
-        .empty-state svg { width: 56px; height: 56px; opacity: .3; margin-bottom: .75rem; }
-        .empty-state p { font-size: .9rem; margin: 0; }
-
-        @keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
-        .stats .card, .card-section { animation: fadeUp .35s ease-out both; }
-        .stats .card:nth-child(1) { animation-delay: 0s; }
-        .stats .card:nth-child(2) { animation-delay: .06s; }
-        .stats .card:nth-child(3) { animation-delay: .12s; }
-        .card-section { animation-delay: .18s; }
-    </style>
 </head>
 <body>
-    <header>
+    <header class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <span class="sidebar-logo">
-                <svg viewBox="0 0 64 64" fill="none">
-                    <defs><linearGradient id="sgr" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3498db"/><stop offset="100%" stop-color="#2c3e50"/></linearGradient></defs>
-                    <path d="M32 2 L58 14 V32 C58 48 32 62 32 62 C32 62 6 48 6 32 V14 Z" fill="url(#sgr)"/>
-                    <path d="M22 32 L30 42 L44 24" stroke="#fff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                </svg>
-            </span>
-            <h1>Gestion<br>des Problemes</h1>
+            <span class="sidebar-logo">GP</span>
+            <h1>Gestion des Problèmes</h1>
+            <button class="sidebar-toggle" title="Réduire/Agrandir">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+            </button>
         </div>
-        <nav>
+        <nav class="sidebar-nav">
             <a href="#" id="dashboardLink">
-                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="4" rx="1"/><rect x="13" y="9" width="8" height="12" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/></svg>
-                Tableau de Bord
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="4" rx="1"/><rect x="14" y="9" width="7" height="12" rx="1"/><rect x="3" y="13" width="7" height="8" rx="1"/></svg>
+                <span class="nav-label">Tableau de Bord</span>
             </a>
             <a href="utilisateurs.html">
                 <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                Utilisateurs
+                <span class="nav-label">Utilisateurs</span>
             </a>
             <a href="reclamations.html" class="active">
                 <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-                Reclamations
+                <span class="nav-label">Réclamations</span>
+            </a>
+            <a href="postes.html">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                <span class="nav-label">Postes</span>
             </a>
             <div class="nav-spacer"></div>
             <a href="#" onclick="logout()" class="logout-link">
                 <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-                Deconnexion
+                <span class="nav-label">Déconnexion</span>
             </a>
         </nav>
         <div class="sidebar-footer">
@@ -64,60 +43,58 @@
             <span class="sidebar-role" id="sidebarRole"></span>
         </div>
     </header>
-    <main>
-        <div class="page-header">
-            <h2>Reclamations</h2>
-            <div class="page-actions">
+    <div class="main-content">
+        <div class="topbar">
+            <div class="topbar-left">
+                <h2 style="font-size:1rem;font-weight:700;">Réclamations</h2>
+            </div>
+            <div class="topbar-right">
+                <div class="topbar-search">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <input type="text" id="searchInput" placeholder="Rechercher...">
+                </div>
                 <span class="section-count" id="ticketCount">0</span>
+                <div class="topbar-avatar" id="avatarInitial">R</div>
             </div>
         </div>
+        <main class="page-container">
+            <div class="stats">
+                <div class="card card-accent" style="--card-accent: var(--text-muted);">
+                    <h3>Total</h3>
+                    <div class="value" id="statTotal">0</div>
+                </div>
+                <div class="card card-accent" style="--card-accent: var(--primary);">
+                    <h3>Ouverts</h3>
+                    <div class="value" id="statOuvert">0</div>
+                </div>
+                <div class="card card-accent" style="--card-accent: var(--success);">
+                    <h3>Résolus</h3>
+                    <div class="value" id="statResolu">0</div>
+                </div>
+            </div>
 
-        <div class="stats">
-            <div class="card card-accent" style="--card-accent: var(--text-muted);">
-                <div class="stat-chart">
-                    <svg viewBox="0 0 40 32"><rect x="2" y="16" width="8" height="14" rx="2" fill="var(--text-muted)" opacity=".7"/><rect x="14" y="10" width="8" height="20" rx="2" fill="var(--text-muted)" opacity=".85"/><rect x="26" y="4" width="8" height="26" rx="2" fill="var(--text-muted)"/></svg>
+            <section class="card-section">
+                <div class="section-header">
+                    <h3>Tous les tickets</h3>
                 </div>
-                <h3>Total</h3>
-                <div class="value" id="statTotal">0</div>
-            </div>
-            <div class="card card-accent" style="--card-accent: var(--primary);">
-                <div class="stat-chart">
-                    <svg viewBox="0 0 40 32"><rect x="2" y="16" width="8" height="14" rx="2" fill="var(--primary)" opacity=".7"/><rect x="14" y="10" width="8" height="20" rx="2" fill="var(--primary)" opacity=".85"/><rect x="26" y="4" width="8" height="26" rx="2" fill="var(--primary)"/></svg>
+                <div id="allTicketsContainer">
+                    <div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><p>Aucune réclamation.</p></div>
                 </div>
-                <h3>Ouverts</h3>
-                <div class="value" id="statOuvert">0</div>
-            </div>
-            <div class="card card-accent" style="--card-accent: var(--success);">
-                <div class="stat-chart">
-                    <svg viewBox="0 0 40 32"><rect x="2" y="16" width="8" height="14" rx="2" fill="var(--success)" opacity=".7"/><rect x="14" y="10" width="8" height="20" rx="2" fill="var(--success)" opacity=".85"/><rect x="26" y="4" width="8" height="26" rx="2" fill="var(--success)"/></svg>
-                </div>
-                <h3>Resolus</h3>
-                <div class="value" id="statResolu">0</div>
-            </div>
-        </div>
+            </section>
+        </main>
+    </div>
 
-        <section class="card-section">
-            <div class="section-header">
-                <h3>Tous les tickets</h3>
-                <div style="position:relative;">
-                    <svg style="position:absolute;left:8px;top:50%;transform:translateY(-50%);width:14px;height:14px;color:var(--text-muted);pointer-events:none;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                    <input type="text" id="searchInput" class="search-box" placeholder="Rechercher..." style="padding-left:28px;">
-                </div>
-            </div>
-            <div id="allTicketsContainer">
-                <div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><p>Aucune reclamation.</p></div>
-            </div>
-        </section>
-    </main>
     <script src="../js/auth.js"></script>
     <script src="../js/tickets.js"></script>
     <script src="../js/main.js"></script>
+    <script src="../js/sidebar.js"></script>
     <script>
         const user = checkAuth(['technicien', 'ingenieur', 'chef']);
         if (user) {
             $('sidebarUser').textContent = user.name;
             $('sidebarRole').textContent = roleInfo[user.role].label;
             $('dashboardLink').href = roleInfo[user.role].dashboard;
+            $('avatarInitial').textContent = user.name.charAt(0).toUpperCase();
 
             function renderTickets(filter) {
                 const tickets = getTickets();
@@ -137,16 +114,17 @@
                     : tickets;
 
                 if (filtered.length === 0) {
-                    container.innerHTML = '<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><p>' + (filter ? 'Aucun resultat pour "' + filter + '".' : 'Aucune reclamation.') + '</p></div>';
+                    container.innerHTML = '<div class="empty-msg">' + (filter ? 'Aucun résultat pour "' + filter + '".' : 'Aucune réclamation.') + '</div>';
                     return;
                 }
                 let html = '<div class="tickets-table"><div class="tickets-header"><span>ID</span><span>Titre</span><span>Auteur</span><span>Statut</span><span>Date</span></div>';
+                const sColors = { 'Ouvert': '#B30016', 'En cours': '#F59E0B', 'Resolu': '#16A34A', 'Escalade': '#DC2626' };
                 filtered.forEach(t => {
                     html += '<div class="ticket-row">' +
                         '<span class="ticket-id">#' + t.id.toString().slice(-4) + '</span>' +
                         '<span><strong>' + t.title + '</strong><span class="ticket-desc">' + t.description + '</span></span>' +
                         '<span class="ticket-author">' + t.createdBy + '</span>' +
-                        '<span>' + getStatusBadge(t.status) + '</span>' +
+                        '<span><span class="badge" style="background:' + (sColors[t.status] || '#64748B') + '">' + t.status + '</span></span>' +
                         '<span class="ticket-date">' + t.createdAt + '</span>' +
                     '</div>';
                 });
@@ -155,7 +133,7 @@
             }
 
             let searchTimeout;
-            $('searchInput').addEventListener('input', function() {
+            $('searchInput').addEventListener('input', function () {
                 clearTimeout(searchTimeout);
                 searchTimeout = setTimeout(() => renderTickets(this.value.toLowerCase().trim()), 200);
             });
