@@ -83,53 +83,6 @@
                 </div>
             </div>
 
-                        <div class="stats">
-                <div class="stat-card-new">
-                    <div class="sc-header">
-                        <div class="sc-icon" style="background:#f1f5f9;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg></div>
-                        <span class="sc-trend">+3 cette semaine</span>
-                    </div>
-                    <div class="sc-body">
-                        <h3>TICKETS CRÉÉS</h3>
-                        <div class="value" id="statTotal">0</div>
-                    </div>
-                    <div class="sc-sparkline"></div>
-                </div>
-                <div class="stat-card-new">
-                    <div class="sc-header">
-                        <div class="sc-icon" style="background:#f1f5f9;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.5-8.6"/><polyline points="17 2 21 6 17 10"/></svg></div>
-                        <span class="sc-trend">+1 ce mois</span>
-                    </div>
-                    <div class="sc-body">
-                        <h3>EN COURS</h3>
-                        <div class="value" id="statOpen">0</div>
-                    </div>
-                    <div class="sc-sparkline"></div>
-                </div>
-                <div class="stat-card-new">
-                    <div class="sc-header">
-                        <div class="sc-icon" style="background:#f1f5f9;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
-                        <span class="sc-trend" style="color:var(--success);">Objectif atteint</span>
-                    </div>
-                    <div class="sc-body">
-                        <h3>RÉSOLUS</h3>
-                        <div class="value" id="statResolved">0</div>
-                    </div>
-                    <div class="sc-sparkline"></div>
-                </div>
-                <div class="stat-card-new">
-                    <div class="sc-header">
-                        <div class="sc-icon" style="background:#f1f5f9;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
-                        <span class="sc-trend">Mise à jour</span>
-                    </div>
-                    <div class="sc-body">
-                        <h3>MESSAGES NON LUS</h3>
-                        <div class="value">2</div>
-                    </div>
-                    <div class="sc-sparkline"></div>
-                </div>
-            </div>
-
             <!-- Tickets Section (Page-like) -->
             <section style="background:#fff; border-radius:12px; border:1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.02); overflow:hidden;">
                 <div style="display:flex; align-items:center; justify-content:space-between; padding:1.25rem 1.5rem; border-bottom:1px solid var(--border);">
@@ -266,9 +219,11 @@ function selectCat(el) {
             if (!title || !desc) return;
             const ticket = createTicket(title, desc, user.name, type, level);
             ticket.priority = priority;
+            ticket.status = 'Escalade';
+            ticket.level = 'Eleve';
             const tickets = getTickets();
             const t = tickets.find(t => t.id === ticket.id);
-            if (t) t.priority = priority;
+            if (t) { t.priority = priority; t.status = 'Escalade'; t.level = 'Eleve'; }
             saveTickets(tickets);
             $('ticketForm').reset();
             closeTicketModal();
@@ -282,9 +237,6 @@ function selectCat(el) {
         function loadMyTickets() {
             var tickets = getTicketsByUser(user.name);
             var container = $('myTicketsContainer');
-            $('statTotal').textContent = tickets.length;
-            $('statOpen').textContent = tickets.filter(function(t){return t.status==='Ouvert' || t.status==='En cours';}).length;
-            $('statResolved').textContent = tickets.filter(function(t){return t.status==='Resolu';}).length;
             if($('uCountAll')) $('uCountAll').textContent = tickets.length;
 
             var filtered = userFilter === 'all' ? tickets : tickets.filter(function(t){return t.status===userFilter;});

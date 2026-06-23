@@ -81,41 +81,6 @@
                 </div>
             </div>
 
-            <div class="stats">
-                                <div class="stat-card-new">
-                    <div class="sc-header">
-                        <div class="sc-icon" style="background:#f1f5f9;"></div>
-                        <span class="sc-trend">+ ce mois</span>
-                    </div>
-                    <div class="sc-body">
-                        <h3>TICKETS OUVERTS</h3>
-                        <div class="value" id="statOpen">0</div>
-                    </div>
-                    <div class="sc-sparkline"></div>
-                </div>
-                                <div class="stat-card-new">
-                    <div class="sc-header">
-                        <div class="sc-icon" style="background:#f1f5f9;"></div>
-                        <span class="sc-trend">+ ce mois</span>
-                    </div>
-                    <div class="sc-body">
-                        <h3>EN COURS</h3>
-                        <div class="value" id="statInProgress">0</div>
-                    </div>
-                    <div class="sc-sparkline"></div>
-                </div>
-                                <div class="stat-card-new">
-                    <div class="sc-header">
-                        <div class="sc-icon" style="background:#f1f5f9;"></div>
-                        <span class="sc-trend">+ ce mois</span>
-                    </div>
-                    <div class="sc-body">
-                        <h3>RÉSOLUS</h3>
-                        <div class="value" id="statResolved">0</div>
-                    </div>
-                    <div class="sc-sparkline"></div>
-                </div>
-            </div>
 
             <!-- Chart Section -->
             <div class="card-section" style="padding:1.5rem; background:#fff; border-radius:12px; border:1px solid var(--border); margin-bottom:2rem; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
@@ -221,9 +186,6 @@
             var tickets = getOpenTickets();
             var all = getTickets();
             $('openCount').textContent = tickets.length;
-            $('statOpen').textContent = tickets.length;
-            $('statInProgress').textContent = all.filter(function(t){return t.status==='En cours';}).length;
-            $('statResolved').textContent = all.filter(function(t){return t.status==='Resolu';}).length;
             currentDetailActions = function(t) {
                 var canResolve = t.level === 'Normal';
                 var html = '<button class="td-btn td-btn-primary" onclick="claimTicket(' + t.id + '); closeTicketDetail();" style="margin-right:8px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Prendre en charge</button>';

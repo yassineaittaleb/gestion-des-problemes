@@ -98,9 +98,17 @@
             <section class="card-section">
                 <div class="section-header">
                     <h3>Tous les tickets</h3>
-                    <div style="position:relative;">
-                        <svg style="position:absolute;left:8px;top:50%;transform:translateY(-50%);width:14px;height:14px;color:var(--text-muted);pointer-events:none;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                        <input type="text" id="searchInput" class="search-box" placeholder="Rechercher..." style="padding-left:28px;">
+                    <div style="display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap;">
+                        <div style="position:relative;">
+                            <svg style="position:absolute;left:8px;top:50%;transform:translateY(-50%);width:14px;height:14px;color:var(--text-muted);pointer-events:none;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                            <input type="text" id="searchInput" class="search-box" placeholder="Rechercher..." style="padding-left:28px;">
+                        </div>
+                        <input type="date" id="dateFilter" style="padding:0.45rem 0.75rem; border:1px solid var(--border); border-radius:8px; font-size:0.85rem; background:#fff; color:var(--text); cursor:pointer;">
+                        <div style="display:flex; gap:0.25rem;">
+                            <button id="periodToday" onclick="setPeriod('today')" style="padding:0.4rem 0.75rem; border-radius:20px; border:1px solid var(--border); font-size:0.78rem; font-weight:600; cursor:pointer; background:#fff; color:var(--text-secondary);">Aujourd'hui</button>
+                            <button id="periodWeek" onclick="setPeriod('week')" style="padding:0.4rem 0.75rem; border-radius:20px; border:1px solid var(--border); font-size:0.78rem; font-weight:600; cursor:pointer; background:#fff; color:var(--text-secondary);">Cette semaine</button>
+                            <button id="periodMonth" onclick="setPeriod('month')" style="padding:0.4rem 0.75rem; border-radius:20px; border:1px solid var(--border); font-size:0.78rem; font-weight:600; cursor:pointer; background:#fff; color:var(--text-secondary);">Ce mois</button>
+                        </div>
                     </div>
                 </div>
                 <div id="allTicketsContainer">
@@ -134,6 +142,23 @@
 
         var recPage = 1;
         var recPageSize = 12;
+        var periodFilter = '';
+
+        function setPeriod(period) {
+            if (periodFilter === period) periodFilter = '';
+            else periodFilter = period;
+            var btns = ['periodToday','periodWeek','periodMonth'];
+            btns.forEach(function(id) {
+                var b = document.getElementById(id);
+                if (b) { b.style.background = '#fff'; b.style.color = 'var(--text-secondary)'; b.style.border = '1px solid var(--border)'; }
+            });
+            if (periodFilter) {
+                var active = document.getElementById('period' + period.charAt(0).toUpperCase() + period.slice(1));
+                if (active) { active.style.background = 'var(--primary)'; active.style.color = '#fff'; active.style.border = 'none'; }
+            }
+            recPage = 1;
+            renderTickets($('searchInput').value.toLowerCase().trim());
+        }
 
         function renderTickets(filter) {
             const tickets = getTickets();
@@ -143,14 +168,36 @@
             $('statOuvert').textContent = tickets.filter(t => t.status === 'Ouvert').length;
             $('statResolu').textContent = tickets.filter(t => t.status === 'Resolu').length;
 
-            const filtered = filter
-                ? tickets.filter(t =>
-                    t.title.toLowerCase().includes(filter) ||
-                    t.description.toLowerCase().includes(filter) ||
-                    t.createdBy.toLowerCase().includes(filter) ||
-                    t.id.toString().includes(filter)
-                )
-                : tickets;
+            const dateVal = $('dateFilter').value;
+            const dateFilter = dateVal ? dateVal.split('-').reverse().join('/') : '';
+
+            const filtered = tickets.filter(t => {
+                if (filter && !t.title.toLowerCase().includes(filter) &&
+                    !t.description.toLowerCase().includes(filter) &&
+                    !t.createdBy.toLowerCase().includes(filter) &&
+                    !t.createdAt.toLowerCase().includes(filter) &&
+                    !t.id.toString().includes(filter)) return false;
+                if (dateFilter && !t.createdAt.startsWith(dateFilter)) return false;
+                if (periodFilter) {
+                    var p = t.createdAt.split(' ')[0].split('/');
+                    if (p.length !== 3) return false;
+                    var d = new Date(p[2], p[1] - 1, p[0]);
+                    var now = new Date();
+                    var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                    if (periodFilter === 'today' && d.getTime() !== today.getTime()) return false;
+                    if (periodFilter === 'week') {
+                        var weekStart = new Date(today);
+                        weekStart.setDate(today.getDate() - today.getDay());
+                        var weekEnd = new Date(weekStart);
+                        weekEnd.setDate(weekStart.getDate() + 6);
+                        if (d < weekStart || d > weekEnd) return false;
+                    }
+                    if (periodFilter === 'month') {
+                        if (d.getMonth() !== today.getMonth() || d.getFullYear() !== today.getFullYear()) return false;
+                    }
+                }
+                return true;
+            });
 
             var totalPages = Math.ceil(filtered.length / recPageSize) || 1;
             if (recPage > totalPages) recPage = totalPages;
@@ -203,8 +250,12 @@
         let searchTimeout;
         $('searchInput').addEventListener('input', function() {
             clearTimeout(searchTimeout);
-            recPage = 1; // Reset to page 1 on search
+            recPage = 1;
             searchTimeout = setTimeout(() => renderTickets(this.value.toLowerCase().trim()), 200);
+        });
+        $('dateFilter').addEventListener('change', function() {
+            recPage = 1;
+            renderTickets($('searchInput').value.toLowerCase().trim());
         });
 
         renderTickets();

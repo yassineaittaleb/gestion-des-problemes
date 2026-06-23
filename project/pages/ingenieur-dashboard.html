@@ -85,43 +85,8 @@
                 </div>
             </div>
 
-            <div class="stats">
-                                <div class="stat-card-new">
-                    <div class="sc-header">
-                        <div class="sc-icon" style="background:#f1f5f9;"></div>
-                        <span class="sc-trend">+ ce mois</span>
-                    </div>
-                    <div class="sc-body">
-                        <h3>ESCALADES</h3>
-                        <div class="value" id="statEscalated">0</div>
-                    </div>
-                    <div class="sc-sparkline"></div>
-                </div>
-                                <div class="stat-card-new">
-                    <div class="sc-header">
-                        <div class="sc-icon" style="background:#f1f5f9;"></div>
-                        <span class="sc-trend">+ ce mois</span>
-                    </div>
-                    <div class="sc-body">
-                        <h3>RÉSOLUS</h3>
-                        <div class="value" id="statResolved">0</div>
-                    </div>
-                    <div class="sc-sparkline"></div>
-                </div>
-                                <div class="stat-card-new">
-                    <div class="sc-header">
-                        <div class="sc-icon" style="background:#f1f5f9;"></div>
-                        <span class="sc-trend">+ ce mois</span>
-                    </div>
-                    <div class="sc-body">
-                        <h3>TOTAL TICKETS</h3>
-                        <div class="value" id="statTotal">0</div>
-                    </div>
-                    <div class="sc-sparkline"></div>
-                </div>
-            </div>
 
-                        <!-- Chart Section -->
+            <!-- Chart Section -->
             <div class="card-section" style="padding:1.5rem; background:#fff; border-radius:12px; border:1px solid var(--border); margin-bottom:2rem; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
                 <h3 style="font-size:0.75rem; color:var(--text-secondary); font-weight:700; margin-bottom:1.5rem; text-transform:uppercase;">ACTIVITÉ DES TICKETS (14 JOURS)</h3>
                 <div style="height: 250px; width: 100%;"><canvas id="engChart"></canvas></div>
@@ -133,6 +98,10 @@
                     <div style="display:flex; gap:0.5rem;">
                         <button id="tabEsc" onclick="switchEngTab('esc')" style="padding:0.45rem 1rem; border-radius:20px; border:none; font-size:0.8rem; font-weight:600; cursor:pointer; background:var(--primary); color:#fff;">Escaladés <span id="escalatedCount" style="background:rgba(255,255,255,0.25); padding:0 6px; border-radius:10px; margin-left:4px; font-size:0.7rem;">0</span></button>
                         <button id="tabAll" onclick="switchEngTab('all')" style="padding:0.45rem 1rem; border-radius:20px; border:1px solid var(--border); font-size:0.8rem; font-weight:600; cursor:pointer; background:#fff; color:var(--text-secondary);">Tous les Tickets <span id="allCount" style="background:var(--bg-alt); padding:0 6px; border-radius:10px; margin-left:4px; font-size:0.7rem;">0</span></button>
+                    </div>
+                    <div style="position:relative;">
+                        <svg style="position:absolute;left:8px;top:50%;transform:translateY(-50%);width:14px;height:14px;color:var(--text-muted);pointer-events:none;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <input type="text" id="engSearchInput" class="search-box" placeholder="Rechercher tickets..." style="padding-left:28px;">
                     </div>
                 </div>
                 <div id="escalatedTicketsContainer" style="padding:0; max-height:500px; overflow-y:auto;"></div>
@@ -228,17 +197,32 @@
 
         window.takeEscalated = function(id) { takeTicket(id, user.name); loadEscalatedTickets(); };
 
-        function loadEscalatedTickets() {
-            var tickets = getEscalatedTickets();
-            var all = getTickets();
-            $('escalatedCount').textContent = tickets.length;
-            $('statEscalated').textContent = tickets.length;
-            $('statResolved').textContent = all.filter(function(t){return t.status==='Resolu';}).length;
-            $('statTotal').textContent = all.length;
-            $('allCount').textContent = all.length;
+        function getEngFilter() {
+            return ($('engSearchInput').value || '').toLowerCase().trim();
+        }
 
-            renderEngTable(tickets, $('escalatedTicketsContainer'));
-            renderEngTable(all, $('allTicketsContainer'));
+        function filterTickets(list) {
+            var f = getEngFilter();
+            if (!f) return list;
+            return list.filter(function(t) {
+                return t.title.toLowerCase().includes(f) ||
+                    t.description.toLowerCase().includes(f) ||
+                    t.createdBy.toLowerCase().includes(f) ||
+                    t.status.toLowerCase().includes(f) ||
+                    t.id.toString().includes(f);
+            });
+        }
+
+        function loadEscalatedTickets() {
+            var all = getTickets();
+            var escalated = getEscalatedTickets();
+            var filteredAll = filterTickets(all);
+            var filteredEsc = filterTickets(escalated);
+            $('escalatedCount').textContent = filteredEsc.length;
+            $('allCount').textContent = filteredAll.length;
+
+            renderEngTable(filteredEsc, $('escalatedTicketsContainer'));
+            renderEngTable(filteredAll, $('allTicketsContainer'));
         }
 
         window.switchEngTab = function(tab) {
@@ -258,6 +242,14 @@
         window.resolveEscalated = function(id) { resolveTicket(id); loadEscalatedTickets(); };
 
         loadEscalatedTickets();
+
+        var engSearchTimeout;
+        $('engSearchInput').addEventListener('input', function() {
+            clearTimeout(engSearchTimeout);
+            pageStates['escalatedTicketsContainer'] = 1;
+            pageStates['allTicketsContainer'] = 1;
+            engSearchTimeout = setTimeout(loadEscalatedTickets, 200);
+        });
 
         // Draw chart
         var all = getTickets();
