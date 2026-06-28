@@ -215,7 +215,5 @@ function getCurrentUserRole() {
     return user ? user.role : '';
 }
 
-localStorage.removeItem('users');
-localStorage.removeItem('tickets');
-seedUsers();
-seedTickets();
+if (!localStorage.getItem('users')) seedUsers();
+if (!localStorage.getItem('tickets')) seedTickets();

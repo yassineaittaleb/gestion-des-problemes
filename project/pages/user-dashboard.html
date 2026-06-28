@@ -219,11 +219,9 @@ function selectCat(el) {
             if (!title || !desc) return;
             const ticket = createTicket(title, desc, user.name, type, level);
             ticket.priority = priority;
-            ticket.status = 'Escalade';
-            ticket.level = 'Eleve';
             const tickets = getTickets();
             const t = tickets.find(t => t.id === ticket.id);
-            if (t) { t.priority = priority; t.status = 'Escalade'; t.level = 'Eleve'; }
+            if (t) { t.priority = priority; }
             saveTickets(tickets);
             $('ticketForm').reset();
             closeTicketModal();

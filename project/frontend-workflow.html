@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frontend Workflow — SGRI</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#0f172a;font-family:'Segoe UI',Arial,sans-serif;padding:2rem;display:flex;flex-direction:column;align-items:center;min-height:100vh}
+  h1{font-size:1.4rem;color:#f1f5f9;margin-bottom:.25rem;font-weight:700;letter-spacing:-.3px}
+  .sub{color:#64748b;font-size:.82rem;margin-bottom:.5rem}
+  .sub a{color:#3b82f6;text-decoration:none}
+  .sub a:hover{text-decoration:underline}
+  .container{background:#1e293b;border-radius:20px;padding:2rem 1.5rem 1rem;width:100%;max-width:1300px;box-shadow:0 25px 50px -12px rgba(0,0,0,.5);border:1px solid #334155}
+  .legend{display:flex;flex-wrap:wrap;gap:.6rem 1.5rem;justify-content:center;margin-bottom:1rem;padding:.6rem 1rem;background:#0f172a;border-radius:10px;border:1px solid #334155}
+  .legend-item{display:flex;align-items:center;gap:.4rem;font-size:.72rem;color:#94a3b8}
+  .legend-item .dot{width:10px;height:10px;border-radius:4px}
+  .footer{text-align:center;margin-top:.6rem;font-size:.7rem;color:#475569}
+</style>
+</head>
+<body>
+
+<h1>🚀 Frontend Workflow — SGRI (IT CONNECT)</h1>
+<p class="sub">Parcours complet d'un ticket: de la création → à la résolution · <a href="#" onclick="event.preventDefault();location.reload()">↻ Recharger</a></p>
+
+<div class="legend">
+  <span class="legend-item"><span class="dot" style="background:#3b82f6"></span> Authentification</span>
+  <span class="legend-item"><span class="dot" style="background:#22c55e"></span> Utilisateur</span>
+  <span class="legend-item"><span class="dot" style="background:#f59e0b"></span> Technicien</span>
+  <span class="legend-item"><span class="dot" style="background:#a855f7"></span> Ingénieur</span>
+  <span class="legend-item"><span class="dot" style="background:#ef4444"></span> Chef de Service</span>
+  <span class="legend-item"><span class="dot" style="background:#64748b"></span> localStorage</span>
+  <span class="legend-item"><span class="dot" style="background:#06b6d4"></span> États du Ticket</span>
+</div>
+
+<div class="container">
+<div class="mermaid">
+%%{init: {
+  'theme': 'dark',
+  'themeVariables': {
+    'background': '#1e293b',
+    'primaryColor': '#1e293b',
+    'primaryTextColor': '#f1f5f9',
+    'primaryBorderColor': '#334155',
+    'lineColor': '#475569',
+    'secondaryColor': '#0f172a',
+    'tertiaryColor': '#0f172a',
+    'fontFamily': 'Segoe UI, Arial, sans-serif',
+    'fontSize': '13px'
+  },
+  'flowchart': {
+    'curve': 'basis',
+    'padding': 16,
+    'nodeSpacing': 60,
+    'rankSpacing': 70
+  }
+}}%%
+flowchart TD
+  %% ─── STYLES ───
+  classDef auth fill:#1e3a5f,stroke:#3b82f6,color:#93c5fd,stroke-width:2
+  classDef user fill:#14532d,stroke:#22c55e,color:#86efac,stroke-width:2
+  classDef tech fill:#713f12,stroke:#f59e0b,color:#fde68a,stroke-width:2
+  classDef ing fill:#3b0764,stroke:#a855f7,color:#d8b4fe,stroke-width:2
+  classDef chef fill:#7f1d1d,stroke:#ef4444,color:#fca5a5,stroke-width:2
+  classDef store fill:#1e293b,stroke:#64748b,color:#cbd5e1,stroke-width:2,stroke-dasharray:6 3
+  classDef state fill:#0e7490,stroke:#06b6d4,color:#a5f3fc,stroke-width:2
+  classDef done fill:#166534,stroke:#22c55e,color:#bbf7d0,stroke-width:3
+  classDef decision fill:#451a03,stroke:#f97316,color:#fed7aa,stroke-width:2
+
+  %% ─── AUTH ───
+  A1(("🏠 Landing<br/>index.html")):::auth
+  A2["🔐 Sélection du Rôle<br/>(Utilisateur / Technicien /<br/>Ingénieur / Chef)"]:::auth
+  A3["📝 Formulaire Login<br/>auth.js → handleLogin()"]:::auth
+  A4{"✅ checkAuth()<br/>localStorage: currentUser"}:::auth
+
+  A1 --> A2 --> A3 --> A4
+
+  %% ─── STOCKAGE ───
+  LS_START[("💾 localStorage<br/>{'users', 'tickets', 'currentUser'}")]:::store
+
+  A4 -- "❌ Échec" --> A3
+  A4 -- "✅ Succès" --> REDIRECT
+
+  REDIRECT["🔄 Redirection par Rôle<br/>dashboard.html → role-dashboard.html"]:::auth
+
+  %% ─── UTILISATEUR ───
+  subgraph U ["👤 PARCOURS UTILISATEUR"]
+    U1["📋 Tableau de Bord<br/>user-dashboard.html"]:::user
+    U2["➕ Créer un Ticket<br/>Modal → createTicket()"]:::user
+    U3{"Formulaire:<br/>• Titre<br/>• Catégorie<br/>• Description<br/>• Niveau (Normal/Élevé)<br/>• Priorité"}:::decision
+    U4["💾 Sauvegarde<br/>tickets.js → createTicket()<br/>→ localStorage"]:::user
+    U5["📊 Suivi en Temps Réel<br/>setInterval 3s → getTickets()<br/>→ Met à jour le tableau"]:::user
+    U6["🔍 Détail du Ticket<br/>ticketDetail.js → openTicketDetail()"]:::user
+  end
+
+  REDIRECT -- "Rôle: utilisateur" --> U1
+  U1 --> U2 --> U3 --> U4
+  U4 --> U5 --> U6
+  U6 -. "⏳ Attend mise à jour" .-> U5
+
+  %% ─── TECHNICIEN ───
+  subgraph T ["🔧 PARCOURS TECHNICIEN"]
+    T1["📊 Tableau de Bord<br/>technicien-dashboard.html"]:::tech
+    T2["📋 Tickets Ouverts<br/>(status: 'Ouvert')"]:::tech
+    T3["✅ Prendre en Charge<br/>takeTicket() → 'En cours'"]:::tech
+    T4{"🔀 Décision<br/>Niveau du Ticket ?"}:::decision
+    T5["✅ Résoudre<br/>resolveTicket()<br/>→ Status: 'Resolu'"]:::done
+    T6["⬆ Transférer<br/>escalateTicket()<br/>→ Status: 'Escaladé'"]:::ing
+    T7["📊 Mes Tickets<br/>(status: 'En cours')"]:::tech
+    T8["⏱️ Activité<br/>drawActivityChart()<br/>Chart.js (14 jours)"]:::tech
+  end
+
+  REDIRECT -- "Rôle: technicien" --> T1
+  T1 --> T2 --> T3
+  T3 --> T7 --> T4
+  T4 -- "Niveau: Normal" --> T5
+  T4 -- "Niveau: Élevé" --> T6
+  T1 --> T8
+
+  %% ─── INGÉNIEUR ───
+  subgraph I ["💻 PARCOURS INGÉNIEUR"]
+    I1["📊 Tableau de Bord<br/>ingenieur-dashboard.html"]:::ing
+    I2["📋 Tickets Escaladés<br/>(status: 'Escaladé')"]:::ing
+    I3["✅ Prendre en Charge<br/>takeTicket() → 'En cours'"]:::ing
+    I4["✅ Résoudre<br/>resolveTicket() → 'Resolu'"]:::done
+    I5["📊 Activité + Tous Tickets"]:::ing
+  end
+
+  REDIRECT -- "Rôle: ingenieur" --> I1
+  I1 --> I2 --> I3 --> I4
+  I1 --> I5
+
+  %% ─── CHEF DE SERVICE ───
+  subgraph C ["👔 PARCOURS CHEF DE SERVICE"]
+    C1["📊 Tableau de Bord<br/>chef-dashboard.html"]:::chef
+    C2["📊 4 Graphiques<br/>Chart.js:<br/>• Tendance (Area)<br/>• Priorité (Barre)<br/>• Catégorie (Donut)<br/>• Résolution (Gauge)"]:::chef
+    C3["📋 Tous les Tickets<br/>reclamations.html<br/>(Filtres: date, période)"]:::chef
+    C4["👥 Gestion Utilisateurs<br/>utilisateurs.html<br/>• Ajouter Technicien<br/>• Ajouter Ingénieur"]:::chef
+    C5["📋 Assigner un Ticket<br/>→ Sélection Technicien<br/>→ takeTicket()"]:::chef
+  end
+
+  REDIRECT -- "Rôle: chef" --> C1
+  C1 --> C2
+  C1 --> C3
+  C1 --> C4
+  C3 --> C5
+
+  %% ─── ÉTATS DU TICKET (Cycle de Vie) ───
+  subgraph S ["🔄 CYCLE DE VIE DU TICKET"]
+    S1["🟢 Ouvert"]:::state
+    S2["🟡 En cours"]:::state
+    S3["🟣 Escaladé"]:::state
+    S4["✅ Resolu"]:::done
+  end
+
+  U4 -.-> S1
+  T3 -.-> S2
+  T5 -.-> S4
+  T6 -.-> S3
+  I3 -.-> S2
+  I4 -.-> S4
+  C5 -.-> S2
+
+  %% ─── CONNEXIONS ENTRE RÔLES ───
+  U4 -.- T2
+  T6 -.- I2
+  C5 -.- T2
+
+  %% ─── localStorage CENTRAL ───
+  U4 --> LS_START
+  T2 --> LS_START
+  T3 --> LS_START
+  T5 --> LS_START
+  T6 --> LS_START
+  I2 --> LS_START
+  I3 --> LS_START
+  I4 --> LS_START
+  C5 --> LS_START
+  U5 --> LS_START
+  LS_START -. "⏱️ Sync 3s" .-> U5
+  LS_START -. "⏱️ Sync 3s" .-> T2
+  LS_START -. "⏱️ Sync 3s" .-> I2
+</div>
+</div>
+
+<div class="footer">
+  SGRI — Système de Gestion des Réclamations Informatiques · Projet PFE · Vanilla HTML/CSS/JS + localStorage + Chart.js
+</div>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'dark',
+    maxTextSize: 90000,
+    securityLevel: 'loose'
+  });
+</script>
+</body>
+</html>

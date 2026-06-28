@@ -129,85 +129,10 @@ setInterval(() => {
 }, 3000);
 
 // -----------------------------------------------------
-// MOCK DATA SEEDER
+// RICH MOCK DATA SEEDER (only seeds if no tickets exist)
 // -----------------------------------------------------
 function seedTickets() {
-    let tickets = JSON.parse(localStorage.getItem('tickets')) || [];
-    if (tickets.length < 50) {
-        console.log("Seeding Mock Tickets...");
-        const statuses = ['Ouvert', 'En cours', 'Resolu', 'Escalade'];
-        const types = ['Soft', 'Hard', 'Materiel'];
-        const levels = ['Normal', 'Eleve'];
-        const priorities = ['Basse', 'Moyenne', 'Haute', 'Critique'];
-        const creators = ['Ahmed Benali', 'Fatima Zahra', 'Omar Yassine', 'Mouna Tazi', 'Rachid Fassi'];
-        const techs = ['Karim El Fassi', 'Youssef Lamrani', 'Salim Haddaoui'];
-        const titles = [
-            'Problème de connexion VPN', 'Imprimante réseau bloquée', 'Application CRM plante',
-            'Mise à jour Adobe', 'Accès serveur refusé', 'Mot de passe expiré', 'Problème Outlook',
-            'Installer Zoom', 'Panne serveur', 'Règle firewall bloque apps',
-            'Ecran bleu au démarrage', 'Clavier défectueux', 'Souris ne répond pas',
-            'Connexion lente', 'Plus de wifi', 'Erreur système 404', 'Disque dur plein',
-            'Logiciel métier figé', 'Micro ne marche plus', 'Webcam hors service'
-        ];
-        
-        let newTickets = [];
-        const now = new Date();
-        
-        for (let i = 0; i < 150; i++) {
-            const pastDays = Math.floor(Math.random() * 30);
-            const d = new Date(now);
-            d.setDate(d.getDate() - pastDays);
-            
-            const type = types[Math.floor(Math.random() * types.length)];
-            const level = levels[Math.floor(Math.random() * levels.length)];
-            const priority = priorities[Math.floor(Math.random() * priorities.length)];
-            const creator = creators[Math.floor(Math.random() * creators.length)];
-            const title = titles[Math.floor(Math.random() * titles.length)] + ' #' + (i + 1);
-            
-            let status = statuses[Math.floor(Math.random() * statuses.length)];
-            if (pastDays < 3 && Math.random() > 0.3) status = 'Ouvert';
-            else if (pastDays > 10 && Math.random() > 0.2) status = 'Resolu';
-            
-            const assigned = (status !== 'Ouvert') ? techs[Math.floor(Math.random() * techs.length)] : null;
-            
-            newTickets.push({
-                id: Date.now() - Math.floor(Math.random() * 100000) + i,
-                title: title,
-                description: 'Description du problème: ' + title,
-                createdBy: creator,
-                type: type,
-                level: level,
-                status: status,
-                assignedTo: assigned,
-                createdAt: d.toLocaleDateString('fr-FR', {day:'2-digit', month:'2-digit', year:'numeric'}) + ' ' + d.toLocaleTimeString('fr-FR'),
-                priority: priority
-            });
-        }
-        
-        newTickets.sort((a, b) => {
-            const da = a.createdAt.split(' ')[0].split('/').reverse().join('');
-            const db = b.createdAt.split(' ')[0].split('/').reverse().join('');
-            return db.localeCompare(da);
-        });
-        
-        localStorage.setItem('tickets', JSON.stringify(newTickets));
-    }
-}
-
-// Force reseed for rich data
-(function() {
-    var t = JSON.parse(localStorage.getItem('tickets') || '[]');
-    if (t.length < 200 || !t[0].priority || t[0].type === 'Matériel') {
-        localStorage.removeItem('tickets');
-    }
-})();
-
-// -----------------------------------------------------
-// RICH MOCK DATA SEEDER
-// -----------------------------------------------------
-function seedTickets() {
-    var tickets = JSON.parse(localStorage.getItem('tickets') || '[]');
-    if (tickets.length >= 200) return;
+    if (localStorage.getItem('tickets')) return;
     console.log("Seeding Rich Mock Data...");
 
     var statuses = ['Ouvert', 'En cours', 'Resolu', 'Escalade'];
