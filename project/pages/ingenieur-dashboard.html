@@ -186,18 +186,15 @@
         };
 
         var engDetailActions = function(t) {
+            if (t.status === 'Resolu') return '';
+            var users = JSON.parse(localStorage.getItem('users')) || [];
+            var techs = users.filter(function(u){ return u.role === 'technicien'; });
             var html = '';
-            if (t.status === 'Ouvert') {
-                var users = JSON.parse(localStorage.getItem('users')) || [];
-                var techs = users.filter(function(u){ return u.role === 'technicien'; });
-                html += '<select id="engAssignSelect" style="padding:0.45rem 0.75rem;border:1px solid var(--border);border-radius:8px;font-size:0.82rem;margin-right:6px;"><option value="">Choisir un technicien</option>';
-                techs.forEach(function(tech){ html += '<option value="' + tech.name + '">' + tech.name + '</option>'; });
-                html += '</select>';
-                html += '<button class="td-btn td-btn-primary" onclick="var s=document.getElementById(\'engAssignSelect\'); if(s.value){ assignToTech(' + t.id + ',s.value); closeTicketDetail(); }"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Assigner</button>';
-                html += '<button class="td-btn td-btn-success" onclick="engSolveTicket(' + t.id + '); closeTicketDetail();"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Résoudre</button>';
-            } else if (t.status === 'En cours') {
-                html += '<button class="td-btn td-btn-success" onclick="engSolveTicket(' + t.id + '); closeTicketDetail();"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Résoudre</button>';
-            }
+            html += '<select id="engAssignSelect" style="padding:0.45rem 0.75rem;border:1px solid var(--border);border-radius:8px;font-size:0.82rem;"><option value="">Assigner à...</option>';
+            techs.forEach(function(tech){ html += '<option value="' + tech.name + '">' + tech.name + '</option>'; });
+            html += '</select>';
+            html += '<button class="td-btn td-btn-primary" onclick="var s=document.getElementById(\'engAssignSelect\'); if(s.value){ assignToTech(' + t.id + ',s.value); closeTicketDetail(); }"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Assigner</button>';
+            html += '<button class="td-btn td-btn-success" onclick="engSolveTicket(' + t.id + '); closeTicketDetail();"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Résoudre</button>';
             return html;
         };
 
