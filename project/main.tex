@@ -58,6 +58,8 @@
 \definecolor{darkbg}{RGB}{30,41,59}
 \definecolor{successgreen}{RGB}{34,197,94}
 \definecolor{lightgray}{RGB}{245,245,245}
+\definecolor{subsectioncolor}{RGB}{13,148,136}      % Teal — harmonieux avec le bleu
+\definecolor{subsubsectioncolor}{RGB}{15,118,110}   % Teal foncé
 
 % ─── Configuration des hyperliens ───────────────────────────
 \hypersetup{
@@ -83,11 +85,12 @@
 \renewcommand{\headrulewidth}{0.5pt}
 
 % ─── Formatage des titres ───────────────────────────────────
-\titleformat{\chapter}[hang]{\Huge\bfseries\color{darkbg}}{}{0pt}{}
+\titleformat{\chapter}[hang]{\Huge\bfseries\color{primaryblue}}{}{0pt}{}[{\titlerule[1.5pt]}]
 \titleformat{\section}[hang]{\Needspace{5\baselineskip}\Large\bfseries\color{primaryblue}}{}{0pt}{\nopagebreak}
-\titleformat{\subsection}[hang]{\Needspace{4\baselineskip}\large\bfseries\color{darkbg}}{}{0pt}{\nopagebreak}
-\titleformat{\subsubsection}[hang]{\Needspace{3\baselineskip}\normalsize\bfseries\color{primaryblue}}{}{0pt}{\nopagebreak}
+\titleformat{\subsection}[hang]{\Needspace{4\baselineskip}\large\bfseries\color{subsectioncolor}}{}{0pt}{\nopagebreak}
+\titleformat{\subsubsection}[hang]{\Needspace{3\baselineskip}\normalsize\bfseries\color{subsubsectioncolor}}{}{0pt}{\nopagebreak}
 
+\titlespacing*{\chapter}{0pt}{0ex}{3ex}
 \titlespacing*{\section}{0pt}{3ex}{1.5ex}
 \titlespacing*{\subsection}{0pt}{2.5ex}{1ex}
 \titlespacing*{\subsubsection}{0pt}{2ex}{0.8ex}
@@ -109,10 +112,37 @@
 \renewcommand{\listtablename}{Liste des tableaux}
 \renewcommand{\listfigurename}{Liste des figures}
 
+% ─── Justification du texte ─────────────────────────────────
+\usepackage{ragged2e}
+
+% ─── Configuration des légendes ─────────────────────────────
+\captionsetup{
+    font=small,
+    labelfont={bf,color=primaryblue},
+    textfont=normalfont,
+    justification=centering,
+    labelsep=endash,
+    skip=6pt
+}
+
+% ─── Configuration des listes ───────────────────────────────
+\setlist{topsep=0.5em, itemsep=0.2em, parsep=0em, left=2em}
+\setlist[itemize]{label=\textbullet}
+\setlist[enumerate]{label=\arabic*.}
+
+% ─── Placement des flottants ────────────────────────────────
+\floatplacement{figure}{htbp}
+\floatplacement{table}{htbp}
+
+% ─── Paragraphes ────────────────────────────────────────────
+\setlength{\parindent}{1.5em}
+\setlength{\parskip}{0.3em}
+
 % ════════════════════════════════════════════════════════════
 %  DÉBUT DU DOCUMENT
-% ════════════════════════════════════════════════════════════
 \begin{document}
+
+\justifying
 
 % ============================================================
 %  PAGE DE GARDE
@@ -251,8 +281,11 @@ Enfin, j'adresse mes sincères remerciements à ma famille pour leur soutien inc
 \begin{center}
 \Huge\bfseries\color{darkbg} Résumé
 \vspace{1.5cm}
+\end{center}
 
 \normalsize\normalfont
+\justifying
+
 Ce rapport présente la conception et le développement d'un \textbf{Système de Gestion des Réclamations Informatiques (SGRI)}, une application web légère destinée à centraliser, suivre et gérer les incidents informatiques au sein d'une organisation.
 
 \vspace{0.5cm}
@@ -265,8 +298,7 @@ L'application a été développée avec les technologies web standards (HTML5, C
 
 \vspace{0.8cm}
 
-\textbf{Mots-clés :} Gestion des réclamations, Helpdesk, Système d'information, Tickets, Application web, HTML, CSS, JavaScript, Merise.
-\end{center}
+\noindent\textbf{Mots-clés :} Gestion des réclamations, Helpdesk, Système d'information, Tickets, Application web, HTML, CSS, JavaScript, Merise.
 
 \vspace*{\fill}
 
@@ -282,8 +314,11 @@ L'application a été développée avec les technologies web standards (HTML5, C
 \begin{center}
 \Huge\bfseries\color{darkbg} Abstract
 \vspace{1.5cm}
+\end{center}
 
 \normalsize\normalfont
+\justifying
+
 This report presents the design and development of an \textbf{IT Incident Management System (SGRI)}, a lightweight web application aimed at centralizing, tracking, and resolving IT-related problems within an organization.
 
 \vspace{0.5cm}
@@ -296,8 +331,7 @@ The application was developed using standard web technologies (HTML5, CSS3, Vani
 
 \vspace{0.8cm}
 
-\textbf{Keywords:} IT Support, Incident Management, Helpdesk, Web Application, Tickets, HTML, CSS, JavaScript, Merise.
-\end{center}
+\noindent\textbf{Keywords:} IT Support, Incident Management, Helpdesk, Web Application, Tickets, HTML, CSS, JavaScript, Merise.
 
 \vspace*{\fill}
 \end{otherlanguage}
@@ -357,23 +391,19 @@ The application was developed using standard web technologies (HTML5, CSS3, Vani
 % ══════════════════════════════════════════════════════════════
 %  CHAPITRE I : INTRODUCTION GÉNÉRALE
 % ══════════════════════════════════════════════════════════════
-\chapter*{Introduction générale}
-\addcontentsline{toc}{chapter}{I --- Introduction Générale}
+\chapter{Introduction générale}
 
-\section*{Présentation générale du projet}
-\addcontentsline{toc}{section}{Présentation générale du projet}
+\section{Présentation générale du projet}
 
 Dans un monde où la transformation numérique est au coeur des préoccupations des entreprises, la continuité des services informatiques est devenue un enjeu stratégique majeur. Chaque minute d'arrêt d'un service critique peut représenter une perte financière significative et une dégradation de la productivité des équipes. Les systèmes d'information jouent désormais un rôle central dans le fonctionnement quotidien des organisations, quelle que soit leur taille ou leur secteur d'activité.
 
 Cependant, force est de constater que de nombreuses entreprises, en particulier les PME, peinent à structurer efficacement la gestion de leurs incidents informatiques. Entre les appels téléphoniques non tracés, les e-mails perdus dans des boîtes surchargées et les fichiers Excel devenus ingérables, le suivi des pannes reste souvent chaotique. Les techniciens perdent un temps précieux à rechercher des informations dispersées, tandis que les utilisateurs finaux subissent des délais de résolution excessifs.
 
-\section*{Contexte informatique des entreprises}
-\addcontentsline{toc}{section}{Contexte informatique des entreprises}
+\section{Contexte informatique des entreprises}
 
 Le contexte actuel des systèmes d'information est marqué par une complexité croissante. Les infrastructures se multiplient, les applications se diversifient et les utilisateurs sont de plus en plus exigeants en termes de disponibilité et de réactivité. Dans ce paysage, la gestion des incidents n'est plus une option mais une nécessité opérationnelle. Les directions des systèmes d'information (DSI) doivent mettre en place des processus robustes pour garantir la continuité des services.
 
-\section*{Importance de la gestion des incidents IT}
-\addcontentsline{toc}{section}{Importance de la gestion des incidents IT}
+\section{Importance de la gestion des incidents IT}
 
 Une gestion efficace des incidents informatiques permet de :
 \begin{itemize}
@@ -383,8 +413,7 @@ Une gestion efficace des incidents informatiques permet de :
     \item Constituer une base de connaissances exploitable pour la prévention.
 \end{itemize}
 
-\section*{Objectifs du projet}
-\addcontentsline{toc}{section}{Objectifs du projet}
+\section{Objectifs du projet}
 
 Le projet \textbf{SGRI -- TicketFlow} poursuit les objectifs suivants :
 \begin{itemize}
@@ -418,7 +447,7 @@ Cette dispersion empêche d'avoir une vision globale de l'activité du service i
 
 Les utilisateurs qui signalent un problème sont rarement tenus informés de l'avancement de leur demande. Ils doivent relancer plusieurs fois le service informatique pour obtenir des informations, ce qui génère frustration et mécontentement. À l'inverse, les techniciens manquent de visibilité sur la charge de travail globale et peinent à prioriser leurs interventions.
 
-\begin{table}[H]
+\begin{table}[htbp]
     \centering
     \caption{Problèmes identifiés et impacts sur l'organisation}
     \label{tab:problemes}
@@ -552,7 +581,7 @@ Chaque rôle dispose d'un tableau de bord personnalisé :
     \item \textbf{Chef de service :} Indicateurs de performance et statistiques globales.
 \end{itemize}
 
-\begin{table}[H]
+\begin{table}[htbp]
     \centering
     \caption{Récapitulatif des besoins fonctionnels par module}
     \label{tab:besoins-fonctionnels}
@@ -590,7 +619,7 @@ Le code source doit être structuré de manière claire avec une séparation net
 
 L'application doit être accessible aux utilisateurs non techniques. Les formulaires doivent être simples et guidés, les actions importantes doivent être confirmées, et les messages d'erreur doivent être clairs et explicites.
 
-\begin{table}[H]
+\begin{table}[htbp]
     \centering
     \caption{Récapitulatif des besoins non fonctionnels}
     \label{tab:besoins-non-fonctionnels}
@@ -635,7 +664,7 @@ La méthode la plus répandue dans les petites organisations consiste à utilise
 
 Le marché des logiciels de gestion des services informatiques (ITSM) propose des solutions matures et complètes :
 
-\begin{table}[H]
+\begin{table}[htbp]
     \centering
     \caption{Comparatif des solutions professionnelles du marché}
     \label{tab:solutions-marche}
@@ -685,7 +714,7 @@ Face aux limites identifiées, nous proposons le \textbf{Système de Gestion des
 
 L'architecture du SGRI repose sur un modèle où le frontend assume l'ensemble des responsabilités applicatives. La couche de présentation est assurée par des fichiers HTML structurés par vue fonctionnelle. La logique métier est portée par des modules JavaScript spécialisés. La persistance des données est gérée via l'API localStorage du navigateur.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=0.8\textwidth]{archi-sys.png}
     \caption{Architecture du système SGRI}
@@ -729,7 +758,7 @@ Visual Studio Code a été choisi comme éditeur de code pour sa légèreté, sa
 
 Le navigateur Google Chrome a été utilisé pour tester l'application et exploiter les outils de développement (DevTools) pour le débogage, l'inspection du DOM et l'analyse des performances.
 
-\begin{table}[H]
+\begin{table}[htbp]
     \centering
     \caption{Récapitulatif des outils de développement}
     \label{tab:outils}
@@ -781,7 +810,7 @@ JavaScript est le langage de programmation qui apporte l'interactivité et le dy
     \item Gérer les transitions d'interface et les événements utilisateur.
 \end{itemize}
 
-\begin{table}[H]
+\begin{table}[htbp]
     \centering
     \caption{Rôle de chaque langage dans l'application}
     \label{tab:langages}
@@ -803,9 +832,9 @@ JavaScript est le langage de programmation qui apporte l'interactivité et le dy
 
 Le projet utilise l'API \texttt{localStorage} du navigateur pour la persistance des données. Cette API permet de stocker des données sous forme de paires clé-valeur directement dans le navigateur de l'utilisateur. Les données persistent même après la fermeture du navigateur et sont accessibles uniquement depuis la même origine.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.7\textwidth]{tech-stack.png}
+    \includegraphics[width=0.8\textwidth]{tech-stack.png}
     \caption{Stack technologique du projet}
     \label{fig:techstack}
 \end{figure}
@@ -899,7 +928,7 @@ Le MCD représente la structure des données indépendamment de toute considéra
 
 \subsection{Entités du MCD}
 
-\begin{table}[H]
+\begin{table}[htbp]
     \centering
     \caption{Entités du modèle conceptuel}
     \label{tab:entites-mcd}
@@ -927,9 +956,9 @@ Les relations entre les entités sont les suivantes :
     \item Un \textbf{DEPARTEMENT} contient plusieurs \textbf{UTILISATEUR} (1,n).
 \end{itemize}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
-    \includegraphics[width=\textwidth]{MCD.jpeg}
+    \includegraphics[width=0.85\textwidth]{MMCD.jpeg}
     \caption{Modèle Conceptuel des Données (MCD) du SGRI}
     \label{fig:mcd}
 \end{figure}
@@ -951,9 +980,9 @@ Les clés étrangères (\#) matérialisent les relations entre les entités.
 
 Le schéma physique des données illustre l'implémentation via le format JSON dans le localStorage :
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/mcd-sgri.png}
+    \includegraphics[width=0.8\textwidth]{mmpsd.png}
     \caption{Schéma physique des données (stockage JSON dans localStorage)}
     \label{fig:spd}
 \end{figure}
@@ -989,7 +1018,7 @@ La page de connexion constitue le point d'entrée unique de l'application. Elle 
 
 \paragraph{Gestion des sessions :} Une fois connecté, les informations de session sont stockées dans le localStorage. Chaque page vérifie la validité de la session au chargement. En cas de session invalide, l'utilisateur est redirigé vers la page de connexion.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=0.8\textwidth]{con.png}
     \caption{Page de connexion de l'application}
@@ -998,9 +1027,9 @@ La page de connexion constitue le point d'entrée unique de l'application. Elle 
 
 \subsection{Diagramme de séquence -- Authentification}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.9\textwidth]{auth.png}
+    \includegraphics[width=0.8\textwidth]{auth.png}
     \caption{Diagramme de séquence du processus d'authentification}
     \label{fig:seq-auth}
 \end{figure}
@@ -1040,9 +1069,9 @@ function login(username, password, role) {
 
 Le dashboard de l'utilisateur est conçu pour offrir une expérience simple et intuitive centrée sur la création et le suivi des tickets personnels.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/dashboard-user.png}
+    \includegraphics[width=0.8\textwidth]{user.png}
     \caption{Dashboard Utilisateur}
     \label{fig:dashboard-user}
 \end{figure}
@@ -1051,8 +1080,6 @@ Le dashboard de l'utilisateur est conçu pour offrir une expérience simple et i
 
 \begin{itemize}
     \item \textbf{En-tête personnalisé :} Message de bienvenue avec le nom de l'utilisateur connecté.
-    \begin{itemize}
-    \end{itemize}
     \item \textbf{Bouton ``Créer un Ticket'' :} Ouvre une modale de création.
     \item \textbf{Tableau ``Mes Tickets'' :} Liste des tickets avec colonnes : ID, Titre, Type, Niveau, Statut (badge coloré), Date, Assigné à.
 \end{itemize}
@@ -1074,9 +1101,9 @@ La modale de création permet de saisir les informations suivantes :
 
 Le dashboard du technicien est l'interface opérationnelle principale pour la gestion des interventions.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/dashboard-technicien.png}
+    \includegraphics[width=0.8\textwidth]{tech.png}
     \caption{Dashboard Technicien}
     \label{fig:dashboard-technicien}
 \end{figure}
@@ -1100,9 +1127,9 @@ Le dashboard du technicien est l'interface opérationnelle principale pour la ge
 
 L'ingénieur supervise le flux des réclamations et assure la gestion des problèmes complexes.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/dashboard-ingenieur.png}
+    \includegraphics[width=0.8\textwidth]{eng.png}
     \caption{Dashboard Ingénieur}
     \label{fig:dashboard-ingenieur}
 \end{figure}
@@ -1122,9 +1149,9 @@ L'ingénieur supervise le flux des réclamations et assure la gestion des probl�
 
 Le chef de service dispose d'une vue stratégique complète sur l'activité du service informatique.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/dashboard-chef.png}
+    \includegraphics[width=0.8\textwidth]{chef.png}
     \caption{Dashboard Chef de Service}
     \label{fig:dashboard-chef}
 \end{figure}
@@ -1158,9 +1185,9 @@ La page de gestion des utilisateurs permet d'administrer les comptes de l'applic
     \item \textbf{Validation :} Vérification de l'unicité du nom d'utilisateur.
 \end{itemize}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/gestion-utilisateurs.png}
+    \includegraphics[width=0.8\textwidth]{ges.png}
     \caption{Page de gestion des utilisateurs}
     \label{fig:users}
 \end{figure}
@@ -1181,7 +1208,7 @@ Chaque ticket conserve un historique complet des actions menées tout au long de
     \item Actions de résolution et de clôture.
 \end{itemize}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=0.8\textwidth]{his-ticket.png}
     \caption{Historique des actions d'un ticket}
@@ -1191,8 +1218,7 @@ Chaque ticket conserve un historique complet des actions menées tout au long de
 % ══════════════════════════════════════════════════════════════
 %  CHAPITRE VIII : CONCLUSION
 % ══════════════════════════════════════════════════════════════
-\chapter*{Conclusion}
-\addcontentsline{toc}{chapter}{VIII --- Conclusion}
+\chapter{Conclusion}
 
 \section{Résultats obtenus}
 
@@ -1213,7 +1239,7 @@ Les résultats obtenus sont les suivants :
 
 Ce projet de fin d'année nous a permis de développer et consolider plusieurs compétences :
 
-\begin{table}[H]
+\begin{table}[htbp]
     \centering
     \caption{Compétences acquises lors du projet}
     \label{tab:competences}
