@@ -37,9 +37,7 @@ function seedTickets() {
     if (localStorage.getItem('tickets')) return;
     
     const types = ['Soft', 'Hard', 'Materiel'];
-    const levels = ['Normal', 'Eleve'];
-    const statuses = ['Ouvert', 'En cours', 'Resolu', 'Escalade'];
-    const priorities = ['Basse', 'Moyenne', 'Haute', 'Critique'];
+    const statuses = ['Ouvert', 'En cours', 'Resolu'];
     
     const titles = [
         'Problème de connexion VPN', 'Imprimante réseau bloquée', 'Application CRM plante', 
@@ -62,16 +60,12 @@ function seedTickets() {
         const createdAtDate = new Date(now - randomTimeOffset);
         
         const type = types[Math.floor(Math.random() * types.length)];
-        const level = levels[Math.floor(Math.random() * levels.length)];
         let status = statuses[Math.floor(Math.random() * statuses.length)];
-        const priority = priorities[Math.floor(Math.random() * priorities.length)];
         const title = titles[Math.floor(Math.random() * titles.length)] + ' #' + (i + 1);
         
         let assignedTo = null;
         if (status === 'En cours' || status === 'Resolu') {
             assignedTo = techs[Math.floor(Math.random() * techs.length)];
-        } else if (status === 'Escalade') {
-            assignedTo = null; // En attente ingénieur
         }
         
         tickets.push({
@@ -80,12 +74,10 @@ function seedTickets() {
             description: 'Description générique pour ce problème signalé par l\'utilisateur. Vérification requise.',
             createdBy: authors[Math.floor(Math.random() * authors.length)],
             type: type,
-            level: level,
             status: status,
             assignedTo: assignedTo,
             createdAt: createdAtDate.toLocaleString('fr-FR'),
-            createdAtMs: createdAtDate.getTime(),
-            priority: priority
+            createdAtMs: createdAtDate.getTime()
         });
     }
     

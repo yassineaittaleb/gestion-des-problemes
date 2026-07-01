@@ -96,16 +96,17 @@
             <section style="background:#fff; border-radius:12px; border:1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.02); overflow:hidden;">
                 <div style="display:flex; align-items:center; justify-content:space-between; padding:1.25rem 1.5rem; border-bottom:1px solid var(--border);">
                     <div style="display:flex; gap:0.5rem;">
-                        <button id="tabEsc" onclick="switchEngTab('esc')" style="padding:0.45rem 1rem; border-radius:20px; border:none; font-size:0.8rem; font-weight:600; cursor:pointer; background:var(--primary); color:#fff;">Escaladés <span id="escalatedCount" style="background:rgba(255,255,255,0.25); padding:0 6px; border-radius:10px; margin-left:4px; font-size:0.7rem;">0</span></button>
-                        <button id="tabAll" onclick="switchEngTab('all')" style="padding:0.45rem 1rem; border-radius:20px; border:1px solid var(--border); font-size:0.8rem; font-weight:600; cursor:pointer; background:#fff; color:var(--text-secondary);">Tous les Tickets <span id="allCount" style="background:var(--bg-alt); padding:0 6px; border-radius:10px; margin-left:4px; font-size:0.7rem;">0</span></button>
+                        <button id="tabAll" onclick="switchEngFilter('all')" style="padding:0.45rem 1rem; border-radius:20px; border:none; font-size:0.8rem; font-weight:600; cursor:pointer; background:var(--primary); color:#fff;">Tous <span id="allCount" style="background:rgba(255,255,255,0.25); padding:0 6px; border-radius:10px; margin-left:4px; font-size:0.7rem;">0</span></button>
+                        <button id="tabOuvert" onclick="switchEngFilter('Ouvert')" style="padding:0.45rem 1rem; border-radius:20px; border:1px solid var(--border); font-size:0.8rem; font-weight:600; cursor:pointer; background:#fff; color:var(--text-secondary);">Ouverts</button>
+                        <button id="tabProgress" onclick="switchEngFilter('En cours')" style="padding:0.45rem 1rem; border-radius:20px; border:1px solid var(--border); font-size:0.8rem; font-weight:600; cursor:pointer; background:#fff; color:var(--text-secondary);">En cours</button>
+                        <button id="tabResolved" onclick="switchEngFilter('Resolu')" style="padding:0.45rem 1rem; border-radius:20px; border:1px solid var(--border); font-size:0.8rem; font-weight:600; cursor:pointer; background:#fff; color:var(--text-secondary);">Résolus</button>
                     </div>
                     <div style="position:relative;">
                         <svg style="position:absolute;left:8px;top:50%;transform:translateY(-50%);width:14px;height:14px;color:var(--text-muted);pointer-events:none;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                         <input type="text" id="engSearchInput" class="search-box" placeholder="Rechercher tickets..." style="padding-left:28px;">
                     </div>
                 </div>
-                <div id="escalatedTicketsContainer" style="padding:0; max-height:500px; overflow-y:auto;"></div>
-                <div id="allTicketsContainer" style="padding:0; max-height:500px; overflow-y:auto; display:none;"></div>
+                <div id="allTicketsContainer" style="padding:0; max-height:500px; overflow-y:auto;"></div>
             </section>
         </main>
     </div>
@@ -124,22 +125,22 @@
         
         $('sidebarAvatar').textContent = user.name.charAt(0);
 
-        var pageStates = { 'escalatedTicketsContainer': 1, 'allTicketsContainer': 1 };
-        var pageSize = 12;
+        var engFilter = 'all';
+        var engPage = 1;
+        var engPageSize = 12;
 
         function renderEngTable(tickets, container) {
-            var containerId = container.id;
-            var page = pageStates[containerId] || 1;
-            var totalPages = Math.ceil(tickets.length / pageSize) || 1;
+            var page = engPage;
+            var totalPages = Math.ceil(tickets.length / engPageSize) || 1;
             if (page > totalPages) page = totalPages;
-            pageStates[containerId] = page;
+            engPage = page;
 
             if (tickets.length === 0) {
                 container.innerHTML = '<div style="padding:3rem; text-align:center; color:var(--text-muted); font-size:0.9rem;">Aucun ticket dans cette catégorie.</div>';
                 return;
             }
 
-            var paginated = tickets.slice((page - 1) * pageSize, page * pageSize);
+            var paginated = tickets.slice((page - 1) * engPageSize, page * engPageSize);
 
             var html = '<table style="width:100%; border-collapse:collapse; font-size:0.85rem;">';
             html += '<thead><tr style="border-bottom:1px solid var(--border); text-align:left;"><th style="padding:0.75rem 1.5rem; font-size:0.7rem; font-weight:700; text-transform:uppercase; color:var(--text-muted);">N° TICKET</th><th style="padding:0.75rem 0.5rem; font-size:0.7rem; font-weight:700; text-transform:uppercase; color:var(--text-muted);">CLIENT</th><th style="padding:0.75rem 0.5rem; font-size:0.7rem; font-weight:700; text-transform:uppercase; color:var(--text-muted);">DATE</th><th style="padding:0.75rem 0.5rem; font-size:0.7rem; font-weight:700; text-transform:uppercase; color:var(--text-muted);">TYPE</th><th style="padding:0.75rem 1.5rem; font-size:0.7rem; font-weight:700; text-transform:uppercase; color:var(--text-muted);">STATUT</th></tr></thead><tbody>';
@@ -161,41 +162,41 @@
             // Pagination Controls
             if (totalPages > 1) {
                 html += '<div style="display:flex; justify-content:space-between; align-items:center; padding:1rem 1.5rem; border-top:1px solid var(--border); background:#fff;">';
-                html += '<span style="font-size:0.8rem; color:var(--text-muted);">Affichage de ' + (((page-1)*pageSize)+1) + ' à ' + Math.min(page*pageSize, tickets.length) + ' sur ' + tickets.length + ' tickets</span>';
+                html += '<span style="font-size:0.8rem; color:var(--text-muted);">Affichage de ' + (((page-1)*engPageSize)+1) + ' à ' + Math.min(page*engPageSize, tickets.length) + ' sur ' + tickets.length + ' tickets</span>';
                 html += '<div style="display:flex; gap:0.25rem;">';
-                html += '<button onclick="changePageEng(\'' + containerId + '\', ' + (page-1) + ')" ' + (page===1?'disabled':'') + ' style="padding:0.4rem 0.75rem; border:1px solid var(--border); border-radius:6px; background:#fff; cursor:'+(page===1?'default':'pointer')+'; color:var(--text-secondary); font-size:0.8rem;">Précédent</button>';
+                html += '<button onclick="changePageEng(' + (page-1) + ')" ' + (page===1?'disabled':'') + ' style="padding:0.4rem 0.75rem; border:1px solid var(--border); border-radius:6px; background:#fff; cursor:'+(page===1?'default':'pointer')+'; color:var(--text-secondary); font-size:0.8rem;">Précédent</button>';
                 
                 var startP = Math.max(1, page - 2);
                 var endP = Math.min(totalPages, page + 2);
                 for(var p=startP; p<=endP; p++) {
                     var isAct = (p === page);
-                    html += '<button onclick="changePageEng(\'' + containerId + '\', ' + p + ')" style="padding:0.4rem 0.75rem; border:1px solid '+(isAct?'var(--primary)':'var(--border)')+'; border-radius:6px; background:'+(isAct?'var(--primary)':'#fff')+'; cursor:pointer; color:'+(isAct?'#fff':'var(--text-secondary)')+'; font-weight:'+(isAct?'700':'400')+'; font-size:0.8rem;">'+p+'</button>';
+                    html += '<button onclick="changePageEng(' + p + ')" style="padding:0.4rem 0.75rem; border:1px solid '+(isAct?'var(--primary)':'var(--border)')+'; border-radius:6px; background:'+(isAct?'var(--primary)':'#fff')+'; cursor:pointer; color:'+(isAct?'#fff':'var(--text-secondary)')+'; font-weight:'+(isAct?'700':'400')+'; font-size:0.8rem;">'+p+'</button>';
                 }
 
-                html += '<button onclick="changePageEng(\'' + containerId + '\', ' + (page+1) + ')" ' + (page===totalPages?'disabled':'') + ' style="padding:0.4rem 0.75rem; border:1px solid var(--border); border-radius:6px; background:#fff; cursor:'+(page===totalPages?'default':'pointer')+'; color:var(--text-secondary); font-size:0.8rem;">Suivant</button>';
+                html += '<button onclick="changePageEng(' + (page+1) + ')" ' + (page===totalPages?'disabled':'') + ' style="padding:0.4rem 0.75rem; border:1px solid var(--border); border-radius:6px; background:#fff; cursor:'+(page===totalPages?'default':'pointer')+'; color:var(--text-secondary); font-size:0.8rem;">Suivant</button>';
                 html += '</div></div>';
             }
 
             container.innerHTML = html;
         }
 
-        window.changePageEng = function(containerId, newPage) {
-            pageStates[containerId] = newPage;
-            loadEscalatedTickets();
+        window.changePageEng = function(newPage) {
+            engPage = newPage;
+            loadEngTickets();
         };
 
         var engDetailActions = function(t) {
             var html = '';
-            if (t.status === 'Escalade') {
-                html += '<button class="td-btn td-btn-primary" onclick="takeEscalated(' + t.id + '); closeTicketDetail();" style="margin-right:8px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Prendre en charge</button>';
-                html += '<button class="td-btn td-btn-success" onclick="resolveEscalated(' + t.id + '); closeTicketDetail();" style="background:#16a34a; color:#fff; border:none;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Résoudre</button>';
-            } else if (t.status === 'En cours' && t.assignedTo === user.name) {
-                html += '<button class="td-btn td-btn-success" onclick="resolveEscalated(' + t.id + '); closeTicketDetail();" style="background:#16a34a; color:#fff; border:none;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Résoudre</button>';
+            if (t.status === 'Ouvert') {
+                var users = JSON.parse(localStorage.getItem('users')) || [];
+                var techs = users.filter(function(u){ return u.role === 'technicien'; });
+                html += '<select id="engAssignSelect" style="padding:0.45rem 0.75rem;border:1px solid var(--border);border-radius:8px;font-size:0.82rem;margin-right:6px;"><option value="">Choisir un technicien</option>';
+                techs.forEach(function(tech){ html += '<option value="' + tech.name + '">' + tech.name + '</option>'; });
+                html += '</select>';
+                html += '<button class="td-btn td-btn-primary" onclick="var s=document.getElementById(\'engAssignSelect\'); if(s.value){ assignToTech(' + t.id + ',s.value); closeTicketDetail(); }"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Assigner</button>';
             }
             return html;
         };
-
-        window.takeEscalated = function(id) { takeTicket(id, user.name); loadEscalatedTickets(); };
 
         function getEngFilter() {
             return ($('engSearchInput').value || '').toLowerCase().trim();
@@ -213,42 +214,41 @@
             });
         }
 
-        function loadEscalatedTickets() {
+        function loadEngTickets() {
             var all = getTickets();
-            var escalated = getEscalatedTickets();
-            var filteredAll = filterTickets(all);
-            var filteredEsc = filterTickets(escalated);
-            $('escalatedCount').textContent = filteredEsc.length;
-            $('allCount').textContent = filteredAll.length;
-
-            renderEngTable(filteredEsc, $('escalatedTicketsContainer'));
-            renderEngTable(filteredAll, $('allTicketsContainer'));
+            var filtered = engFilter === 'all' ? all : all.filter(function(t){ return t.status === engFilter; });
+            var searched = filterTickets(filtered);
+            $('allCount').textContent = all.length;
+            renderEngTable(searched, $('allTicketsContainer'));
         }
 
-        window.switchEngTab = function(tab) {
-            if (tab === 'esc') {
-                $('escalatedTicketsContainer').style.display = '';
-                $('allTicketsContainer').style.display = 'none';
-                $('tabEsc').style.background = 'var(--primary)'; $('tabEsc').style.color = '#fff'; $('tabEsc').style.border = 'none';
-                $('tabAll').style.background = '#fff'; $('tabAll').style.color = 'var(--text-secondary)'; $('tabAll').style.border = '1px solid var(--border)';
-            } else {
-                $('escalatedTicketsContainer').style.display = 'none';
-                $('allTicketsContainer').style.display = '';
-                $('tabAll').style.background = 'var(--primary)'; $('tabAll').style.color = '#fff'; $('tabAll').style.border = 'none';
-                $('tabEsc').style.background = '#fff'; $('tabEsc').style.color = 'var(--text-secondary)'; $('tabEsc').style.border = '1px solid var(--border)';
-            }
+        window.switchEngFilter = function(status) {
+            engFilter = status;
+            var btns = ['tabAll','tabOuvert','tabProgress','tabResolved'];
+            btns.forEach(function(id) {
+                var b = document.getElementById(id);
+                if (b) { b.style.background = '#fff'; b.style.color = 'var(--text-secondary)'; b.style.border = '1px solid var(--border)'; }
+            });
+            var map = { all:'tabAll', Ouvert:'tabOuvert', 'En cours':'tabProgress', Resolu:'tabResolved' };
+            var active = document.getElementById(map[status]);
+            if (active) { active.style.background = 'var(--primary)'; active.style.color = '#fff'; active.style.border = 'none'; }
+            engPage = 1;
+            loadEngTickets();
         };
 
-        window.resolveEscalated = function(id) { resolveTicket(id); loadEscalatedTickets(); };
+        window.assignToTech = function(id, techName) {
+            if (!techName) return;
+            takeTicket(id, techName);
+            loadEngTickets();
+        };
 
-        loadEscalatedTickets();
+        loadEngTickets();
 
         var engSearchTimeout;
         $('engSearchInput').addEventListener('input', function() {
             clearTimeout(engSearchTimeout);
-            pageStates['escalatedTicketsContainer'] = 1;
-            pageStates['allTicketsContainer'] = 1;
-            engSearchTimeout = setTimeout(loadEscalatedTickets, 200);
+            engPage = 1;
+            engSearchTimeout = setTimeout(loadEngTickets, 200);
         });
 
         // Draw chart

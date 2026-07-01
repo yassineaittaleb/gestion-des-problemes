@@ -91,15 +91,13 @@
             <!-- Tickets Section (Page-like) -->
             <section style="background:#fff; border-radius:12px; border:1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.02); overflow:hidden;">
                 <!-- Tab Header -->
-                <div style="display:flex; align-items:center; justify-content:space-between; padding:1.25rem 1.5rem; border-bottom:1px solid var(--border);">
+                <div style="display:flex; align-items:center; padding:1.25rem 1.5rem; border-bottom:1px solid var(--border);">
                     <div style="display:flex; gap:0.5rem;">
-                        <button id="tabOpen" onclick="switchTab('open')" style="padding:0.45rem 1rem; border-radius:20px; border:none; font-size:0.8rem; font-weight:600; cursor:pointer; background:var(--primary); color:#fff; transition:all 0.15s;">Tickets Ouverts <span id="openCount" style="background:rgba(255,255,255,0.25); padding:0 6px; border-radius:10px; margin-left:4px; font-size:0.7rem;">0</span></button>
-                        <button id="tabMy" onclick="switchTab('my')" style="padding:0.45rem 1rem; border-radius:20px; border:1px solid var(--border); font-size:0.8rem; font-weight:600; cursor:pointer; background:#fff; color:var(--text-secondary); transition:all 0.15s;">Mes Tickets <span id="myCount" style="background:var(--bg-alt); padding:0 6px; border-radius:10px; margin-left:4px; font-size:0.7rem;">0</span></button>
+                        <button id="tabMy" onclick="switchTab('my')" style="padding:0.45rem 1rem; border-radius:20px; border:none; font-size:0.8rem; font-weight:600; cursor:pointer; background:var(--primary); color:#fff; transition:all 0.15s;">Mes Tickets <span id="myCount" style="background:rgba(255,255,255,0.25); padding:0 6px; border-radius:10px; margin-left:4px; font-size:0.7rem;">0</span></button>
                     </div>
                 </div>
                 <!-- Table Content -->
-                <div id="openTicketsContainer" style="padding:0;"></div>
-                <div id="myTicketsContainer" style="padding:0; display:none;"></div>
+                <div id="myTicketsContainer" style="padding:0;"></div>
             </section>
         </main>
     </div>
@@ -118,22 +116,21 @@
         
         $('sidebarAvatar').textContent = user.name.charAt(0);
 
-        var pageStates = { 'openTicketsContainer': 1, 'myTicketsContainer': 1 };
-        var pageSize = 12;
+        var techPage = 1;
+        var techPageSize = 12;
 
-        function renderCleanTable(tickets, container, detailActionFn) {
-            var containerId = container.id;
-            var page = pageStates[containerId] || 1;
-            var totalPages = Math.ceil(tickets.length / pageSize) || 1;
+        function renderTechTable(tickets, container) {
+            var page = techPage;
+            var totalPages = Math.ceil(tickets.length / techPageSize) || 1;
             if (page > totalPages) page = totalPages;
-            pageStates[containerId] = page;
+            techPage = page;
 
             if (tickets.length === 0) {
-                container.innerHTML = '<div style="padding:3rem; text-align:center; color:var(--text-muted); font-size:0.9rem;">Aucun ticket dans cette catégorie.</div>';
+                container.innerHTML = '<div style="padding:3rem; text-align:center; color:var(--text-muted); font-size:0.9rem;">Aucun ticket assigné pour le moment.</div>';
                 return;
             }
 
-            var paginated = tickets.slice((page - 1) * pageSize, page * pageSize);
+            var paginated = tickets.slice((page - 1) * techPageSize, page * techPageSize);
             
             var html = '<table style="width:100%; border-collapse:collapse; font-size:0.85rem;">';
             html += '<thead><tr style="border-bottom:1px solid var(--border); text-align:left;"><th style="padding:0.75rem 1.5rem; font-size:0.7rem; font-weight:700; text-transform:uppercase; color:var(--text-muted);">N° TICKET</th><th style="padding:0.75rem 0.5rem; font-size:0.7rem; font-weight:700; text-transform:uppercase; color:var(--text-muted);">CLIENT</th><th style="padding:0.75rem 0.5rem; font-size:0.7rem; font-weight:700; text-transform:uppercase; color:var(--text-muted);">DATE</th><th style="padding:0.75rem 0.5rem; font-size:0.7rem; font-weight:700; text-transform:uppercase; color:var(--text-muted);">TYPE</th><th style="padding:0.75rem 1.5rem; font-size:0.7rem; font-weight:700; text-transform:uppercase; color:var(--text-muted);">STATUT</th></tr></thead><tbody>';
@@ -142,7 +139,7 @@
                 var colors = ['#b91c1c','#2563eb','#7c3aed','#d97706','#16a34a'];
                 var bgColor = colors[Math.abs(t.id) % colors.length];
                 var dateStr = t.createdAt.split(' ')[0];
-                html += '<tr style="border-bottom:1px solid var(--border-light); transition:background 0.1s; cursor:pointer;" onmouseenter="this.style.background=\'var(--bg-alt)\'" onmouseleave="this.style.background=\'#fff\'" onclick="openTicketDetail(' + t.id + ', currentDetailActions)">';
+                html += '<tr style="border-bottom:1px solid var(--border-light); transition:background 0.1s; cursor:pointer;" onmouseenter="this.style.background=\'var(--bg-alt)\'" onmouseleave="this.style.background=\'#fff\'" onclick="openTicketDetail(' + t.id + ', techDetailActions)">';
                 html += '<td style="padding:0.85rem 1.5rem; font-weight:600; color:var(--text-secondary);">#' + t.id.toString().slice(-4) + '</td>';
                 html += '<td style="padding:0.85rem 0.5rem;"><div style="display:flex; align-items:center; gap:0.65rem;"><div style="width:32px;height:32px;border-radius:50%;background:' + bgColor + ';color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;flex-shrink:0;">' + initials + '</div><div><div style="font-weight:600; color:var(--text);">' + t.createdBy + '</div><div style="font-size:0.75rem; color:var(--text-muted); margin-top:1px; max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">' + t.title + '</div></div></div></td>';
                 html += '<td style="padding:0.85rem 0.5rem; color:var(--text-secondary);">' + dateStr + '</td>';
@@ -152,80 +149,50 @@
             });
             html += '</tbody></table>';
 
-            // Pagination Controls
             if (totalPages > 1) {
                 html += '<div style="display:flex; justify-content:space-between; align-items:center; padding:1rem 1.5rem; border-top:1px solid var(--border); background:#fff;">';
-                html += '<span style="font-size:0.8rem; color:var(--text-muted);">Affichage de ' + (((page-1)*pageSize)+1) + ' à ' + Math.min(page*pageSize, tickets.length) + ' sur ' + tickets.length + ' tickets</span>';
+                html += '<span style="font-size:0.8rem; color:var(--text-muted);">Affichage de ' + (((page-1)*techPageSize)+1) + ' à ' + Math.min(page*techPageSize, tickets.length) + ' sur ' + tickets.length + ' tickets</span>';
                 html += '<div style="display:flex; gap:0.25rem;">';
-                html += '<button onclick="changePage(\'' + containerId + '\', ' + (page-1) + ')" ' + (page===1?'disabled':'') + ' style="padding:0.4rem 0.75rem; border:1px solid var(--border); border-radius:6px; background:#fff; cursor:'+(page===1?'default':'pointer')+'; color:var(--text-secondary); font-size:0.8rem;">Précédent</button>';
+                html += '<button onclick="changeTechPage(' + (page-1) + ')" ' + (page===1?'disabled':'') + ' style="padding:0.4rem 0.75rem; border:1px solid var(--border); border-radius:6px; background:#fff; cursor:'+(page===1?'default':'pointer')+'; color:var(--text-secondary); font-size:0.8rem;">Précédent</button>';
                 
                 var startP = Math.max(1, page - 2);
                 var endP = Math.min(totalPages, page + 2);
                 for(var p=startP; p<=endP; p++) {
                     var isAct = (p === page);
-                    html += '<button onclick="changePage(\'' + containerId + '\', ' + p + ')" style="padding:0.4rem 0.75rem; border:1px solid '+(isAct?'var(--primary)':'var(--border)')+'; border-radius:6px; background:'+(isAct?'var(--primary)':'#fff')+'; cursor:pointer; color:'+(isAct?'#fff':'var(--text-secondary)')+'; font-weight:'+(isAct?'700':'400')+'; font-size:0.8rem;">'+p+'</button>';
+                    html += '<button onclick="changeTechPage(' + p + ')" style="padding:0.4rem 0.75rem; border:1px solid '+(isAct?'var(--primary)':'var(--border)')+'; border-radius:6px; background:'+(isAct?'var(--primary)':'#fff')+'; cursor:pointer; color:'+(isAct?'#fff':'var(--text-secondary)')+'; font-weight:'+(isAct?'700':'400')+'; font-size:0.8rem;">'+p+'</button>';
                 }
 
-                html += '<button onclick="changePage(\'' + containerId + '\', ' + (page+1) + ')" ' + (page===totalPages?'disabled':'') + ' style="padding:0.4rem 0.75rem; border:1px solid var(--border); border-radius:6px; background:#fff; cursor:'+(page===totalPages?'default':'pointer')+'; color:var(--text-secondary); font-size:0.8rem;">Suivant</button>';
+                html += '<button onclick="changeTechPage(' + (page+1) + ')" ' + (page===totalPages?'disabled':'') + ' style="padding:0.4rem 0.75rem; border:1px solid var(--border); border-radius:6px; background:#fff; cursor:'+(page===totalPages?'default':'pointer')+'; color:var(--text-secondary); font-size:0.8rem;">Suivant</button>';
                 html += '</div></div>';
             }
 
             container.innerHTML = html;
         }
 
-        window.changePage = function(containerId, newPage) {
-            pageStates[containerId] = newPage;
-            if (containerId === 'openTicketsContainer') loadOpenTickets();
-            else if (containerId === 'myTicketsContainer') loadMyTickets();
-            else if (containerId === 'allTicketsContainer') loadAllTickets();
+        window.changeTechPage = function(newPage) {
+            techPage = newPage;
+            loadMyTickets();
         };
 
-        var currentDetailActions = null;
-
-        function loadOpenTickets() {
-            var tickets = getOpenTickets();
-            var all = getTickets();
-            $('openCount').textContent = tickets.length;
-            currentDetailActions = function(t) {
-                var canResolve = t.level === 'Normal';
-                var html = '<button class="td-btn td-btn-primary" onclick="claimTicket(' + t.id + '); closeTicketDetail();" style="margin-right:8px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Prendre en charge</button>';
-                html += '<button class="td-btn td-btn-success" onclick="solveTicket(' + t.id + '); closeTicketDetail();" style="background:#16a34a; color:#fff; border:none;" ' + (canResolve ? '' : 'disabled title="Niveau Élevé"') + '><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Résoudre</button>';
-                return html;
-            };
-            renderCleanTable(tickets, $('openTicketsContainer'), currentDetailActions);
-        }
+        var techDetailActions = function(t) {
+            var html = '';
+            if (t.status === 'En cours' && t.assignedTo === user.name) {
+                html += '<button class="td-btn td-btn-success" onclick="solveTicket(' + t.id + '); closeTicketDetail();" style="background:#16a34a; color:#fff; border:none;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Résoudre</button>';
+            }
+            return html;
+        };
 
         function loadMyTickets() {
             var tickets = getTechnicianTickets(user.name);
             $('myCount').textContent = tickets.length;
-            currentDetailActions = function(t) {
-                var canResolve = t.level === 'Normal';
-                var html = '<button class="td-btn td-btn-primary" onclick="solveTicket(' + t.id + '); closeTicketDetail();" ' + (canResolve ? '' : 'disabled title="Niveau Élevé"') + '><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Résoudre</button>';
-                html += '<button class="td-btn td-btn-danger" onclick="escalate(' + t.id + '); closeTicketDetail();"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/></svg> Transférer</button>';
-                return html;
-            };
-            renderCleanTable(tickets, $('myTicketsContainer'), currentDetailActions);
+            renderTechTable(tickets, $('myTicketsContainer'));
         }
 
         window.switchTab = function(tab) {
-            if (tab === 'open') {
-                $('openTicketsContainer').style.display = '';
-                $('myTicketsContainer').style.display = 'none';
-                $('tabOpen').style.background = 'var(--primary)'; $('tabOpen').style.color = '#fff'; $('tabOpen').style.border = 'none';
-                $('tabMy').style.background = '#fff'; $('tabMy').style.color = 'var(--text-secondary)'; $('tabMy').style.border = '1px solid var(--border)';
-            } else {
-                $('openTicketsContainer').style.display = 'none';
-                $('myTicketsContainer').style.display = '';
-                $('tabMy').style.background = 'var(--primary)'; $('tabMy').style.color = '#fff'; $('tabMy').style.border = 'none';
-                $('tabOpen').style.background = '#fff'; $('tabOpen').style.color = 'var(--text-secondary)'; $('tabOpen').style.border = '1px solid var(--border)';
-            }
         };
 
-        window.claimTicket = function(id) { takeTicket(id, user.name); loadOpenTickets(); loadMyTickets(); };
-        window.solveTicket = function(id) { resolveTicket(id); loadMyTickets(); loadOpenTickets(); };
-        window.escalate = function(id) { escalateTicket(id); loadMyTickets(); loadOpenTickets(); };
+        window.solveTicket = function(id) { resolveTicket(id); loadMyTickets(); };
 
-        loadOpenTickets();
         loadMyTickets();
 
         // Draw chart

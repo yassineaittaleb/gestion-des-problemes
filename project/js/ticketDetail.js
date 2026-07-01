@@ -37,8 +37,6 @@
         html += '<div class="td-meta">' + getStatusBadge(t.status) + ' <span>par ' + t.createdBy + '</span></div>';
         html += '<div class="td-tags">';
         html += '<span class="td-tag">' + t.type + '</span>';
-        html += '<span class="td-tag">' + t.level + '</span>';
-        if (t.priority) html += '<span class="td-tag">' + t.priority + '</span>';
         html += '</div>';
         html += '</div>';
         html += '<button class="td-close" onclick="closeTicketDetail()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>';
@@ -54,7 +52,6 @@
         html += '<div class="td-info-grid">';
         html += '<div class="td-info-item"><div class="td-info-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> CRÉÉ PAR</div><div class="td-info-value">' + t.createdBy + '</div></div>';
         html += '<div class="td-info-item"><div class="td-info-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> DATE</div><div class="td-info-value">' + t.createdAt.split(' ')[0] + '</div></div>';
-        html += '<div class="td-info-item"><div class="td-info-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg> NIVEAU</div><div class="td-info-value">' + t.level + '</div></div>';
         html += '<div class="td-info-item"><div class="td-info-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> ASSIGNÉ À</div><div class="td-info-value">' + (t.assignedTo || '—') + '</div></div>';
         html += '</div>';
 

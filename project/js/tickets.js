@@ -6,7 +6,7 @@ function saveTickets(tickets) {
     localStorage.setItem('tickets', JSON.stringify(tickets));
 }
 
-function createTicket(title, description, createdBy, type, level) {
+function createTicket(title, description, createdBy, type) {
     const tickets = getTickets();
     const ticket = {
         id: Date.now(),
@@ -14,11 +14,9 @@ function createTicket(title, description, createdBy, type, level) {
         description: description,
         createdBy: createdBy,
         type: type,
-        level: level,
         status: 'Ouvert',
         assignedTo: null,
-        createdAt: new Date().toLocaleString('fr-FR'),
-        priority: 'Moyenne'
+        createdAt: new Date().toLocaleString('fr-FR')
     };
     tickets.unshift(ticket);
     saveTickets(tickets);
@@ -135,10 +133,8 @@ function seedTickets() {
     if (localStorage.getItem('tickets')) return;
     console.log("Seeding Rich Mock Data...");
 
-    var statuses = ['Ouvert', 'En cours', 'Resolu', 'Escalade'];
+    var statuses = ['Ouvert', 'En cours', 'Resolu'];
     var types = ['Soft', 'Hard', 'Materiel'];
-    var levels = ['Normal', 'Eleve'];
-    var priorities = ['Basse', 'Moyenne', 'Haute', 'Critique'];
 
     var creators = [
         'Ahmed Benali', 'Fatima Zahra', 'Omar Yassine', 'Mouna Tazi', 'Rachid Fassi',
@@ -217,8 +213,6 @@ function seedTickets() {
         d.setHours(Math.floor(Math.random() * 10) + 8, Math.floor(Math.random() * 60), 0);
 
         var type = types[Math.floor(Math.random() * types.length)];
-        var level = levels[Math.floor(Math.random() * levels.length)];
-        var priority = priorities[Math.floor(Math.random() * priorities.length)];
         var creator = creators[Math.floor(Math.random() * creators.length)];
 
         var titles, descs;
@@ -232,14 +226,10 @@ function seedTickets() {
         var status;
         if (pastDays < 2) status = Math.random() > 0.2 ? 'Ouvert' : 'En cours';
         else if (pastDays < 7) status = statuses[Math.floor(Math.random() * statuses.length)];
-        else if (pastDays < 20) status = Math.random() > 0.3 ? 'Resolu' : (Math.random() > 0.5 ? 'En cours' : 'Escalade');
-        else status = Math.random() > 0.15 ? 'Resolu' : 'Escalade';
+        else if (pastDays < 20) status = Math.random() > 0.3 ? 'Resolu' : 'En cours';
+        else status = 'Resolu';
 
         var assigned = (status !== 'Ouvert') ? techs[Math.floor(Math.random() * techs.length)] : null;
-
-        // Give high priority to escalated
-        if (status === 'Escalade' && Math.random() > 0.4) priority = 'Critique';
-        if (status === 'Escalade') level = 'Eleve';
 
         newTickets.push({
             id: 1700000000000 + i * 1000 + Math.floor(Math.random() * 999),
@@ -247,11 +237,9 @@ function seedTickets() {
             description: desc,
             createdBy: creator,
             type: type,
-            level: level,
             status: status,
             assignedTo: assigned,
-            createdAt: d.toLocaleDateString('fr-FR', {day:'2-digit', month:'2-digit', year:'numeric'}) + ' ' + d.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}),
-            priority: priority
+            createdAt: d.toLocaleDateString('fr-FR', {day:'2-digit', month:'2-digit', year:'numeric'}) + ' ' + d.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'})
         });
     }
 

@@ -140,12 +140,8 @@
                     <div style="height: 280px; width: 100%;"><canvas id="trendChart"></canvas></div>
                 </div>
                 
-                <!-- 3 charts row -->
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
-                    <div style="background: #fff; border-radius: 12px; border: 1px solid var(--border); padding: 1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
-                        <h3 style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 1rem;">Tickets par Priorité</h3>
-                        <div style="height: 180px; width: 100%;"><canvas id="priorityChart"></canvas></div>
-                    </div>
+                <!-- 2 charts row -->
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
                     <div style="background: #fff; border-radius: 12px; border: 1px solid var(--border); padding: 1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
                         <h3 style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 1rem;">Répartition par Type</h3>
                         <div style="height: 180px; width: 100%;"><canvas id="typeChart"></canvas></div>
@@ -363,28 +359,7 @@
                 });
             }
 
-            // 2. Priority Bar Chart
-            const prioEl = document.getElementById('priorityChart');
-            if (prioEl) {
-                const prioCtx = prioEl.getContext('2d');
-                const pc = { Basse: 0, Moyenne: 0, Haute: 0, Critique: 0 };
-                tickets.forEach(t => { if (pc[t.priority] !== undefined) pc[t.priority]++; });
-
-                new Chart(prioCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: Object.keys(pc),
-                        datasets: [{ data: Object.values(pc), backgroundColor: ['#94a3b8','#3b82f6','#f59e0b','#ef4444'], borderRadius: 6 }]
-                    },
-                    options: {
-                        responsive: true, maintainAspectRatio: false, indexAxis: 'y',
-                        plugins: { legend: { display: false } },
-                        scales: { x: { beginAtZero: true, grid: { color: '#f1f5f9' } }, y: { grid: { display: false } } }
-                    }
-                });
-            }
-
-            // 3. Type Doughnut
+            // 2. Type Doughnut
             const typeEl = document.getElementById('typeChart');
             if (typeEl) {
                 const typeCtx = typeEl.getContext('2d');
@@ -404,7 +379,7 @@
                 });
             }
 
-            // 4. Resolution Gauge
+            // 3. Resolution Gauge
             const gaugeEl = document.getElementById('gaugeChart');
             if (gaugeEl) {
                 const total = tickets.length;
