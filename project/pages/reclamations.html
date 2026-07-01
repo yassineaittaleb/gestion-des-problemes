@@ -161,7 +161,9 @@
         }
 
         function renderTickets(filter) {
-            const tickets = getTickets();
+            var allTickets = getTickets();
+            if (user.role === 'technicien') allTickets = allTickets.filter(function(t) { return t.assignedTo === user.name; });
+            const tickets = allTickets;
             const container = $('allTicketsContainer');
             $('ticketCount').textContent = tickets.length;
             $('statTotal').textContent = tickets.length;
