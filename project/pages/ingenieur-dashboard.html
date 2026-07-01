@@ -194,6 +194,9 @@
                 techs.forEach(function(tech){ html += '<option value="' + tech.name + '">' + tech.name + '</option>'; });
                 html += '</select>';
                 html += '<button class="td-btn td-btn-primary" onclick="var s=document.getElementById(\'engAssignSelect\'); if(s.value){ assignToTech(' + t.id + ',s.value); closeTicketDetail(); }"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Assigner</button>';
+                html += '<button class="td-btn td-btn-success" onclick="engSolveTicket(' + t.id + '); closeTicketDetail();"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Résoudre</button>';
+            } else if (t.status === 'En cours') {
+                html += '<button class="td-btn td-btn-success" onclick="engSolveTicket(' + t.id + '); closeTicketDetail();"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Résoudre</button>';
             }
             return html;
         };
@@ -239,6 +242,13 @@
         window.assignToTech = function(id, techName) {
             if (!techName) return;
             takeTicket(id, techName);
+            loadEngTickets();
+        };
+
+        window.engSolveTicket = function(id) {
+            var tickets = getTickets();
+            var ticket = tickets.find(function(t) { return t.id === id; });
+            if (ticket) { ticket.status = 'Resolu'; ticket.assignedTo = user.name; saveTickets(tickets); }
             loadEngTickets();
         };
 
