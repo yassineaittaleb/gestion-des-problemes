@@ -93,7 +93,10 @@
                 <!-- Tab Header -->
                 <div style="display:flex; align-items:center; padding:1.25rem 1.5rem; border-bottom:1px solid var(--border);">
                     <div style="display:flex; gap:0.5rem;">
-                        <button id="tabMy" onclick="switchTab('my')" style="padding:0.45rem 1rem; border-radius:20px; border:none; font-size:0.8rem; font-weight:600; cursor:pointer; background:var(--primary); color:#fff; transition:all 0.15s;">Mes Tickets <span id="myCount" style="background:rgba(255,255,255,0.25); padding:0 6px; border-radius:10px; margin-left:4px; font-size:0.7rem;">0</span></button>
+                        <button id="tabAll" onclick="switchTechFilter('all')" style="padding:0.45rem 1rem; border-radius:20px; border:none; font-size:0.8rem; font-weight:600; cursor:pointer; background:var(--primary); color:#fff;">Tous <span id="techCountAll" style="background:rgba(255,255,255,0.25); padding:0 6px; border-radius:10px; margin-left:4px; font-size:0.7rem;">0</span></button>
+                        <button id="tabOuvert" onclick="switchTechFilter('Ouvert')" style="padding:0.45rem 1rem; border-radius:20px; border:1px solid var(--border); font-size:0.8rem; font-weight:600; cursor:pointer; background:#fff; color:var(--text-secondary);">Ouverts</button>
+                        <button id="tabEncours" onclick="switchTechFilter('En cours')" style="padding:0.45rem 1rem; border-radius:20px; border:1px solid var(--border); font-size:0.8rem; font-weight:600; cursor:pointer; background:#fff; color:var(--text-secondary);">En cours</button>
+                        <button id="tabResolu" onclick="switchTechFilter('Resolu')" style="padding:0.45rem 1rem; border-radius:20px; border:1px solid var(--border); font-size:0.8rem; font-weight:600; cursor:pointer; background:#fff; color:var(--text-secondary);">Résolus</button>
                     </div>
                 </div>
                 <!-- Table Content -->
@@ -118,6 +121,7 @@
 
         var techPage = 1;
         var techPageSize = 12;
+        var techFilter = 'all';
 
         function renderTechTable(tickets, container) {
             var page = techPage;
@@ -126,7 +130,7 @@
             techPage = page;
 
             if (tickets.length === 0) {
-                container.innerHTML = '<div style="padding:3rem; text-align:center; color:var(--text-muted); font-size:0.9rem;">Aucun ticket assigné pour le moment.</div>';
+                container.innerHTML = '<div style="padding:3rem; text-align:center; color:var(--text-muted); font-size:0.9rem;">Aucun ticket dans cette catégorie.</div>';
                 return;
             }
 
@@ -171,29 +175,51 @@
 
         window.changeTechPage = function(newPage) {
             techPage = newPage;
-            loadMyTickets();
+            loadTechTickets();
+        };
+
+        window.switchTechFilter = function(status) {
+            techFilter = status;
+            var btns = ['tabAll','tabOuvert','tabEncours','tabResolu'];
+            var map = { all:'tabAll', Ouvert:'tabOuvert', 'En cours':'tabEncours', Resolu:'tabResolu' };
+            btns.forEach(function(id) {
+                var b = document.getElementById(id);
+                if (b) { b.style.background = '#fff'; b.style.color = 'var(--text-secondary)'; b.style.border = '1px solid var(--border)'; }
+            });
+            var active = document.getElementById(map[status]);
+            if (active) { active.style.background = 'var(--primary)'; active.style.color = '#fff'; active.style.border = 'none'; }
+            techPage = 1;
+            loadTechTickets();
         };
 
         var techDetailActions = function(t) {
             var html = '';
             if (t.status === 'En cours' && t.assignedTo === user.name) {
-                html += '<button class="td-btn td-btn-success" onclick="solveTicket(' + t.id + '); closeTicketDetail();" style="background:#16a34a; color:#fff; border:none;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Résoudre</button>';
+                html += '<button class="td-btn td-btn-success" onclick="techSolveTicket(' + t.id + '); closeTicketDetail();" style="background:#16a34a; color:#fff; border:none;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Résoudre</button>';
             }
             return html;
         };
 
-        function loadMyTickets() {
-            var tickets = getTechnicianTickets(user.name);
-            $('myCount').textContent = tickets.length;
-            renderTechTable(tickets, $('myTicketsContainer'));
-        }
-
-        window.switchTab = function(tab) {
+        window.techSolveTicket = function(id) {
+            var tickets = getTickets();
+            for (var i = 0; i < tickets.length; i++) {
+                if (tickets[i].id === id && tickets[i].assignedTo === user.name) {
+                    tickets[i].status = 'Resolu';
+                    break;
+                }
+            }
+            saveTickets(tickets);
+            loadTechTickets();
         };
 
-        window.solveTicket = function(id) { resolveTicket(id); loadMyTickets(); };
+        function loadTechTickets() {
+            var all = getTickets().filter(function(t) { return t.assignedTo === user.name; });
+            $('techCountAll').textContent = all.length;
+            var filtered = techFilter === 'all' ? all : all.filter(function(t) { return t.status === techFilter; });
+            renderTechTable(filtered, $('myTicketsContainer'));
+        }
 
-        loadMyTickets();
+        loadTechTickets();
 
         // Draw chart
         var all = getTickets();
